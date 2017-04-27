@@ -1,0 +1,51 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="head item-fixed">
+      <view class="flex-item item-menu1">服务项目</view>
+      <view class="item-solid">|</view>
+      <view class="flex-item item-menu1">拥有资质</view>
+      <view class="item-solid">|</view>
+      <view class="flex-item item-menu2">{{province}}{{city}}</view>
+  </view>
+  <view class="blank100"></view>
+  <view class="content">
+      <view class="flex-item">
+        <image class="img-item" mode="" src="http://www.yanma.com/upload/makeservice/635961777091039899.jpg"></image>
+      </view>
+      <view class="flex-item">
+        <view class="flex-lable">
+          <view class="item-row1 item-Column">服务项目：</view> 
+          <view class="item-row2 item-label">
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>、
+            <label>分娩导乐</label>
+          </view>
+        </view>
+        <view class="flex-lable">持有资质：
+        </view>
+        <view class="flex-lable">服务城市：
+        </view>
+      </view>
+  </view>
+  <view  bindtap="bindViewTap" class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}
+    </text>
+  </view>
+  <view class="blank100"></view>
+  <view class="footer item-fixed">
+    <view class="flex-item item-tel">
+      预约电话：18022308844
+    </view>
+    <view class="flex-item item-Notice">服务须知</view>
+  </view>
+</view>

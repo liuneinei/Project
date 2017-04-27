@@ -1,0 +1,17 @@
+{
+  "pages":[
+    "pages/yanma/yanma",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "盐妈",
+    "navigationBarTextStyle":"black"
+  } ,
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}
