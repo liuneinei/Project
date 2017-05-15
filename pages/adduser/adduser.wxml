@@ -1,0 +1,126 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="page navbar js_show">
+     <view class="page__bd" style="padding-bottom:52rpx;">
+        <view class="weui-tab">
+          <view class="weui-navbar">
+            <view class="weui-navbar__item" bindtap="servertag">分类</view>
+            <view class="weui-navbar__item weui-bar__item_on" bindtap="citytap">地区</view>
+          </view>
+          <view class="weui-tab__panel">
+            <view class="geo-container" hidden="{{geoshow}}">
+            <block wx:if="{{classshow == 1}}">
+                <view class="server-container">
+                   <view class="geo-item server-width">分类分类</view>
+                   <view class="geo-item server-width">分类分类</view>
+                   <view class="geo-item server-width">分类分类</view>
+                   <view class="geo-item server-width">分类分类</view>
+                </view>
+              </block>
+              <block wx:if="{{classshow == 2}}">
+                <view class="province-container">
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                  <view class="geo-item province-width">广东省</view>
+                </view>
+                <view class="city-container">
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                  <view class="geo-item city-width">广州市</view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+     </view>
+  </view>
+  <view  bindtap="bindViewTap" class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+  </view>
+  <view class="zidentity">身份证正面：
+    <image  class="xd-img-user1" catchtap="chooseImageTap" src="{{logo}}"></image>
+  </view>
+   <view class="fidentity">身份证反面：
+    <image  class="xd-img-user1" catchtap="fchooseImageTap" src="{{logo2}}"></image>
+  </view>
+  <view class="imglist">
+    <view wx:for="{{imglist}}" wx:for-index="idx" wx:for-item="item">
+      <image src="{{item}}"></image>
+    </view>
+  </view>
+  <view class="classname" bindtap="bindUps">上传</view>
+
+  
+</view>

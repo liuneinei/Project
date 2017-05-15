@@ -1,12 +1,12 @@
 var api = require('../../api/api.js')
-var arrs = [1, 2, 3];
-//index.js
+
+//detail.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
+    motto: 'Hello World',
     userInfo: {},
-    items:arrs,
     province:'所在',
     city:'城市',
     latitude:0,
@@ -16,12 +16,16 @@ Page({
   },
   onReady: function () {
     wx.setNavigationBarTitle({
-      title: '预约服务'
+      title: '讲师预约服务'
     })
   },
   //拔打电话
-  bindCallPhone:function(e){
-      var phone ;
+  bindCallPhone:function(event){
+    console.log(event)
+      var phone = event.target.dataset.phone;
+      wx.makePhoneCall({
+        phoneNumber: phone //仅为示例，并非真实的电话号码
+      })
   },
   // 服务项目
   bindProject:function(e){
@@ -48,7 +52,7 @@ Page({
   // 所在城市
   bindCity:function(e){
     wx.showActionSheet({
-      itemList: ['广东广州', '广东深圳', '广东清远', '广东云浮', '广东揭阳', '广东中山', '深圳'],
+            itemList: ['广东广州', '广东深圳', '广东清远', '广东云浮', '广东揭阳','广东中山'],
             success: function(res) {
                 if (!res.cancel) {
                     console.log(res.tapIndex)
@@ -56,35 +60,28 @@ Page({
             }
         });
   },
+  // 下拉刷新
   onPullDownRefresh: function () {
-    console.log('onPullDownRefresh', new Date())
+    console.log('pull Down');
   },
-  scroll: function (e) {
-    //console.log('scroll'+e)
-  },
-  scrolltolower: function () {
-    console.log('scrolltolower')
-    var that = this
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading'
-    })
-  arrs[3]=4;
-  arrs[4]=5;
-    that.setData({
-            items:arrs
-          })
-  },
-  // 详情
-  bingInfo:function(event){
-    console.log(event);
-    var id = event.currentTarget.dataset.id;
-    wx.navigateTo({
-      url: '../detail/detail?id='+id
-    })
-  },
-  onLoad: function () {
+  onLoad: function (options) {
+    wx.setClipboardData({
+      data: 'data',
+      success: function (res) {
+        wx.getClipboardData({
+          success: function (res) {
+            console.log(res.data) // data
+          }
+        })
+      }
+    });
+    wx.getClipboardData({
+      success: function (res) {
+        console.log(res.data)
+      }
+    });
     console.log('onLoad')
+    console.log('参数:'+options.id);
     var that = this;
     wx.getLocation({
       type: 'wgs84',

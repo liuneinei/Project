@@ -2,11 +2,12 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  position: absolute;
+  position:fixed;
   z-index: 500;
   top: 0;
   width: 100%;
   border-bottom: 1rpx solid #CCCCCC;
+  background: #FAFAFA;
 }
 .weui-navbar__item {
   position: relative;
@@ -16,7 +17,21 @@
           flex: 1;
   padding: 13px 0;
   text-align: center;
-  font-size: 0;
+  font-size: 16px;
+}
+.weui-navbar__item:after {
+    content: " ";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    bottom: 0;
+    border-right: 1px solid #CCCCCC;
+    color: #CCCCCC;
+    -webkit-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+    -webkit-transform: scaleX(0.5);
+    transform: scaleX(0.5);
 }
 .weui-navbar__item.weui-bar__item_on {
   color: #1AAD19;

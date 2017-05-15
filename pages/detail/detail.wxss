@@ -239,7 +239,7 @@
 
 /*底部*/
 .footer{
-  position: fixed;
+  /*position: fixed;*/
   bottom: 0px;
 }
 .footer flex-item{
@@ -255,4 +255,27 @@
 .item-Notice{
   width: 200rpx;
   text-align: center;
+}
+
+/*标题*/
+.flex-item-title{
+    padding-top: 30rpx;
+    padding-left: 20rpx;
+}
+.flex-item-info{
+    line-height: 25px;
+    padding: 15px 15px 15px 15px;
+    border-radius: 2px;
+    box-shadow: 0 0 2px #333333;
+}
+/* 服务项目介绍 */
+.flex-item-introduce{
+    background: #28b7b9;
+    color: #FFF;
+}
+/* 我的经历 */
+.flex-item-experience{
+    background: #FFFFFF;
+    font-family: "Microsoft YaHei",微软雅黑,"Microsoft JhengHei",华文细黑;
+    color: #666;
 }

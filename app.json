@@ -1,6 +1,9 @@
 {
   "pages":[
+    "pages/adduser/adduser",
     "pages/yanma/yanma",
+    "pages/detail/detail",
+    "pages/index/index",
     "pages/logs/logs"
   ],
   "window":{
