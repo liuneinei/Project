@@ -21,7 +21,7 @@ Page({
     regionapi:true,
     regnavCus:0,//选中
     citys:[],//城市
-    lecturer: lecturer.lecturer
+    lecturers: []
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -60,6 +60,12 @@ Page({
             })
         }
     })
+
+    console.log(lecturer.lecturer)
+    that.setData({
+      lecturers: lecturer.lecturer
+    })
+
     // 实例化API核心类
     var qqmapwx = new QQMapWX({
       key: api.QQMapKey // 必填
