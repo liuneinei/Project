@@ -1,7 +1,10 @@
 var api = require('../../api/api.js')
-var region = require('../../api/testdata/region.js')
 // 引入SDK核心类
 var QQMapWX = require('../../api/qqmap-wx-jssdk.min.js');
+
+//测试数据
+var region = require('../../api/testdata/region.js')
+var lecturer = require('../../api/testdata/lecturer.js')
 
 //index.js
 //获取应用实例
@@ -18,6 +21,7 @@ Page({
     regionapi:true,
     regnavCus:0,//选中
     citys:[],//城市
+    lecturer: lecturer.lecturer
   },
   onReady: function () {
     wx.setNavigationBarTitle({

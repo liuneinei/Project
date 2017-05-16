@@ -53,14 +53,6 @@ function Login(code, encryptedData, iv, Data) {
     duration: 10000
   });
 
-  console.log('请求data');
-  console.log({
-    code: code,
-    encrypteddata: encryptedData,
-    iv: iv,
-    Data: Data
-  });
-
   //请求服务器
   wx.request({
     url: 'http://192.168.199.197:7888/wxlogin',

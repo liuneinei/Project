@@ -34,7 +34,7 @@
     <view class="blank20"></view>
     <view class="item-main">
     <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
-        <block wx:for-items="{{items}}" wx:for-item="i">
+        <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
             <view class="main-list">
                 <view class="module__left module__item">
                     <view class="module__left__img">
