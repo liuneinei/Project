@@ -51,6 +51,10 @@
   width: 250rpx;
   padding-top: 52px;
   overflow-y: auto;
+  background: #e8e8e8;
+}
+
+.geo-container .nav-dorpmenu .province-container .checkon{
   background: #ffffff;
 }
 
@@ -66,6 +70,7 @@
   overflow-y: auto;
   padding-top: 52px;
   width: 250rpx;
+  background: #ffffff;
 }
 /*宽度*/
 .geo-container .city-width{

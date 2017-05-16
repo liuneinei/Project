@@ -19,85 +19,10 @@
               <block wx:if="{{classshow == 2}}">
               <view class="nav-dorpmenu">
                 <view class="province-container" style="height:{{wHeight}}px">
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
-                  <view class="geo-item province-width">广东省</view>
+                    <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
                 </view>
-                <view class="city-container">
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
-                  <view class="geo-item city-width">广州市</view>
+                <view class="city-container" style="height:{{wHeight}}px">
+                  <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
                 </view>
                 </view>
               </block>
@@ -106,7 +31,7 @@
         </view>
      </view>
     </view>
-    <view class="blank40"></view>
+    <view class="blank20"></view>
     <view class="item-main">
     <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
         <block wx:for-items="{{items}}" wx:for-item="i">

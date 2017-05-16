@@ -1,21 +1,23 @@
 var api = require('../../api/api.js')
-var arrs = [1, 2, 3];
+var region = require('../../api/testdata/region.js')
+// 引入SDK核心类
+var QQMapWX = require('../../api/qqmap-wx-jssdk.min.js');
+
 //index.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
     userInfo: {},
-    items:arrs,
-    province:'所在',
-    city:'城市',
-    latitude:0,
-    longitude:0,
-    speed:'',
-    accuracy:'',
+    province:0,
+    city:0,
     geoshow:true,
     classshow:0,
-    wHeight:300
+    wHeight:300,
+    region: [],
+    regionapi:true,
+    regnavCus:0,//选中
+    citys:[],//城市
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -36,11 +38,6 @@ Page({
       title: '加载中',
       icon: 'loading'
     })
-  arrs[3]=4;
-  arrs[4]=5;
-    that.setData({
-            items:arrs
-          })
   },
   // 详情
   bingInfo:function(event){
@@ -51,55 +48,42 @@ Page({
     })
   },
   onLoad: function () {
-      console.log('onLoad')
     var that = this;
+    console.log(that);
+    // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
         success: function(res) {
-            console.log(res.model)
-            console.log(res.pixelRatio)
-            console.log(res.windowWidth)
-            console.log(res.windowHeight)
-            console.log(res.language)
-            console.log(res.version)
-            console.log(res.platform)
             that.setData({
                 wHeight:res.windowHeight-53
             })
-
-            console.log(that.data.wHeight)
         }
     })
+    // 实例化API核心类
+    // var qqmapwx = new QQMapWX({
+    //   key: api.QQMapKey // 必填
+    // });
     
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
-        //纬度，浮点数，范围为-90~90，负数表示南纬
-        var latitude = res.latitude
-         //经度，浮点数，范围为-180~180，负数表示西经
-        var longitude = res.longitude
-         //速度，浮点数，单位m/s
-        var speed = res.speed
-        //位置的精确度
-        var accuracy = res.accuracy
-
-        api.getmap({
-        data: {
-          location: latitude+','+longitude,
-          key:'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA'
-        },
-        success: (res) => {
-          //省份
-          var province = res.data.result.ad_info.province
-          province = province.substr(0,2);
-          //城市
-          var city = res.data.result.ad_info.city
-          city = city.substr(0,2);
-          that.setData({
-            province:province,
-            city:city
-          })
-        } 
-      })
+        // 调用接口
+        // qqmapwx.reverseGeocoder({
+        //   location: {
+        //     //纬度，浮点数，范围为-90~90，负数表示南纬
+        //     latitude: res.latitude,
+        //     //经度，浮点数，范围为-180~180，负数表示西经
+        //     longitude: res.longitude
+        //   },
+        //   success: function (res) {
+        //     console.log(res);
+        //   },
+        //   fail: function (res) {
+        //     console.log(res);
+        //   },
+        //   complete: function (res) {
+        //     console.log(res);
+        //   }
+        // });
       }
     });
     //调用应用实例的方法获取全局数据
@@ -138,7 +122,32 @@ Page({
     console.log(classshow)
     _this.setData({
       geoshow: geoshow,
-      classshow:classshow
+      classshow:classshow,
+      region: region.region
     }); 
   },
+  // 选择省
+  provinceTap: function (event){
+    var _this = this;  
+    var citys=[];
+    var pid = event.target.dataset.id;
+    if (pid<=0){
+      // 请求api
+      _this.setData({
+        regnavCus: pid,
+        citys: citys
+      })
+    }else{
+      [].forEach.call(_this.data.region, function (item, i, arr) {
+        if (item.id == pid) {
+          citys = item.city;
+          // console.log(item.city)
+        }
+      });
+      _this.setData({
+        regnavCus: pid,
+        citys: citys
+      })
+    }
+  }
 })

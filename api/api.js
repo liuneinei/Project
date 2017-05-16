@@ -1,6 +1,7 @@
 const host = 'https://wxnnn.wang'
-
 const geourl = 'https://apis.map.qq.com/ws/geocoder/v1/';
+const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
+const wxlogin ='http://192.168.199.197:7888/wxlogin'
 
 const wxRequest = (params, url) => {
   wx.showToast({
@@ -29,7 +30,9 @@ const wxRequest = (params, url) => {
 // map
 const getmap = (params) => wxRequest(params, geourl)
 
+const lgoinApi = (params) => wxRequest(params,wxlogin)
+
 module.exports = {
   wxRequest,
-  getmap,
+  getmap
 }
