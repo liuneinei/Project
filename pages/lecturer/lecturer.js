@@ -58,7 +58,7 @@ Page({
     })
     // 实例化API核心类
     var qqmapwx = new QQMapWX({
-      key: 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA' // 必填
+      key: api.QQMapKey // 必填
     });
     
     wx.getLocation({
