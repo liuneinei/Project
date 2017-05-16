@@ -15,6 +15,7 @@ Page({
     accuracy:'',
     geoshow:true,
     classshow:0,
+    wHeight:300
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -50,8 +51,25 @@ Page({
     })
   },
   onLoad: function () {
-    console.log('onLoad')
+      console.log('onLoad')
     var that = this;
+    wx.getSystemInfo({
+        success: function(res) {
+            console.log(res.model)
+            console.log(res.pixelRatio)
+            console.log(res.windowWidth)
+            console.log(res.windowHeight)
+            console.log(res.language)
+            console.log(res.version)
+            console.log(res.platform)
+            that.setData({
+                wHeight:res.windowHeight-53
+            })
+
+            console.log(that.data.wHeight)
+        }
+    })
+    
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {

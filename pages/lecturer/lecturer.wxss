@@ -48,7 +48,7 @@
 /*省*/
 .geo-container .province-container{
   height: 100%;
-  width: 200rpx;
+  width: 250rpx;
   padding-top: 52px;
   overflow-y: auto;
   background: #ffffff;
@@ -65,9 +65,10 @@
   border-top: 2px solid #ccc;
   overflow-y: auto;
   padding-top: 52px;
+  width: 250rpx;
 }
 /*宽度*/
 .geo-container .city-width{
-  width:187rpx;
+  width:250rpx;
 }
 /*GEO 地区选择 :end*/

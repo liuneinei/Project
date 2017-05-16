@@ -18,7 +18,7 @@
               </block>
               <block wx:if="{{classshow == 2}}">
               <view class="nav-dorpmenu">
-                <view class="province-container">
+                <view class="province-container" style="height:{{wHeight}}px">
                   <view class="geo-item province-width">广东省</view>
                   <view class="geo-item province-width">广东省</view>
                   <view class="geo-item province-width">广东省</view>
