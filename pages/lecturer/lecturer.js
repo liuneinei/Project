@@ -41,7 +41,6 @@ Page({
   },
   // 详情
   bingInfo:function(event){
-    console.log(event);
     var id = event.currentTarget.dataset.id;
     wx.navigateTo({
       url: '../detail/detail?id='+id
@@ -49,7 +48,6 @@ Page({
   },
   onLoad: function () {
     var that = this;
-    console.log(that);
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
         success: function(res) {
@@ -59,31 +57,31 @@ Page({
         }
     })
     // 实例化API核心类
-    // var qqmapwx = new QQMapWX({
-    //   key: api.QQMapKey // 必填
-    // });
+    var qqmapwx = new QQMapWX({
+      key: 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA' // 必填
+    });
     
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
         // 调用接口
-        // qqmapwx.reverseGeocoder({
-        //   location: {
-        //     //纬度，浮点数，范围为-90~90，负数表示南纬
-        //     latitude: res.latitude,
-        //     //经度，浮点数，范围为-180~180，负数表示西经
-        //     longitude: res.longitude
-        //   },
-        //   success: function (res) {
-        //     console.log(res);
-        //   },
-        //   fail: function (res) {
-        //     console.log(res);
-        //   },
-        //   complete: function (res) {
-        //     console.log(res);
-        //   }
-        // });
+        qqmapwx.reverseGeocoder({
+          location: {
+            //纬度，浮点数，范围为-90~90，负数表示南纬
+            latitude: res.latitude,
+            //经度，浮点数，范围为-180~180，负数表示西经
+            longitude: res.longitude
+          },
+          success: function (res) {
+            console.log(res);
+          },
+          fail: function (res) {
+            console.log(res);
+          },
+          complete: function (res) {
+            console.log(res);
+          }
+        });
       }
     });
     //调用应用实例的方法获取全局数据

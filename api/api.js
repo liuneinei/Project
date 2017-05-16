@@ -34,5 +34,6 @@ const lgoinApi = (params) => wxRequest(params,wxlogin)
 
 module.exports = {
   wxRequest,
-  getmap
+  getmap,
+  QQMapKey,
 }
