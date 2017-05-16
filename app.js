@@ -29,7 +29,7 @@ App({
               var encryptedData = encodeURIComponent(res.encryptedData);//一定要把加密串转成URI编码
               var iv = res.iv;
               //请求自己的服务器
-              Login(code, encryptedData, iv);
+              Login(code, encryptedData, iv, res.encryptedData);
             
               typeof cb == "function" && cb(that.globalData.userInfo)
             }
@@ -44,7 +44,7 @@ App({
 })
 
 
-function Login(code, encryptedData, iv) {
+function Login(code, encryptedData, iv, Data) {
   console.log('code=' + code + '&encryptedData=' + encryptedData + '&iv=' + iv);
   //创建一个dialog
   wx.showToast({
@@ -57,7 +57,8 @@ function Login(code, encryptedData, iv) {
   console.log({
     code: code,
     encrypteddata: encryptedData,
-    iv: iv
+    iv: iv,
+    Data: Data
   });
 
   //请求服务器
