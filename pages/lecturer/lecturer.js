@@ -22,7 +22,8 @@ Page({
     })
   },
   onPullDownRefresh: function () {
-    console.log('onPullDownRefresh', new Date())
+      wx.stopPullDownRefresh();
+    console.log('onPullDownRefresh', new Date());
   },
   scroll: function (e) {
     //console.log('scroll'+e)

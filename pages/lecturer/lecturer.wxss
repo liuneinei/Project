@@ -5,6 +5,10 @@
     background: #ffffff;
 }
 
+.weui-navbar__item{
+    line-height: 40px;
+    padding: 0px;
+}
 
 /*GEO 地区选择 :begin*/
 .geo-container{
