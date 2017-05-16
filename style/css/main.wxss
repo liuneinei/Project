@@ -1,0 +1,43 @@
+
+/*内容部分 :beging*/
+.item-main{
+    margin-top: 10px;
+    background: #ffffff;
+}
+.item-main .main-nav{
+    text-align: center;
+    margin-bottom:-10px;
+    padding-top:10px;
+}
+.main-list{
+    width: 750rpx;
+    display: flex;
+    flex-direction: row;
+    padding-top: 15px;
+}
+
+.main-list .module__left{
+    width: 220rpx;
+}
+.main-list .module__right{
+    width: 530rpx;
+}
+
+.module__left .module__left__img{
+    text-align: center;
+}
+.module__left .module__left__img .module__left__icon{
+    width: 180rpx;
+    height: 180rpx;
+}
+
+.module__right .m_t{
+    display: flex;
+    flex-direction: row;
+}
+.module__right .m_t .m_t_r{
+    color: #746680;
+    font-size: 13px;
+    padding-top:4px;
+}
+/*内容部分 :end*/

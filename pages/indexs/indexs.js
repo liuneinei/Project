@@ -1,12 +1,12 @@
 var api = require('../../api/api.js')
-var arrs = [1, 2, 3];
+
 //index.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
+    motto: 'Hello World',
     userInfo: {},
-    items:arrs,
     province:'所在',
     city:'城市',
     latitude:0,
@@ -19,31 +19,10 @@ Page({
       title: '预约服务'
     })
   },
-  onPullDownRefresh: function () {
-    console.log('onPullDownRefresh', new Date())
-  },
-  scroll: function (e) {
-    //console.log('scroll'+e)
-  },
-  scrolltolower: function () {
-    console.log('scrolltolower')
-    var that = this
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading'
-    })
-  arrs[3]=4;
-  arrs[4]=5;
-    that.setData({
-            items:arrs
-          })
-  },
-  // 详情
-  bingInfo:function(event){
-    console.log(event);
-    var id = event.currentTarget.dataset.id;
+  //事件处理函数
+  bindViewTap: function() {
     wx.navigateTo({
-      url: '../detail/detail?id='+id
+      url: '../logs/logs'
     })
   },
   onLoad: function () {

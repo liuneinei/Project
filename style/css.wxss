@@ -4,7 +4,9 @@
 .blank20{
     height: 20rpx;
 }
-
-.blank20{
-    height: 20rpx;
+.blank30{
+    height: 30rpx;
+}
+.blank40{
+    height: 40rpx;
 }

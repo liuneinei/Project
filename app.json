@@ -1,17 +1,42 @@
 {
   "pages":[
+     "pages/lecturer/lecturer",
+    "pages/index/index",
+   
     "pages/adduser/adduser",
     "pages/yanma/yanma",
     "pages/detail/detail",
-    "pages/index/index",
+    
     "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "盐妈",
-    "navigationBarTextStyle":"black"
+    "navigationBarBackgroundColor": "#714E9E",
+    "navigationBarTitleText": "亲密育儿人才库",
+    "navigationBarTextStyle":"#fff"
   } ,
+  "tabBar": {
+    "color": "#5D5D5D",
+    "selectedColor": "#AD83E5",
+    "backgroundColor": "#fff",
+    "borderStyle": "white",
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "images/home.png",
+      "selectedIconPath": "images/home_active.png"
+    }, {
+      "pagePath": "pages/lecturer/lecturer",
+      "text": "找专家",
+      "iconPath": "images/home.png",
+      "selectedIconPath": "images/home_active.png"
+    },{
+      "pagePath": "pages/adduser/adduser",
+      "text": "加入我们",
+      "iconPath": "images/home.png",
+      "selectedIconPath": "images/home_active.png"
+    }]
+  },
   "networkTimeout": {
     "request": 10000,
     "downloadFile": 10000

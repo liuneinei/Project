@@ -1,51 +1,104 @@
-<!--index.wxml-->
 <view class="container">
-  <view class="head item-fixed">
-      <view class="flex-item item-menu1">服务项目</view>
-      <view class="item-solid">|</view>
-      <view class="flex-item item-menu1">拥有资质</view>
-      <view class="item-solid">|</view>
-      <view class="flex-item item-menu2">{{province}}{{city}}</view>
-  </view>
-  <view class="blank100"></view>
-  <view class="content">
-      <view class="flex-item">
-        <image class="img-item" mode="" src="http://www.yanma.com/upload/makeservice/635961777091039899.jpg"></image>
-      </view>
-      <view class="flex-item">
-        <view class="flex-lable">
-          <view class="item-row1 item-Column">服务项目：</view> 
-          <view class="item-row2 item-label">
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>、
-            <label>分娩导乐</label>
-          </view>
+    <view class="item-nav">
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
         </view>
-        <view class="flex-lable">持有资质：
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
         </view>
-        <view class="flex-lable">服务城市：
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
         </view>
-      </view>
-  </view>
-  <view  bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}
-    </text>
-  </view>
-  <view class="blank100"></view>
-  <view class="footer item-fixed">
-    <view class="flex-item item-tel">
-      预约电话：18022308844
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
+        </view>
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
+        </view>
+        <view class="nav-width nav-tabber">
+            <view class="nav__pic">
+                <view class="nav-tabbar-icon">
+                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                </view>
+            </view>
+            <view class="nav__label">分类分类</view>
+        </view>
     </view>
-    <view class="flex-item item-Notice">服务须知</view>
-  </view>
+    <view class="item-main">
+        <view class="main-nav">-- 为你推荐 --</view>
+        <view class="main-list">
+            <view class="module__left module__item">
+                <view class="module__left__img">
+                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                </view>
+            </view>
+            <view class="module__right module__item">
+                <view class="m_t">
+                    <view class="m_t_l">崔老师</view>
+                    <view class="m_t_r">分娩导乐</view>
+                </view>
+                <view class="m_b">
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                </view>
+            </view>
+        </view>
+        <view class="main-list">
+            <view class="module__left module__item">
+                <view class="module__left__img">
+                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                </view>
+            </view>
+            <view class="module__right module__item">
+                <view class="m_t">
+                    <view class="m_t_l">崔老师</view>
+                    <view class="m_t_r">分娩导乐</view>
+                </view>
+                <view class="m_b">
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                </view>
+            </view>
+        </view>
+        <view class="main-list">
+            <view class="module__left module__item">
+                <view class="module__left__img">
+                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                </view>
+            </view>
+            <view class="module__right module__item">
+                <view class="m_t">
+                    <view class="m_t_l">崔老师</view>
+                    <view class="m_t_r">分娩导乐</view>
+                </view>
+                <view class="m_b">
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                </view>
+            </view>
+        </view>
+        <view class="blank20"></view>
+    </view>
 </view>

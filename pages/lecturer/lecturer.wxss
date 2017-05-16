@@ -1,0 +1,69 @@
+@import '../../style/widget/weui-tab/weui-navbar.wxss';
+@import '../../style/css/main.wxss';
+
+.container {
+    background: #ffffff;
+}
+
+
+/*GEO 地区选择 :begin*/
+.geo-container{
+    height: 100%;
+  position: fixed;
+  width:750rpx;
+  background: rgba(204, 204, 204, .53);
+  z-index: 499;
+}
+
+/*公共*/
+.geo-container .geo-item{
+  display: inline-flex;
+  flex-direction: row;
+  height:35px;
+  line-height:35px;
+  justify-content:center;
+}
+
+/*服务*/
+.geo-container .server-container{
+  padding-top: 52px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+.server-container .server-width{
+  width:250rpx;
+}
+
+.geo-container .nav-dorpmenu{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/*省*/
+.geo-container .province-container{
+  height: 100%;
+  width: 200rpx;
+  padding-top: 52px;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+/*省 宽度*/
+.geo-container .province-width{
+  width:250rpx;
+}
+
+/*市*/
+.geo-container .city-container{
+  height: 100%;
+  border-top: 2px solid #ccc;
+  overflow-y: auto;
+  padding-top: 52px;
+}
+/*宽度*/
+.geo-container .city-width{
+  width:187rpx;
+}
+/*GEO 地区选择 :end*/

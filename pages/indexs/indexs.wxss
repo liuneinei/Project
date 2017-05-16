@@ -1,0 +1,116 @@
+/**index.wxss**/
+.container{
+  background: #dcdcdc;
+}
+.blank100{
+  height: 100rpx;
+}
+
+.item-fixed{
+  display: flex;
+  flex-direction: row;
+  width: 750rpx;
+  background: #28b7b9;
+  height: 100rpx;
+  line-height: 100rpx;
+  box-shadow: 0 0 2px #333333;
+  color: #ffffff;
+  font-family: "微软雅黑";
+}
+/*头部*/
+.head{
+  position: fixed;
+  
+}
+.head .flex-item{
+  width: 248rpx;
+  text-align: center;
+  padding-left: 48rpx;
+}
+
+.item-menu1{
+  background: url('/images/menu.png') no-repeat 18rpx 49%;
+  background-size: 50rpx;
+}
+
+.item-menu2{
+  background: url('/images/place.png') no-repeat 35rpx 50%;
+  background-size: 35rpx;
+}
+
+/*内容区*/
+.content{
+  display: flex;
+  flex-direction: column;
+  width: 720rpx;
+  background: #ffffff;
+  margin-top: 20rpx;
+}
+.content .flex-item{
+  padding-left: 20rpx;
+}
+/*图片*/
+.content .flex-item .img-item{
+  width: 100%;
+}
+/*内容*/
+.content .flex-lable{
+  line-height: 50rpx;
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+}
+
+.item-row1{
+  width: 170rpx;
+}
+.item-row2{
+  width: 530rpx;
+}
+
+/*内容 label*/
+.content .flex-item label{
+  color: rgb(101, 101, 101);
+}
+
+/*底部*/
+.footer{
+  position: fixed;
+  bottom: 0px;
+}
+.footer flex-item{
+  text-align: center;
+}
+
+/*预约电话*/
+.item-tel{
+  width: 550rpx;
+  text-align: center;
+}
+/*服务须知*/
+.item-Notice{
+  width: 200rpx;
+  text-align: center;
+}
+
+/*测试区*/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}

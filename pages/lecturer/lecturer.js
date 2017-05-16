@@ -12,7 +12,9 @@ Page({
     latitude:0,
     longitude:0,
     speed:'',
-    accuracy:'' 
+    accuracy:'',
+    geoshow:true,
+    classshow:0,
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -88,5 +90,36 @@ Page({
         userInfo:userInfo
       })
     });
-  }
+  },
+  //服务选项
+  servertag:function(e){
+    let _this = this;
+    var classshow = 1;
+     var geoshow=false;
+    if (_this.data.classshow == 1){
+      classshow=0;
+       geoshow=true;
+    }
+    console.log(classshow)
+    _this.setData({
+      geoshow: geoshow,
+      classshow: classshow
+    });
+    
+  },
+  //citytap 城市选择
+  citytap:function(e){
+    var _this = this;   
+    var classshow = 2;
+    var geoshow=false;
+    if (_this.data.classshow == 2){
+      classshow=0;
+      geoshow=true;
+    }
+    console.log(classshow)
+    _this.setData({
+      geoshow: geoshow,
+      classshow:classshow
+    }); 
+  },
 })
