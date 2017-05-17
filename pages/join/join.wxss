@@ -1,0 +1,62 @@
+
+/*头部*/
+.item-top{
+  background: #71509e;
+  height: 260rpx;
+  text-align: center;
+}
+.item-top .top-img{
+  padding-top: 20rpx;
+}
+.item-top .top-img .top__head{
+  border-radius: 50%;
+  height: 140rpx;
+  width: 140rpx;
+}
+
+.item-top .top-btn{
+  padding-top: 20rpx;
+  padding-bottom: 40rpx;
+  color: #e7e3ee;
+  text-align: center;
+}
+
+.item-top .top-btn .btn_upload{
+  width: 130rpx;
+  height: 40rpx;
+  border: 1px solid #e7e3ee;
+  font-size: 24rpx;
+  border-radius: 25rpx;
+  margin: 0 auto;
+}
+
+/*内容*/
+.item-main{
+  background: #ffffff;
+}
+.item-main .item-content{
+  padding-left: 30rpx;
+}
+
+.item-content .item-input .item__input{
+  height: 88rpx;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
+
+.item-content .item-pic{
+  width: 320rpx;
+  height: 210rpx;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
+.item-content .item-pic .item__pic{
+  width: 50rpx;
+  height: 50rpx;
+  margin: 0 auto;
+}
+
+.item-content .item-content-main{
+  display: flex;
+  flex-direction: row;
+}

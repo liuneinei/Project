@@ -1,8 +1,9 @@
 {
   "pages":[
-     "pages/lecturer/lecturer",
+    "pages/lecturerinfo/lecturerinfo",
     "pages/index/index",
-   
+    "pages/lecturer/lecturer",
+    "pages/join/join",
     "pages/adduser/adduser",
     "pages/yanma/yanma",
     "pages/detail/detail",
@@ -28,13 +29,13 @@
     }, {
       "pagePath": "pages/lecturer/lecturer",
       "text": "找专家",
-      "iconPath": "images/home.png",
-      "selectedIconPath": "images/home_active.png"
+      "iconPath": "images/lecturer.png",
+      "selectedIconPath": "images/lecturer_active.png"
     },{
-      "pagePath": "pages/adduser/adduser",
+      "pagePath": "pages/join/join",
       "text": "加入我们",
-      "iconPath": "images/home.png",
-      "selectedIconPath": "images/home_active.png"
+      "iconPath": "images/join.png",
+      "selectedIconPath": "images/join_active.png"
     }]
   },
   "networkTimeout": {

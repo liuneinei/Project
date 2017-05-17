@@ -1,0 +1,101 @@
+<view class="container">
+  <view class="item-top">
+    <view class="top-img">
+      <image src="/images/head_portrait.png" class="top__head"></image>
+    </view>
+    <view class="top-btn">
+      <view class="btn_upload">上传头像</view>
+    </view>
+  </view>
+  <view class="blank10"></view>
+  <view class="item-main">
+    <view class="item-content">
+      <view class="item-lable">您提供服务城市</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">认证行业</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">姓名</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">手机</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+     <view class="item-content">
+      <view class="item-lable">微信号</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">简介</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">介绍</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">培训机构</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">推荐人</view>
+      <view class="item-input">
+        <input type="text" class="item__input" placeholder="城市" />
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">身份证</view>
+      <view class="item-content-main">
+        <view class="item-pic-row">
+          <view class="item-pic">
+            <image src="/images/btn_add_img.png" class="item__pic"></image>
+          </view>
+          <view class="item-desc">正面</view>
+        </view>
+        <view class="item-pic-row">
+          <view class="item-pic">
+            <image src="/images/btn_add_img.png" class="item__pic"></image>
+          </view>
+          <view class="item-desc">反面</view>
+        </view>
+      </view>
+    </view>
+    <view class="item-content">
+      <view class="item-lable">专业证书</view>
+      <view class="item-content-main">
+        <view class="item-pic-row">
+          <view class="item-pic">
+            <image src="/images/btn_add_img.png" class="item__pic"></image>
+          </view>
+          <view class="item-desc">正面</view>
+        </view>
+        <view class="item-pic-row">
+          <view class="item-pic">
+            <image src="/images/btn_add_img.png" class="item__pic"></image>
+          </view>
+          <view class="item-desc">反面</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
