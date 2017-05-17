@@ -20,4 +20,18 @@
       <view class="item-content">内容</view>
     </view>
   </view>
+  <view class="item-tabber">
+    <view class="tabber-item">
+      <view class="tabbar__i">
+        <image src="/images/btn_phone.png" class="tabbar__icon"></image>
+      </view>
+      <view class="tabbar__label">电话联系</view>
+    </view>
+    <view class="tabber-item">
+      <view class="tabbar__i">
+        <image src="/images/btn_qrcode.png" class="tabbar__icon"></image>
+      </view>
+      <view class="tabbar__label">二维码</view>
+    </view>
+  </view>
 </view>

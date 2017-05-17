@@ -1,7 +1,7 @@
 /*头部*/
 .item-top{
   background: #71509e;
-  height: 260rpx;
+  height: 300rpx;
   text-align: center;
 }
 .item-top .top-img{
@@ -15,7 +15,7 @@
 
 .item-top .top-btn{
   padding-top: 20rpx;
-  padding-bottom: 40rpx;
+  padding-bottom: 10rpx;
   color: #e7e3ee;
   text-align: center;
 }
@@ -31,5 +31,32 @@
 
 /*内容*/
 .item-main .item__frame{
+  margin-top: 20rpx;
   background: #ffffff;
+}
+
+.item-main .item__frame .item-title{
+  text-align: center;
+}
+.item-tabber{
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0;
+  height: 100rpx;
+  line-height: 100rpx;
+border-top: 1px solid #333;
+width: 750rpx;
+}
+.item-tabber .tabber-item{
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+  margin: 0 auto;
+  justify-content: center;
+}
+.item-tabber .tabber-item .tabbar__i .tabbar__icon{
+  width: 40rpx;
+  height: 40rpx;
+  vertical-align: text-bottom;
 }
