@@ -14,7 +14,7 @@
     height: 40rpx;
 }
 .blank50{
-    height: 40rpx;
+    height: 50rpx;
 }
 
 .backfff{

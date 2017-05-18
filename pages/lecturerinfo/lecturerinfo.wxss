@@ -35,6 +35,9 @@
 }
 
 /*内容*/
+.item-main{
+  padding-bottom: 96rpx;
+}
 .item-main .item__frame{
   background: #ffffff;
 }
@@ -73,10 +76,14 @@
   flex-direction: row;
   position: fixed;
   bottom: 0;
-  height: 100rpx;
-  line-height: 100rpx;
-border-top: 1px solid #333;
+  height: 96rpx;
+  line-height: 96rpx;
+border-top: 1rpx solid #cccccc;
 width: 750rpx;
+background: #ffffff;
+}
+.tabber-item:first-child{
+  border-right: 1rpx solid #cccccc;
 }
 .item-tabber .tabber-item{
   display: flex;
@@ -89,4 +96,13 @@ width: 750rpx;
   width: 40rpx;
   height: 40rpx;
   vertical-align: text-bottom;
+}
+
+.item-tabber .tabbar__label{
+  font-size: 32rpx;
+  color: #2dbe82;
+  padding-left: 26rpx;
+}
+.item-tabber .tabbar__label333{
+  color: #333333;
 }

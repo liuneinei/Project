@@ -6,7 +6,7 @@
 }
 
 .weui-navbar__item{
-    line-height: 40px;
+    line-height: 72rpx;
     padding: 0px;
 }
 
@@ -80,7 +80,7 @@
   width:500rpx;
   justify-content: flex-start;
   margin-left: 30rpx;
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1rpx solid #dddddd;
 }
 /*GEO 地区选择 :end*/
 .weui-navbar__item{
@@ -93,7 +93,7 @@
   height: 72rpx;
 }
 .navbar__item__border .navbar__item__bi{
-  border: 0.5px solid #CCCCCC;
+  border: 0.5rpx solid #CCCCCC;
   height: 32rpx;
   margin-top: 20rpx;
 }
