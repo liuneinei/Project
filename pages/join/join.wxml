@@ -63,18 +63,22 @@
         <input type="text" class="item__input" placeholder="用于对您资质的审核" />
       </view>
     </view>
-    <view class="item-content">
+    <view class="item-content item-pic-list">
       <view class="item-lable">身份证</view>
       <view class="item-content-main">
         <view class="item-pic-row">
           <view class="item-pic">
-            <image src="/images/btn_add_img.png" class="item__pic"></image>
+            <view class="item-pic-frame">
+              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            </view>
           </view>
           <view class="item-desc">正面</view>
         </view>
         <view class="item-pic-row">
           <view class="item-pic">
-            <image src="/images/btn_add_img.png" class="item__pic"></image>
+            <view class="item-pic-frame">
+              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            </view>
           </view>
           <view class="item-desc">反面</view>
         </view>
@@ -85,8 +89,10 @@
       <view class="item-lable">专业证书</view>
       <view class="item-content-main">
         <view class="item-pic-row">
-          <view class="item-pic">
-            <image src="/images/btn_add_img.png" class="item__pic"></image>
+          <view class="item-pic item-pic-cert">
+            <view class="item-pic-frame">
+              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            </view>
           </view>
         </view>
       </view>

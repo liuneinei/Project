@@ -3,8 +3,21 @@
         <view class="page__bd" style="padding-bottom:52rpx;">
         <view class="weui-tab">
           <view class="weui-navbar">
-            <view class="weui-navbar__item" bindtap="servertag">选择类别</view>
-            <view class="weui-navbar__item weui-bar__item_on" bindtap="citytap">选择地区</view>
+            <view class="weui-navbar__item" bindtap="servertag">
+              <view class="weui-navbar__item__lable">选择类别</view>
+              <view class="weui-navbar__item__icon">
+                <image src="/images/open_up.png" class="navbar__item__i"></image>
+              </view>
+            </view>
+            <view class="navbar__item__border">
+              <view class="navbar__item__bi"></view>
+            </view>
+            <view class="weui-navbar__item weui-bar__item_on" bindtap="citytap">
+              <view class="weui-navbar__item__lable">选择地区</view>
+              <view class="weui-navbar__item__icon">
+                <image src="/images/open_up.png" class="navbar__item__i"></image>
+              </view>
+            </view>
           </view>
           <view class="weui-tab__panel">
             <view class="geo-container" hidden="{{geoshow}}">
@@ -35,7 +48,7 @@
     <view class="item-main">
     <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
         <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
-            <view class="main-list">
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
                 <view class="module__left module__item">
                     <view class="module__left__img">
                         <image src="/images/icon_tabbar.png" class="module__left__icon"></image>

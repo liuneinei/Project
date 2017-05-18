@@ -1,4 +1,4 @@
-@import '../../style/widget/weui-tab/weui-navbar.wxss';
+@import '../../style/weui-navbar.wxss';
 @import '../../style/css/main.wxss';
 
 .container {
@@ -15,7 +15,7 @@
     height: 100%;
   position: fixed;
   width:750rpx;
-  background: rgba(204, 204, 204, .53);
+  background: rgba(174, 174, 174, 0.4);
   z-index: 499;
 }
 
@@ -23,14 +23,16 @@
 .geo-container .geo-item{
   display: inline-flex;
   flex-direction: row;
-  height:35px;
-  line-height:35px;
+  height:80rpx;
+  line-height:80rpx;
   justify-content:center;
+  color: #333333;
+  font-size: 28rpx;
 }
 
 /*服务*/
 .geo-container .server-container{
-  padding-top: 52px;
+  padding-top: 72rpx;
   overflow-y: auto;
   background: #ffffff;
 }
@@ -49,9 +51,9 @@
 .geo-container .province-container{
   height: 100%;
   width: 250rpx;
-  padding-top: 52px;
+  padding-top: 72rpx;
   overflow-y: auto;
-  background: #e8e8e8;
+  background: #f4f4f4;
 }
 
 .geo-container .nav-dorpmenu .province-container .checkon{
@@ -60,20 +62,54 @@
 
 /*省 宽度*/
 .geo-container .province-width{
+  justify-content: flex-start;
   width:250rpx;
+  padding-left: 30rpx;
 }
 
 /*市*/
 .geo-container .city-container{
   height: 100%;
-  border-top: 2px solid #ccc;
   overflow-y: auto;
-  padding-top: 52px;
-  width: 250rpx;
+  padding-top: 72rpx;
+  width: 500rpx;
   background: #ffffff;
 }
 /*宽度*/
 .geo-container .city-width{
-  width:250rpx;
+  width:500rpx;
+  justify-content: flex-start;
+  margin-left: 30rpx;
+  border-bottom: 1px solid #dddddd;
 }
 /*GEO 地区选择 :end*/
+.weui-navbar__item{
+  line-height: 72rpx;
+}
+.weui-navbar__item::after{
+  border-right: none;
+}
+.navbar__item__border{
+  height: 72rpx;
+}
+.navbar__item__border .navbar__item__bi{
+  border: 0.5px solid #CCCCCC;
+  height: 32rpx;
+  margin-top: 20rpx;
+}
+.weui-navbar__item{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+} 
+.weui-navbar__item .weui-navbar__item__lable{
+  font-size: 28rpx;
+  color: #333333;
+}
+.weui-navbar__item .weui-navbar__item__icon{
+  padding-left: 10rpx;
+}
+.weui-navbar__item .weui-navbar__item__icon .navbar__item__i{
+ width: 20rpx;
+ height: 20rpx; 
+}

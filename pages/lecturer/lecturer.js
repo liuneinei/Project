@@ -47,7 +47,7 @@ Page({
   bingInfo:function(event){
     var id = event.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../detail/detail?id='+id
+      url: '../lecturerinfo/lecturerinfo?id='+id
     })
   },
   onLoad: function () {

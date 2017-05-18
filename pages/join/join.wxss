@@ -37,6 +37,9 @@
 .item-main .item-content{
   padding: 40rpx 30rpx 0rpx 30rpx; 
 }
+.item-main .item-pic-list{
+  padding: 40rpx 0rpx 0rpx 30rpx; 
+}
 .item-content .item-lable{
   font-size: 28rpx;
   color: #333333;
@@ -65,16 +68,32 @@
   height: 210rpx;
   border: 1px solid #dddddd;
   border-radius: 3px;
+  text-align: center;
+}
+.item-content .item-pic-cert{
+  width: 210rpx;
+  height: 160rpx;
+}
+
+.item-content .item-pic .item-pic-frame{
+  line-height: 210rpx;
+}
+.item-content .item-pic-cert .item-pic-frame{
+  line-height: 160rpx;
 }
 .item-content .item-pic .item__pic{
   width: 50rpx;
   height: 50rpx;
-  margin: 0 auto;
+  /*margin-top: 68rpx;*/
 }
 
 .item-content .item-content-main{
   display: flex;
   flex-direction: row;
+}
+
+.item-content .item-content-main .item-pic-row{
+  padding-right: 30rpx;
 }
 
 .item-pic-row__lable,.item-content .item-content-main .item-pic-row .item-desc{
@@ -94,7 +113,7 @@
 }
 
 .item-btn .item-btn__lable{
-  background: url(../../images/btn_back.png);
+  background: url(../../images/btn_back.png) no-repeat;
   height: 80rpx;
   line-height: 80rpx;
   text-align: center;

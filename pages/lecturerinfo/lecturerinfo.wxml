@@ -4,20 +4,35 @@
       <image src="/images/head_portrait.png" class="top__head"></image>
     </view>
     <view class="top-btn">
-      <view class="btn_upload">上传头像</view>
+      <view class="btn_upload">崔玉涛</view>
     </view>
     <view class="top-desc">
-      <view class="top__desc">儿科医生</view>
+      <view class="top__desc">
+        儿科医生 睡眠顾问  /  广东省 广州市
+      </view>
     </view>
   </view>
   <view class="item-main">
     <view class="item__frame">
-      <view class="item-title">关于专家</view>
-      <view class="item-content">内容</view>
+      <view class="item-title">
+      <view class="item-i">
+        <image src="/images/about.png" class="item-icon"></image>
+      </view>
+      <view class="item-i_d">·</view>
+      <view class="item-title_lable">关于专家</view>
+      </view>
+      <view class="item-content item-indent">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
     </view>
+    <view class="blank10"></view>
     <view class="item__frame">
-      <view class="item-title">服务须知</view>
-      <view class="item-content">内容</view>
+      <view class="item-title">
+        <view class="item-i">
+          <image src="/images/btn_notice.png" class="item-icon"></image>
+        </view>
+        <view class="item-i_d">·</view>
+        <view class="item-title_lable">服务须知</view>
+      </view>
+      <view class="item-content">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
     </view>
   </view>
   <view class="item-tabber">
