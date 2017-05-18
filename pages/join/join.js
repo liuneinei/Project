@@ -45,10 +45,11 @@ function didPressChooesImage(that) {
             filePath: filePath,
             name: 'file',
             formData: {
-                'key': 'test.jpg',
-                'token': uptoken
+              'key': 'test.jpg',
+              'token': 'QrQSGz8wX13Pe5ezSmRpZgmEMRXdkJtILiHcK4d0:ZZP86Up6Jc-lRQDAz6ZC9p8lVSM=:eyJzY29wZSI6Inlhbm1hLWVkdS13eGFwcDp0ZXN0LmpwZyIsImRlYWRsaW5lIjoxNDk1MTIyOTAyLCJ1cEhvc3RzIjpbImh0dHA6XC9cL3VwLXoyLnFpbml1LmNvbSIsImh0dHA6XC9cL3VwbG9hZC16Mi5xaW5pdS5jb20iLCItSCB1cC16Mi5xaW5pdS5jb20gaHR0cDpcL1wvMTgzLjYwLjIxNC4xOTgiXX0='
             },
             success: function(res) {
+                //返回hash值、key值
                 console.log(res);
             },
             fail(error) {

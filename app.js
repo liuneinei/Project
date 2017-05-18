@@ -49,15 +49,15 @@ App({
 function Login(code, encryptedData, iv, Data) {
   console.log('code=' + code + '&encryptedData=' + encryptedData + '&iv=' + iv);
   //创建一个dialog
-  wx.showToast({
-    title: '正在登录...',
-    icon: 'loading',
-    duration: 10000
-  });
+  // wx.showToast({
+  //   title: '正在登录...',
+  //   icon: 'loading',
+  //   duration: 10000
+  // });
 
   //请求服务器
   wx.request({
-    url: 'http://192.168.199.197:7888/wxlogin',
+    url: api.host+'/wxlogin',
     data: {
       code: code,
       encrypteddata: encryptedData,
@@ -70,7 +70,7 @@ function Login(code, encryptedData, iv, Data) {
     success: function (res) {
       // success
       wx.hideToast();
-      console.log('服务器返回' + res.data);
+      console.log('服务器返回success');
 
     },
     fail: function () {
