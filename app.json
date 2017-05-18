@@ -1,9 +1,10 @@
 {
   "pages":[
-    "pages/lecturerinfo/lecturerinfo",
     "pages/index/index",
+     "pages/join/join",
+    "pages/lecturerinfo/lecturerinfo",
+    
     "pages/lecturer/lecturer",
-    "pages/join/join",
     "pages/adduser/adduser",
     "pages/yanma/yanma",
     "pages/detail/detail",

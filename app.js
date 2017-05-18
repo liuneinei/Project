@@ -21,10 +21,12 @@ App({
           wx.getUserInfo({
             success: function (res) {
               var uinfo = res.userInfo;
-              uinfo.province = res.encryptedData;
-              uinfo.city = res.iv;
-              uinfo.language = code;
+              uinfo.encryptedData = res.encryptedData;
+              uinfo.iv = res.iv;
+              uinfo.code = code;
               that.globalData.userInfo = uinfo
+
+              console.log(uinfo)
               
               var encryptedData = encodeURIComponent(res.encryptedData);//一定要把加密串转成URI编码
               var iv = res.iv;

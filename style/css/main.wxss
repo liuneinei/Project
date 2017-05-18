@@ -1,23 +1,22 @@
 
 /*内容部分 :beging*/
 .item-main{
-    margin-top: 10px;
+    margin-top: 16rpx;
     background: #ffffff;
 }
 .item-main .main-nav{
     text-align: center;
-    margin-bottom:-10px;
-    padding-top:10px;
+    padding-top:30rpx;
 }
 .main-list{
     width: 750rpx;
     display: flex;
     flex-direction: row;
-    padding-top: 15px;
+    padding-top: 40rpx;
 }
 
 .main-list .module__left{
-    width: 220rpx;
+    padding: 0rpx 26rpx 0rpx 30rpx;
 }
 .main-list .module__right{
     width: 530rpx;
@@ -27,17 +26,29 @@
     text-align: center;
 }
 .module__left .module__left__img .module__left__icon{
-    width: 180rpx;
-    height: 180rpx;
+    width: 160rpx;
+    height: 160rpx;
 }
 
 .module__right .m_t{
     display: flex;
     flex-direction: row;
+    padding-top:20rpx;
+}
+.module__right .m_t .m_t_l{
+    color: #333333;
+    font-size: 30rpx;
 }
 .module__right .m_t .m_t_r{
-    color: #746680;
-    font-size: 13px;
-    padding-top:4px;
+    padding-left: 12rpx;
+    color: #714e9e;
+    font-size: 24rpx;
+    padding-top: 6rpx;
+}
+
+.main-list .module__item .m_b{
+    font-size: 26rpx;
+    color: #999999;
+    padding-right: 30rpx;
 }
 /*内容部分 :end*/

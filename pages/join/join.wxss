@@ -35,13 +35,29 @@
   background: #ffffff;
 }
 .item-main .item-content{
-  padding-left: 30rpx;
+  padding: 40rpx 30rpx 0rpx 30rpx; 
 }
-
+.item-content .item-lable{
+  font-size: 28rpx;
+  color: #333333;
+  padding-bottom: 16rpx;
+}
 .item-content .item-input .item__input{
   height: 88rpx;
+  line-height: 88rpx;
   border: 1px solid #dddddd;
   border-radius: 3px;
+  padding: 0rpx 20rpx 0rpx 20rpx;
+}
+
+.item-content .item-input .item__textarea{
+  line-height: 88rpx;
+  height: 132rpx;
+  padding: 20rpx;
+}
+
+.item-content .item-input .item__textareah{
+  height: 396rpx;
 }
 
 .item-content .item-pic{
@@ -59,4 +75,30 @@
 .item-content .item-content-main{
   display: flex;
   flex-direction: row;
+}
+
+.item-pic-row__lable,.item-content .item-content-main .item-pic-row .item-desc{
+  padding-top: 10rpx;
+  font-size: 28rpx;
+  color: #999999;
+  text-align: center;
+}
+.container .item-pic-row__lable{
+  text-align: left;
+  padding-left: 30rpx;
+}
+
+/*提交*/
+.item-btn{
+  padding: 80rpx 30rpx 80rpx 30rpx;
+}
+
+.item-btn .item-btn__lable{
+  background: url(../../images/btn_back.png);
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #999999;
+  font-weight: bold;
 }

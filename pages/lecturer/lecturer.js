@@ -1,6 +1,6 @@
 var api = require('../../api/api.js')
 // 引入SDK核心类
-var QQMapWX = require('../../api/qqmap-wx-jssdk.min.js');
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 
 //测试数据
 var region = require('../../api/testdata/region.js')

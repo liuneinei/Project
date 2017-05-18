@@ -1,9 +1,10 @@
 <view class="container">
+    <view class="blank8 backfff"></view>
     <view class="item-nav">
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav1.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
@@ -11,7 +12,7 @@
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav2.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
@@ -19,7 +20,7 @@
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav3.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
@@ -27,7 +28,7 @@
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav4.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
@@ -35,7 +36,7 @@
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav5.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
@@ -43,12 +44,13 @@
         <view class="nav-width nav-tabber">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
-                    <image src="/images/icon_tabbar.png" class="nav-tabbar__icon"></image>
+                    <image src="/images/nav6.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
             <view class="nav__label">分类分类</view>
         </view>
     </view>
+    <view class="blank8 backfff"></view>
     <view class="item-main">
         <view class="main-nav">-- 为你推荐 --</view>
         <view class="main-list">
@@ -63,7 +65,7 @@
                     <view class="m_t_r">分娩导乐</view>
                 </view>
                 <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
                 </view>
             </view>
         </view>
@@ -79,7 +81,7 @@
                     <view class="m_t_r">分娩导乐</view>
                 </view>
                 <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
                 </view>
             </view>
         </view>
@@ -95,7 +97,7 @@
                     <view class="m_t_r">分娩导乐</view>
                 </view>
                 <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
                 </view>
             </view>
         </view>
