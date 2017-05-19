@@ -69,6 +69,7 @@
   border: 1px solid #dddddd;
   border-radius: 3px;
   text-align: center;
+  position: relative;
 }
 .item-content .item-pic-cert{
   width: 210rpx;
@@ -76,15 +77,17 @@
 }
 
 .item-content .item-pic .item-pic-frame{
-  line-height: 210rpx;
+  /*line-height: 210rpx;*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -25rpx;
+  margin-left: -25rpx;
 }
-.item-content .item-pic-cert .item-pic-frame{
-  line-height: 160rpx;
-}
+
 .item-content .item-pic .item__pic{
   width: 50rpx;
   height: 50rpx;
-  /*margin-top: 68rpx;*/
 }
 
 .item-content .item-content-main{
