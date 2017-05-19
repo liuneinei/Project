@@ -1,10 +1,18 @@
 var api = require('../../api/api.js')
+var region = require('../../api/testdata/region.js')
 //index.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
     userInfo: {},
+    classshow:0,
+    geoshow:true,
+    region: [],
+    regionapi: true,
+    regnavCus: 0,//选中
+    citys: [],//城市
+    wHeight: 300,
     imageURL:'',
     imageObject: {}
   },
@@ -15,6 +23,18 @@ Page({
   },
   onLoad: function () {
     var that = this;
+
+    // 获取系统信息，提取屏幕高度
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          wHeight: res.windowHeight - 40
+        })
+      }
+    })
+    that.setData({
+      region: region.region
+    }); 
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
       //更新数据
@@ -28,6 +48,37 @@ Page({
   uploadheadTap:function(event){
     var that = this;
     didPressChooesImage(that);
+  },
+  // 选择城市
+  ProvinceEvent:function(event){
+    var _this = this;   
+    var classshow = 2;
+    var geoshow=false;
+    console.log(_this)
+    if (_this.data.classshow == 2){
+      classshow=0;
+      geoshow=true;
+    }
+    console.log(classshow)
+    _this.setData({
+      geoshow: geoshow,
+      classshow: classshow
+    });
+  },
+  // 类别选择
+  ClassEvent:function(event){
+    let _this = this;
+    var classshow = 1;
+    var geoshow = false;
+    if (_this.data.classshow == 1) {
+      classshow = 0;
+      geoshow = true;
+    }
+    console.log(classshow)
+    _this.setData({
+      geoshow: geoshow,
+      classshow: classshow
+    });
   }
   // ##:end 事件处理 
 });

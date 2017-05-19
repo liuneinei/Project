@@ -12,13 +12,13 @@
     <view class="item-content">
       <view class="item-lable">您提供服务城市</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="城市" />
+        <input type="text" class="item__input" bindfocus="ProvinceEvent" placeholder="点击选择" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">认证行业</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="点击选择" />
+        <input type="text" class="item__input" bindfocus="ClassEvent" placeholder="点击选择" />
       </view>
     </view>
     <view class="item-content">
@@ -103,6 +103,34 @@
     </view>
     <view class="item-btn">
       <view class="item-btn__lable">提交申请</view>
+    </view>
+  </view>
+
+  <view class="weui-tab__panel">
+    <view class="geo-container" hidden="{{geoshow}}">
+      <block wx:if="{{classshow == 1}}">
+        <view class="class-lable">需要认证的行业(多选)</view>
+        <view class="server-container" style="height:{{wHeight}}px">
+          <view class="geo-item server-width">分类分类</view>
+          <view class="geo-item server-width">分类分类</view>
+          <view class="geo-item server-width">分类分类</view>
+          <view class="geo-item server-width">分类分类</view>
+        </view>
+        <view class="tab-class-btn">
+        <view class="tab-class-btn-lable">确认</view>
+      </view>
+      </block>
+      <block wx:if="{{classshow == 2}}">
+        <view class="geo-lable">选择所在地区</view>
+        <view class="nav-dorpmenu">
+          <view class="province-container" style="height:{{wHeight}}px">
+            <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
+          </view>
+          <view class="city-container" style="height:{{wHeight}}px">
+            <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
+          </view>
+        </view>
+      </block>
     </view>
   </view>
 </view>
