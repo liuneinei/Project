@@ -57,6 +57,7 @@
   line-height: 88rpx;
   height: 132rpx;
   padding: 20rpx;
+  width: 650rpx;
 }
 
 .item-content .item-input .item__textareah{
