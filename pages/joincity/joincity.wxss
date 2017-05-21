@@ -1,0 +1,100 @@
+/*:begin 选项*/
+.weui-navbar__item{
+    line-height: 72rpx;
+    padding: 0px;
+}
+
+/*GEO 地区选择 :begin*/
+.geo-container{
+    height: 100%;
+  width:750rpx;
+  background: #ffffff;
+  z-index: 499;
+  top: 0px;
+}
+
+.geo-container .class-lable{
+  padding: 30rpx 0 0 30rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/*公共*/
+.geo-container .geo-item{
+  display: inline-flex;
+  flex-direction: row;
+  height:80rpx;
+  line-height:80rpx;
+  justify-content:center;
+  color: #333333;
+  font-size: 28rpx;
+}
+
+.geo-container .nav-dorpmenu{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.geo-container .geo-lable{
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  color: #333333;
+  margin-left: 30rpx;
+}
+/*省*/
+.geo-container .province-container{
+  height: 100%;
+  width: 250rpx;
+  overflow-y: auto;
+  background: #f4f4f4;
+}
+
+.geo-container .nav-dorpmenu .province-container .checkon{
+  background: #ffffff;
+}
+
+/*省 宽度*/
+.geo-container .province-width{
+  justify-content: flex-start;
+  width:250rpx;
+  padding-left: 30rpx;
+}
+
+/*市*/
+.geo-container .city-container{
+  height: 100%;
+  overflow-y: auto;
+  width: 500rpx;
+  background: #ffffff;
+}
+/*宽度*/
+.geo-container .city-width{
+  width:500rpx;
+  justify-content: flex-start;
+  margin-left: 30rpx;
+  border-bottom: 1rpx solid #dddddd;
+}
+/*GEO 地区选择 :end*/
+
+.geo-container .tab-class-btn{
+  width: 750rpx;
+  position: absolute;
+  bottom: 50rpx;
+}
+.geo-container .tab-class-btn-lable{
+  width: 690rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin: 0 auto;
+  text-align: center;
+  /*background: url(../../images/btn_submit.png) no-repeat;*/
+  background: #714E9E;
+  color: #999999;
+  font-size: 28rpx;
+  border-radius: 5rpx;
+}
+/*:end 选项*/

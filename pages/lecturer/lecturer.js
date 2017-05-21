@@ -23,10 +23,9 @@ Page({
     citys:[],//城市
     lecturers: []
   },
-  onReady: function () {
-    wx.setNavigationBarTitle({
-      title: '预约服务'
-    })
+  onShow: function () { 
+    console.log('lect:onShow');
+    console.log(app.globalData.objoin);
   },
   onPullDownRefresh: function () {
       wx.stopPullDownRefresh();
@@ -50,7 +49,12 @@ Page({
       url: '../lecturerinfo/lecturerinfo?id='+id
     })
   },
-  onLoad: function () {
+  onLoad: function (options) {
+    console.log('lect:处理');
+    var objoin = app.globalData.objoin;
+    objoin.name = '测试来烊';
+    app.globalData.objoin = objoin;
+    console.log(app.globalData.objoin);
     var that = this;
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
@@ -60,12 +64,9 @@ Page({
             })
         }
     })
-
-    console.log(lecturer.lecturer)
     that.setData({
       lecturers: lecturer.lecturer
     })
-
     // 实例化API核心类
     var qqmapwx = new QQMapWX({
       key: api.QQMapKey // 必填
@@ -127,12 +128,6 @@ Page({
       classshow=0;
       geoshow=true;
     }
-    console.log(classshow)
-    _this.setData({
-      geoshow: geoshow,
-      classshow:classshow,
-      region: region.region
-    }); 
   },
   // 选择省
   provinceTap: function (event){

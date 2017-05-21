@@ -1,4 +1,5 @@
 <view class="container">
+  <form bindsubmit="formSubmit">
   <view class="item-top">
     <view class="top-img">
       <image src="/images/head_portrait.png" class="top__head"></image>
@@ -24,43 +25,43 @@
     <view class="item-content">
       <view class="item-lable">姓名</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">手机</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" />
+        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone"/>
       </view>
     </view>
      <view class="item-content">
       <view class="item-lable">微信号</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" />
+        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">简介</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" />
+        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">介绍</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" />
+        <textarea class="item__input item__textarea item__textareah" placeholder="" maxlength="400"  bindblur="HandleNotice" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">培训机构</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">推荐人</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于对您资质的审核" />
+        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" />
       </view>
     </view>
     <view class="item-content item-pic-list">
@@ -105,32 +106,5 @@
       <view class="item-btn__lable">提交申请</view>
     </view>
   </view>
-
-  <view class="weui-tab__panel">
-    <view class="geo-container" hidden="{{geoshow}}">
-      <block wx:if="{{classshow == 1}}">
-        <view class="class-lable">需要认证的行业(多选)</view>
-        <view class="server-container" style="height:{{wHeight}}px">
-          <view class="geo-item server-width">分类分类</view>
-          <view class="geo-item server-width">分类分类</view>
-          <view class="geo-item server-width">分类分类</view>
-          <view class="geo-item server-width">分类分类</view>
-        </view>
-        <view class="tab-class-btn">
-        <view class="tab-class-btn-lable">确认</view>
-      </view>
-      </block>
-      <block wx:if="{{classshow == 2}}">
-        <view class="geo-lable">选择所在地区</view>
-        <view class="nav-dorpmenu">
-          <view class="province-container" style="height:{{wHeight}}px">
-            <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
-          </view>
-          <view class="city-container" style="height:{{wHeight}}px">
-            <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
-          </view>
-        </view>
-      </block>
-    </view>
-  </view>
+  </form>
 </view>

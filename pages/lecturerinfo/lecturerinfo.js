@@ -22,5 +22,17 @@ Page({
         userInfo: userInfo
       })
     });
+  },
+  // :begin 事件处理
+  imgTap:function(event){
+    console.log('处理');
+    var objoin = app.globalData.objoin;
+    objoin.referee = '我是推荐人';
+    app.globalData.objoin = objoin;
+
+    wx.navigateBack({
+      delta:1
+    })
   }
+  // :end 事件处理
 })

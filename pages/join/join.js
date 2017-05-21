@@ -14,16 +14,47 @@ Page({
     citys: [],//城市
     wHeight: 300,
     imageURL:'',
-    imageObject: {}
+    imageObject: {},
+    objoin:{
+      isedit:false,
+      province: 0,
+      city: 0,
+      classid: '',
+      img: '',
+      name: '',
+      phone: '',
+      wxname: '',
+      qrcode: '',
+      desc: '',
+      notice: '',
+      institutions: '',
+      referee: '',
+      idcard_z: '',
+      idcard_f: '',
+      certificate: ''
+    },//保存填写信息
   },
   onReady: function () {
     wx.setNavigationBarTitle({
       title: '加入我们'
     })
   },
+  onShow:function(){ 
+    var that = this;
+    that.setData({
+      geoshow:true
+    }); 
+
+    wx.getStorage({
+      key: 'objoin',
+      success: function(res) {
+        console.log('获取objoin');
+        console.log(res);
+      },
+    })
+  },
   onLoad: function () {
     var that = this;
-
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
       success: function (res) {
@@ -32,6 +63,10 @@ Page({
         })
       }
     })
+
+    // 定时保存
+    timesave(that);
+
     that.setData({
       region: region.region
     }); 
@@ -51,37 +86,128 @@ Page({
   },
   // 选择城市
   ProvinceEvent:function(event){
-    var _this = this;   
+    var that = this;   
     var classshow = 2;
     var geoshow=false;
-    console.log(_this)
-    if (_this.data.classshow == 2){
+    if (that.data.classshow == 2){
       classshow=0;
       geoshow=true;
     }
-    console.log(classshow)
-    _this.setData({
+    that.setData({
       geoshow: geoshow,
       classshow: classshow
     });
   },
   // 类别选择
   ClassEvent:function(event){
-    let _this = this;
-    var classshow = 1;
-    var geoshow = false;
-    if (_this.data.classshow == 1) {
-      classshow = 0;
-      geoshow = true;
-    }
-    console.log(classshow)
-    _this.setData({
-      geoshow: geoshow,
-      classshow: classshow
-    });
-  }
+    wx.navigateTo({
+      url: '../joinclass/joinclass?classshow=1',
+    })
+  },
+  //更新name
+  changeData: function (classid,classname) {
+    console.log('获取回调信息changeData');
+    console.log(classid);
+    console.log(classname);
+    var that = this;
+    var objoin = that.data.objoin;
+    objoin.classid = classid
+    that.setData({
+      objoin: objoin
+    })
+
+    console.log('获取回调信息changeData');
+    console.log(objoin);
+    console.log(classname);
+  },
   // ##:end 事件处理 
+  // ##:begin from表单处理
+  //名字
+  HandleName:function(event){
+    var that = this;
+    var name = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.name = name;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandlePhone: function (event) {
+    var that = this;
+    var phone = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.phone = phone;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandleWxName: function (event) {
+    var that = this;
+    var wxname = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.wxname = wxname;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandleDesc: function (event) {
+    var that = this;
+    var desc = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.desc = desc;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandleNotice: function (event) {
+    var that = this;
+    var notice = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.notice = notice;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandleInstitutions: function (event) {
+    var that = this;
+    var institutions = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.institutions = institutions;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  HandleReferee: function (event) {
+    var that = this;
+    var referee = event.detail.value
+    var objoin = that.data.objoin;
+    objoin.referee = referee;
+    objoin.isedit = true; 
+    that.setData({
+      objoin: objoin
+    })
+  },
+  // ##:end from表单处理
 });
+
+// 定时保存
+function timesave(that){
+  console.log("定时30秒");
+  console.log(that.data.objoin);
+  var _objoin = that.data.objoin;
+  if (_objoin.isedit){
+    wx.setStorage({
+      key: 'objoin',
+      data: _objoin,
+    })
+  }
+  setTimeout(function () { timesave(that)},30000); }
 
 // 上传
 function didPressChooesImage(that) {

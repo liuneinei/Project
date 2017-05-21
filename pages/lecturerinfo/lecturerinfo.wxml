@@ -1,7 +1,7 @@
 <view class="container">
   <view class="item-top">
     <view class="top-img">
-      <image src="/images/head_portrait.png" class="top__head"></image>
+      <image src="/images/head_portrait.png" class="top__head" bindtap="imgTap"></image>
     </view>
     <view class="top-btn">
       <view class="btn_upload">崔玉涛</view>

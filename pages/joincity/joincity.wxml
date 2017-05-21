@@ -1,0 +1,13 @@
+<view class="weui-tab__panel">
+    <view class="geo-container">
+        <view class="geo-lable">选择所在地区</view>
+        <view class="nav-dorpmenu">
+          <view class="province-container" style="height:{{wHeight}}px">
+            <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
+          </view>
+          <view class="city-container" style="height:{{wHeight}}px">
+            <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
+          </view>
+        </view>
+    </view>
+  </view>

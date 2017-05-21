@@ -8,7 +8,7 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
   },
-  getUserInfo:function(cb,code){
+  getUserInfo:function(cb){
     var that = this
     if(this.globalData.userInfo){
       typeof cb == "function" && cb(this.globalData.userInfo)
@@ -17,7 +17,6 @@ App({
       wx.login({
         success: function (rel) {
           var code = rel.code;
-          
           wx.getUserInfo({
             success: function (res) {
               var uinfo = res.userInfo;
@@ -25,14 +24,10 @@ App({
               uinfo.iv = res.iv;
               uinfo.code = code;
               that.globalData.userInfo = uinfo
-
-              console.log(uinfo)
-              
               var encryptedData = encodeURIComponent(res.encryptedData);//一定要把加密串转成URI编码
               var iv = res.iv;
               //请求自己的服务器
               Login(code, encryptedData, iv, res.encryptedData);
-            
               typeof cb == "function" && cb(that.globalData.userInfo)
             }
           })
@@ -41,7 +36,25 @@ App({
     }
   },
   globalData:{
-    userInfo:null
+    userInfo:null,
+    objoin: {
+      isedit: false,
+      province: 0,
+      city: 0,
+      classid: '',
+      img: '',
+      name: '',
+      phone: '',
+      wxname: '',
+      qrcode: '',
+      desc: '',
+      notice: '',
+      institutions: '',
+      referee: '',
+      idcard_z: '',
+      idcard_f: '',
+      certificate: ''
+    },//保存填写信息
   }
 })
 
