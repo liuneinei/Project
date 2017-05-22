@@ -6,6 +6,7 @@
     "pages/lecturerinfo/lecturerinfo",
     "pages/lecturer/lecturer",
     "pages/joinclass/joinclass",
+    "pages/joincity/joincity",
     "pages/adduser/adduser",
     "pages/yanma/yanma",
     "pages/detail/detail",

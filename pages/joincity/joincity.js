@@ -7,7 +7,9 @@ Page({
   data: {
     region: [],
     regionapi: true,
+    regnavCus:0,
     wHeight: 300,
+    citys:[]
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -15,6 +17,7 @@ Page({
     })
   },
   onLoad: function () {
+    var that = this;
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
       success: function (res) {
@@ -23,51 +26,40 @@ Page({
         })
       }
     })
+    that.setData({
+      region: region.region
+    })
   },
   // ##:beging 事件处理 
   // 选择省
   provinceTap: function (event) {
-    var _this = this;
+    var that = this;
     var citys = [];
     var pid = event.target.dataset.id;
     if (pid <= 0) {
       // 请求api
-      _this.setData({
+      that.setData({
         regnavCus: pid,
         citys: citys
       })
     } else {
-      [].forEach.call(_this.data.region, function (item, i, arr) {
+      [].forEach.call(that.data.region, function (item, i, arr) {
         if (item.id == pid) {
           citys = item.city;
           // console.log(item.city)
         }
       });
-      _this.setData({
+      that.setData({
         regnavCus: pid,
         citys: citys
       })
     }
   },
-  ClassTap:function(event){
-    console.log('事件触发');
+  //选择市
+  cityTap:function(event){
+    var that = this;
+    var cid = event.target.dataset.id;
     
-    //获取页面栈
-        var pages = getCurrentPages();
-        console.log(pages);
-        if(pages.length > 1){
-            //上一个页面实例对象
-            var prePage = pages[pages.length - 2];
-
-            console.log(pages.length);
-            console.log(prePage);
-            
-            //关键在这里
-            prePage.changeData(1,'类别')
-        }
-    wx.navigateBack({
-      delta:1
-    })
   },
   // ##:end 事件处理 
 });

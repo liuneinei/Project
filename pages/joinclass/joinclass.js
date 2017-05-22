@@ -6,14 +6,15 @@ Page({
   data: {
     citys: [{
       "id": 1,
-      "name": "广东省",
+      "name": "分类1",
     },
     {
       "id": 2,
-      "name": "广西省",
+      "name": "分类2",
     },],//城市
     wHeight: 300,
-    check:[]
+    check:[],
+    checks:[]
   },
   onReady: function () {
     wx.setNavigationBarTitle({

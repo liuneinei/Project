@@ -121,18 +121,3 @@
   text-align: left;
   padding-left: 30rpx;
 }
-
-/*提交*/
-.item-btn{
-  padding: 80rpx 30rpx 80rpx 30rpx;
-}
-
-.item-btn .item-btn__lable{
-  /*background: url(../../images/btn_back.png) no-repeat;*/
-  background: #f4f4f4;
-  height: 80rpx;
-  line-height: 80rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #999999;
-}

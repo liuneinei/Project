@@ -6,12 +6,6 @@ var app = getApp()
 Page({
   data: {
     userInfo: {},
-    classshow:0,
-    geoshow:true,
-    region: [],
-    regionapi: true,
-    regnavCus: 0,//选中
-    citys: [],//城市
     wHeight: 300,
     imageURL:'',
     imageObject: {},
@@ -39,36 +33,18 @@ Page({
       title: '加入我们'
     })
   },
-  onShow:function(){ 
-    var that = this;
-    that.setData({
-      geoshow:true
-    }); 
-
-    wx.getStorage({
-      key: 'objoin',
-      success: function(res) {
-        console.log('获取objoin');
-        console.log(res);
-      },
-    })
-  },
   onLoad: function () {
     var that = this;
+    let wHeight = that.data.wHeight;
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
       success: function (res) {
-        that.setData({
-          wHeight: res.windowHeight - 40
-        })
+        wHeight = res.windowHeight - 40
       }
     })
-
-    // 定时保存
-    timesave(that);
-
     that.setData({
-      region: region.region
+      region: region.region,
+      wHeight: wHeight
     }); 
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
@@ -77,6 +53,8 @@ Page({
         userInfo: userInfo
       })
     });
+    // 定时保存
+    timesave(that);
   },
   // ##:beging 事件处理 
   //上传头像
@@ -86,22 +64,17 @@ Page({
   },
   // 选择城市
   ProvinceEvent:function(event){
-    var that = this;   
-    var classshow = 2;
-    var geoshow=false;
-    if (that.data.classshow == 2){
-      classshow=0;
-      geoshow=true;
-    }
-    that.setData({
-      geoshow: geoshow,
-      classshow: classshow
-    });
+    console.log('选择城市');
+    wx.navigateTo({
+      url: '../joincity/joincity',
+    })
   },
   // 类别选择
   ClassEvent:function(event){
+    console.log('类别选择');
+    
     wx.navigateTo({
-      url: '../joinclass/joinclass?classshow=1',
+      url: '../joinclass/joinclass',
     })
   },
   //更新name

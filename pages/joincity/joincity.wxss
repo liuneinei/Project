@@ -33,7 +33,6 @@
 .geo-container .nav-dorpmenu{
     display: flex;
     flex-direction: row;
-    flex-wrap:wrap;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -48,7 +47,7 @@
 /*省*/
 .geo-container .province-container{
   height: 100%;
-  width: 250rpx;
+  width: 280rpx;
   overflow-y: auto;
   background: #f4f4f4;
 }

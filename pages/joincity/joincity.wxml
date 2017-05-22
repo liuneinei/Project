@@ -6,7 +6,7 @@
             <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
           </view>
           <view class="city-container" style="height:{{wHeight}}px">
-            <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
+            <view wx:for="{{citys}}" wx:for-item="itemm" class="geo-item city-width" bindtap="cityTap" data-id="{{item.id}}">{{itemm.name}}</view>
           </view>
         </view>
     </view>
