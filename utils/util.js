@@ -16,6 +16,16 @@ function formatNumber(n) {
   return n[1] ? n : '0' + n
 }
 
+Array.prototype.remove=function(dx){
+  if(isNaN(dx) || dx> this.length){return false};
+  var n = 0;
+  [].forEach.call(this, function (item, i, arr) {
+    if (arr[i] != arr[dx]){
+      this[n++] = this[i]
+    }
+  });
+}
+
 module.exports = {
   formatTime: formatTime
 }

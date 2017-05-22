@@ -14,7 +14,10 @@ Page({
     },],//城市
     wHeight: 300,
     check:[],
-    checks:[]
+    // 选中的id集
+    checkids: [],
+    // 选中的Name集
+    checknames:[],
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -34,18 +37,13 @@ Page({
   },
   // ##:beging 事件处理 
   ClassTap:function(event){
-    //获取页面栈
-        var pages = getCurrentPages();
-        if(pages.length > 1){
-            //上一个页面实例对象
-            var prePage = pages[pages.length - 2];
-            //关键在这里
-            prePage.changeData(1,'类别')
-        }
+    // id集
     var check = this.data.check;
+    // 索引值
     var idx = event.target.dataset.idx;
+    var id = event.target.dataset.id;
+    var name = event.target.dataset.name;
     for (var i=0;i<=idx;i++){
-      console.log(check[i]);
       if(i==idx){
         check[i] = idx;
       }else{
@@ -58,5 +56,16 @@ Page({
       check: check
     })
   },
+  // 确认
+  confirmTap:function(event){
+    //获取页面栈
+    var pages = getCurrentPages();
+    if (pages.length > 1) {
+      //上一个页面实例对象
+      var prePage = pages[pages.length - 2];
+      //关键在这里
+      prePage.changeData(1, this.data.check.join(' '))
+    }
+  }
   // ##:end 事件处理 
 });

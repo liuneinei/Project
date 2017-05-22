@@ -59,6 +59,7 @@ Page({
   cityTap:function(event){
     var that = this;
     var cid = event.target.dataset.id;
+    var pages = getCurrentPages();
     
   },
   // ##:end 事件处理 

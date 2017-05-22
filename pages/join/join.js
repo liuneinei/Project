@@ -7,8 +7,10 @@ Page({
   data: {
     userInfo: {},
     wHeight: 300,
-    imageURL:'',
-    imageObject: {},
+    // 选中的分类集
+    checkClass:'',
+    // 选中的城市
+    checkProvince:'',
     objoin:{
       isedit:false,
       province: 0,
@@ -77,21 +79,26 @@ Page({
       url: '../joinclass/joinclass',
     })
   },
-  //更新name
-  changeData: function (classid,classname) {
-    console.log('获取回调信息changeData');
-    console.log(classid);
-    console.log(classname);
+  //更新分类
+  changeData: function (classid, checkClass) {
     var that = this;
     var objoin = that.data.objoin;
     objoin.classid = classid
     that.setData({
-      objoin: objoin
-    })
-
-    console.log('获取回调信息changeData');
-    console.log(objoin);
-    console.log(classname);
+      objoin: objoin,
+      checkClass: checkClass
+    });
+  },
+  //更新省市
+  changeProvince: function (pid, cid, checkProvince) {
+    var that = this;
+    var objoin = that.data.objoin;
+    objoin.province = pid;
+    objoin.city = cid;
+    that.setData({
+      objoin: objoin,
+      checkProvince: checkProvince
+    });
   },
   // ##:end 事件处理 
   // ##:begin from表单处理
