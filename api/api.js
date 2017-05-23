@@ -1,7 +1,15 @@
-const host = 'https://edu.yanma.com:7888'
+// 主机域名
+const host = 'https://edu.yanma.com'
+// 微信登录
+const wxlogin = '/wxlogin'
+// 上传文件
+const uploadtoken = '/uploadtoken'
+// 省市
+const getRegion = '/getRegion'
+
 const geourl = 'https://apis.map.qq.com/ws/geocoder/v1/';
+// 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
-const wxlogin =''
 
 const wxRequest = (params, url) => {
   wx.showToast({
