@@ -203,7 +203,7 @@ function didPressChooesImage(that) {
         var filePath = res.tempFilePaths[0];
         //上传
         wx.uploadFile({
-          url: 'https://up-z2.qbox.me',//如果是华北一请用up-z1.qbox.me
+          url: 'https://up-z2.qbox.me',
             filePath: filePath,
             name: 'file',
             formData: {
@@ -220,7 +220,7 @@ function didPressChooesImage(that) {
             complete(res) {
                 console.log(res)
             }
-        });
-      }
-    })
+       });
+     }
+  })
 }
