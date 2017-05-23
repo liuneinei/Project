@@ -1,0 +1,198 @@
+接口详情
+
+1.1）接口名称：省市
+   请求类型  get
+   请求Url  https://domain.com/getregion
+   正确JSON数据包：
+  [
+        {
+            "id": "1",
+            "name": "广东省",
+            "city": [
+                {
+                    "id": "0",
+                    "name": "全部"
+                },
+                {
+                    "id": "1",
+                    "name": "深圳市"
+                }
+            ]
+        },
+        {
+            "id": "2",
+            "name": "广西省",
+            "city": [
+		{
+                    "id": "0",
+                    "name": "全部"
+                }
+                {
+                    "id": "1",
+                    "name": "南宁市"
+                }
+            ]
+        }
+    ]
+
+1.2）接口名称：为你推荐
+   请求类型  get
+   请求Url  https://domain.com/getrecommend
+   正确JSON数据包：
+   [
+	    {
+	        "id": "1",
+	        "name": "讲师A",
+	        "img": "/1.png",
+	        "class": [
+	            {
+	                "name": "分娩导乐"
+	            },
+	            {
+	                "name": "分娩导乐"
+	            }
+	        ],
+	        "desc": "讲师简介"
+	    }
+	]
+
+2）接口名称：讲师列表
+   请求类型  get
+   请求Url  https://domain.com/getlecturer
+   请求参数列表：
+   data{
+   		classid:0,
+   		province:0,
+   		city:0
+   }
+   正确JSON数据包：
+   [
+	    {
+	        "id": "1",
+	        "name": "讲师A",
+	        "img": "/1.png",
+	        "class": [
+	            {
+	                "name": "分娩导乐"
+	            },
+	            {
+	                "name": "分娩导乐"
+	            }
+	        ],
+	        "desc": "讲师简介" 
+	    }
+	]
+
+3）接口名称：讲师详情
+   请求类型  get
+   请求Url  https://domain.com/getlecturerinfo
+   请求参数列表：
+   data{
+   		lecturerid:1
+   }
+   正确JSON数据包：
+   {
+	    "id": "1",
+	    "name": "讲师",
+	    "img": "https://domain.com/1.png",
+	    "class": [
+	        {
+	            "name": "分娩导乐"
+	        },
+	        {
+	            "name": "分娩导乐"
+	        }
+	    ],
+	    "province": "广州省",
+	    "city": "广州市",
+	    "desc": "关于专家",
+	    "notice": "讲师描述",
+	    "phone": "13045678900",
+	    "qrcode": "/qrcode.png",
+	    "wxname":"微信号",
+	    "qrcode":"微信二维码[预留]",
+	}
+
+4）接口名称：上传图片 ==> 对接七牛
+
+
+5）接口名称：加入人才库
+   请求类型  post
+   请求Url  https://domain.com/postlecturer
+   请求参数列表：
+   data{
+   		province:1,
+   		city:2,
+   		classid:"1,2,3,4",
+   		img:"头像",
+   		name:"姓名",
+   		phone:"13012345678",
+   		wxname:"微信号",
+   		qrcode:"微信二维码[预留]",
+   		desc:"您的简介",
+   		notice: "你的介绍",
+   		institutions: "培训机构与负责人",
+   		referee:"推荐人",
+   		idcard_z:"身份证正面url",
+   		idcard_f:"身份证反面url",
+   		certificate:"证书1url,证书2url,证书3url,证书4url,"
+   }
+   正确JSON数据包：
+   [
+	    {
+	        "status": true/false,
+	        "msg": ""
+	    }
+	]
+
+5.1）接口名称：是否人才库
+   请求类型  post
+   请求Url  https://domain.com/getislecturer
+   请求参数列表：
+   data{
+   		openid:*****,
+   }
+   正确JSON数据包：
+	    {
+	        "type": 0未填写 1填写未提交 2已提交,
+	        "result": {
+				province:{
+					id:1,
+					name:’广东省’
+					city:{
+						id:11,
+						name:’广州市’
+					}
+				},
+   				classid:[
+   					{
+   						// 类别ID
+   						id:1,
+						name:’分类名称1’
+   					},
+   					{
+   						id:2,
+						name:’分类名称2’
+   					}
+   				],
+   				img:"头像",
+   				name:"姓名",
+   				phone:"13012345678",
+   				wxname:"微信号",
+   				qrcode:"微信二维码[预留]",
+   				desc:"您的简介",
+   				notice: "你的介绍",
+   				institutions: "培训机构与负责人",
+   				referee:"推荐人",
+   				idcard_z:"身份证正面url",
+   				idcard_f:"身份证反面url",
+   				certificate:[
+   					{
+   						url:'证书1url'
+   					},
+   					{
+   						url:'证书2url'
+   					}
+   				]
+	        }
+	    }
