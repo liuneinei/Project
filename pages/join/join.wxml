@@ -13,13 +13,13 @@
     <view class="item-content">
       <view class="item-lable">您提供服务城市</view>
       <view class="item-input">
-        <view class="item__input" bindtap="ProvinceEvent">点击选择</view>
+        <view class="item__input" bindtap="ProvinceEvent">{{checkProvince}}</view>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">认证行业</view>
       <view class="item-input">
-        <view class="item__input" bindtap="ClassEvent">点击选择</view>
+        <view class="item__input" bindtap="ClassEvent">{{checkClassName}}</view>
       </view>
     </view>
     <view class="item-content">

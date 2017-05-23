@@ -50,6 +50,7 @@
   width: 280rpx;
   overflow-y: auto;
   background: #f4f4f4;
+  overflow-x: hidden;
 }
 
 .geo-container .nav-dorpmenu .province-container .checkon{

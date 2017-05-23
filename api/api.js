@@ -1,13 +1,12 @@
 // 主机域名
-const host = 'https://edu.yanma.com'
+const host = 'https://edu.yanma.com';
 // 微信登录
-const wxlogin = '/wxlogin'
+const iwxlogin = '/wxlogin';
 // 上传文件
-const uploadtoken = '/uploadtoken'
+const iuploadtoken = '/uploadtoken';
 // 省市
-const getRegion = '/getRegion'
+const igetRegion = '/getRegion';
 
-const geourl = 'https://apis.map.qq.com/ws/geocoder/v1/';
 // 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
 
@@ -35,14 +34,20 @@ const wxRequest = (params, url) => {
     }
   })
 }
-// map
-const getmap = (params) => wxRequest(params, geourl)
 
 const lgoinApi = (params) => wxRequest(params,wxlogin)
 
 module.exports = {
+  // 主机域名
   host,
+  // 微信登录
+  iwxlogin,
+  // 上传文件
+  iuploadtoken,
+  // 省市
+  igetRegion,
+  // 公共请求函数
   wxRequest,
-  getmap,
+  // 地图Key
   QQMapKey,
 }

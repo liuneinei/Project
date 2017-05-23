@@ -7,10 +7,10 @@ Page({
   data: {
     userInfo: {},
     wHeight: 300,
-    // 选中的分类集
-    checkClass:'',
     // 选中的城市
-    checkProvince:'',
+    checkProvince: '点击选择',
+    // 选中的分类集
+    checkClassName:'点击选择',
     objoin:{
       isedit:false,
       province: 0,
@@ -57,39 +57,24 @@ Page({
     });
     // 定时保存
     timesave(that);
+
+    // 地区拉取API
+    GetRegion();
   },
   // ##:beging 事件处理 
-  //上传头像
-  uploadheadTap:function(event){
-    var that = this;
-    didPressChooesImage(that);
-  },
   // 选择城市
   ProvinceEvent:function(event){
-    console.log('选择城市');
     wx.navigateTo({
       url: '../joincity/joincity',
     })
   },
-  // 类别选择
+  // 选择类别
   ClassEvent:function(event){
-    console.log('类别选择');
-    
     wx.navigateTo({
       url: '../joinclass/joinclass',
     })
   },
-  //更新分类
-  changeData: function (classid, checkClass) {
-    var that = this;
-    var objoin = that.data.objoin;
-    objoin.classid = classid
-    that.setData({
-      objoin: objoin,
-      checkClass: checkClass
-    });
-  },
-  //更新省市
+  // 更新城市
   changeProvince: function (pid, cid, checkProvince) {
     var that = this;
     var objoin = that.data.objoin;
@@ -100,9 +85,24 @@ Page({
       checkProvince: checkProvince
     });
   },
+  // 更新类别
+  changeClass: function (classid, checkClassName) {
+    var that = this;
+    var objoin = that.data.objoin;
+    objoin.classid = classid
+    that.setData({
+      objoin: objoin,
+      checkClassName: checkClassName
+    });
+  },
   // ##:end 事件处理 
   // ##:begin from表单处理
-  //名字
+  // 上传头像
+  uploadheadTap: function (event) {
+    var that = this;
+    didPressChooesImage(that);
+  },
+  // 名字
   HandleName:function(event){
     var that = this;
     var name = event.detail.value
@@ -113,6 +113,7 @@ Page({
       objoin: objoin
     })
   },
+  // 手机
   HandlePhone: function (event) {
     var that = this;
     var phone = event.detail.value
@@ -123,6 +124,7 @@ Page({
       objoin: objoin
     })
   },
+  // 微信号
   HandleWxName: function (event) {
     var that = this;
     var wxname = event.detail.value
@@ -133,6 +135,7 @@ Page({
       objoin: objoin
     })
   },
+  // 简介
   HandleDesc: function (event) {
     var that = this;
     var desc = event.detail.value
@@ -143,6 +146,7 @@ Page({
       objoin: objoin
     })
   },
+  // 介绍
   HandleNotice: function (event) {
     var that = this;
     var notice = event.detail.value
@@ -153,6 +157,7 @@ Page({
       objoin: objoin
     })
   },
+  // 培训机构
   HandleInstitutions: function (event) {
     var that = this;
     var institutions = event.detail.value
@@ -163,6 +168,7 @@ Page({
       objoin: objoin
     })
   },
+  // 推荐人
   HandleReferee: function (event) {
     var that = this;
     var referee = event.detail.value
@@ -178,8 +184,6 @@ Page({
 
 // 定时保存
 function timesave(that){
-  console.log("定时30秒");
-  console.log(that.data.objoin);
   var _objoin = that.data.objoin;
   if (_objoin.isedit){
     wx.setStorage({
@@ -187,7 +191,8 @@ function timesave(that){
       data: _objoin,
     })
   }
-  setTimeout(function () { timesave(that)},30000); }
+  setTimeout(function () { timesave(that)},30000); 
+}
 
 // 上传
 function didPressChooesImage(that) {

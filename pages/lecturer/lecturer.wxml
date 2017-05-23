@@ -3,7 +3,7 @@
         <view class="page__bd" style="padding-bottom:52rpx;">
         <view class="weui-tab">
           <view class="weui-navbar">
-            <view class="weui-navbar__item" bindtap="servertag">
+            <view class="weui-navbar__item" bindtap="ClassdTap">
               <view class="weui-navbar__item__lable">选择类别</view>
               <view class="weui-navbar__item__icon">
                 <image src="/images/open_up.png" class="navbar__item__i"></image>
@@ -12,7 +12,7 @@
             <view class="navbar__item__border">
               <view class="navbar__item__bi"></view>
             </view>
-            <view class="weui-navbar__item weui-bar__item_on" bindtap="citytap">
+            <view class="weui-navbar__item weui-bar__item_on" bindtap="RegionTap">
               <view class="weui-navbar__item__lable">选择地区</view>
               <view class="weui-navbar__item__icon">
                 <image src="/images/open_up.png" class="navbar__item__i"></image>
@@ -23,7 +23,7 @@
             <view class="geo-container" hidden="{{geoshow}}">
             <block wx:if="{{classshow == 1}}">
                 <view class="server-container">
-                   <view class="geo-item server-width">分类分类</view>
+                   <view class="geo-item server-width {{classid == 0 ?'checkon' :''}}" data-id="0" bindtap="ClassTap">分类分类</view>
                    <view class="geo-item server-width">分类分类</view>
                    <view class="geo-item server-width">分类分类</view>
                    <view class="geo-item server-width">分类分类</view>
@@ -32,7 +32,7 @@
               <block wx:if="{{classshow == 2}}">
               <view class="nav-dorpmenu">
                 <view class="province-container" style="height:{{wHeight}}px">
-                    <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == regnavCus ? 'checkon':''}}" bindtap="provinceTap" data-id="{{item.id}}">{{item.name}}</view>
+                    <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == provinceid ? 'checkon':''}}" bindtap="ProvinceTap" data-id="{{item.id}}">{{item.name}}</view>
                 </view>
                 <view class="city-container" style="height:{{wHeight}}px">
                   <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>

@@ -3,7 +3,6 @@ var api = require('../../api/api.js')
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
 
 //测试数据
-var region = require('../../api/testdata/region.js')
 var lecturer = require('../../api/testdata/lecturer.js')
 
 //index.js
@@ -12,24 +11,30 @@ var app = getApp()
 Page({
   data: {
     userInfo: {},
-    province:0,
-    city:0,
+    // 屏幕高度
+    wHeight: 300,
+    // 是否显示
     geoshow:true,
+    // 显示的操作 1分类 2城市
     classshow:0,
-    wHeight:300,
+    // 分类集(json)
+    classl: [],
+    // 省集(json)
     region: [],
-    regionapi:true,
-    regnavCus:0,//选中
-    citys:[],//城市
+    // 市集(json)
+    citys:[],
+    // 选中的分类
+    classid: 0,
+    // 选中的省
+    provinceid: 0,
+    // 选中的市
+    cityid: 0,
+    // 讲师列表
     lecturers: []
-  },
-  onShow: function () { 
-    console.log('lect:onShow');
-    console.log(app.globalData.objoin);
   },
   onPullDownRefresh: function () {
       wx.stopPullDownRefresh();
-    console.log('onPullDownRefresh', new Date());
+      console.log('onPullDownRefresh', new Date());
   },
   scroll: function (e) {
     //console.log('scroll'+e)
@@ -50,11 +55,6 @@ Page({
     })
   },
   onLoad: function (options) {
-    console.log('lect:处理');
-    var objoin = app.globalData.objoin;
-    objoin.name = '测试来烊';
-    app.globalData.objoin = objoin;
-    console.log(app.globalData.objoin);
     var that = this;
     // 获取系统信息，提取屏幕高度
     wx.getSystemInfo({
@@ -64,6 +64,15 @@ Page({
             })
         }
     })
+    // 本地存储 - 城市
+    wx.getStorage({
+      key: 'region',
+      success: function (res) {
+        that.setData({
+          region: res.data
+        })
+      },
+    })
     that.setData({
       lecturers: lecturer.lecturer
     })
@@ -71,7 +80,6 @@ Page({
     var qqmapwx = new QQMapWX({
       key: api.QQMapKey // 必填
     });
-    
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
@@ -103,54 +111,57 @@ Page({
       })
     });
   },
+  // :beging 事件处理
   //服务选项
-  servertag:function(e){
-    let _this = this;
+  ClassdTap:function(e){
+    let that = this;
     var classshow = 1;
      var geoshow=false;
-    if (_this.data.classshow == 1){
+     if (that.data.classshow == 1){
       classshow=0;
        geoshow=true;
     }
-    console.log(classshow)
-    _this.setData({
+     that.setData({
       geoshow: geoshow,
       classshow: classshow
     });
-    
   },
-  //citytap 城市选择
-  citytap:function(e){
-    var _this = this;   
+  // 地区选择
+  RegionTap:function(e){
+    var that = this;   
     var classshow = 2;
     var geoshow=false;
-    if (_this.data.classshow == 2){
+    if (that.data.classshow == 2){
       classshow=0;
       geoshow=true;
     }
+    that.setData({
+      geoshow: geoshow,
+      classshow: classshow
+    });
   },
   // 选择省
-  provinceTap: function (event){
+  ProvinceTap: function (event){
     var _this = this;  
     var citys=[];
     var pid = event.target.dataset.id;
-    if (pid<=0){
-      // 请求api
-      _this.setData({
-        regnavCus: pid,
-        citys: citys
-      })
-    }else{
       [].forEach.call(_this.data.region, function (item, i, arr) {
         if (item.id == pid) {
-          citys = item.city;
-          // console.log(item.city)
+          citys = item.citys;
         }
       });
+      citys.splice(0, 0, {
+        "id": 0,
+        "name": "全省"
+      });
       _this.setData({
-        regnavCus: pid,
+        provinceid: pid,
         citys: citys
       })
-    }
-  }
+  },
+  // 选择类别
+  ClassTap:function(event){
+    var cid = event.target.dataset.id;
+  },
+  // :end 事件处理
 })

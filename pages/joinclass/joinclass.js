@@ -15,9 +15,9 @@ Page({
     wHeight: 300,
     check:[],
     // 选中的id集
-    checkids: [],
+    checkids: '',
     // 选中的Name集
-    checknames:[],
+    checknames:'',
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -37,35 +37,59 @@ Page({
   },
   // ##:beging 事件处理 
   ClassTap:function(event){
+    var that = this;
     // id集
-    var check = this.data.check;
+    var check = that.data.check;
+    // 选中的id集
+    var checkids = that.data.checkids;
+    // 选中的Name集
+    var checknames = that.data.checknames;
+
     // 索引值
     var idx = event.target.dataset.idx;
     var id = event.target.dataset.id;
     var name = event.target.dataset.name;
     for (var i=0;i<=idx;i++){
-      if(i==idx){
-        check[i] = idx;
-      }else{
-        if(check[i] == null){
-          check[i]=-1;
+        if(i==idx){
+          if (check[i] == null || check[i]<=-1){
+            check[i] = idx;
+            checkids += id+',';
+            checknames += name+',';
+          }else{
+            check[i] = -1;
+            checkids = checkids.replace(id + ',',''); 
+            checknames = checknames.replace(name + ',','');
+          }
+        }else{
+          if(check[i] == null){
+            check[i]=-1;
+          }
         }
-      }
     }
-    this.setData({
-      check: check
+    that.setData({
+      check: check,
+      checkids: checkids,
+      checknames: checknames
     })
   },
   // 确认
   confirmTap:function(event){
+    var that = this;
     //获取页面栈
     var pages = getCurrentPages();
     if (pages.length > 1) {
       //上一个页面实例对象
       var prePage = pages[pages.length - 2];
+      var checkids = that.data.checkids;
+      checkids = checkids.substr(0, checkids.length - 1);
+      var checknames = that.data.checknames;
+      checknames = checknames.substr(0, checknames.length-1);
       //关键在这里
-      prePage.changeData(1, this.data.check.join(' '))
+      prePage.changeClass(checkids, checknames)
     }
+    wx.navigateBack({
+      delta:1
+    });
   }
   // ##:end 事件处理 
 });

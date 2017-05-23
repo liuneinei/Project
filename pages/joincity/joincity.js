@@ -1,5 +1,4 @@
 var api = require('../../api/api.js')
-var region = require('../../api/testdata/region.js')
 //index.js
 //获取应用实例
 var app = getApp()
@@ -9,6 +8,8 @@ Page({
     regionapi: true,
     regnavCus:0,
     wHeight: 300,
+    ProvinceId:0,
+    ProvinceName:'',
     citys:[]
   },
   onReady: function () {
@@ -26,8 +27,15 @@ Page({
         })
       }
     })
-    that.setData({
-      region: region.region
+
+    // 本地存储 - 城市
+    wx.getStorage({
+      key: 'region',
+      success: function(res) {
+        that.setData({
+          region: res.data
+        })
+      },
     })
   },
   // ##:beging 事件处理 
@@ -36,31 +44,41 @@ Page({
     var that = this;
     var citys = [];
     var pid = event.target.dataset.id;
-    if (pid <= 0) {
-      // 请求api
-      that.setData({
-        regnavCus: pid,
-        citys: citys
-      })
-    } else {
+    var pname = event.target.dataset.name;
       [].forEach.call(that.data.region, function (item, i, arr) {
         if (item.id == pid) {
-          citys = item.city;
-          // console.log(item.city)
+          citys = item.citys
         }
+      });
+
+      citys.splice(0, 0, {
+        "id": 0,
+        "name": "全省"
       });
       that.setData({
         regnavCus: pid,
-        citys: citys
+        citys: citys,
+        ProvinceId: pid,
+        ProvinceName: pname,
       })
-    }
   },
   //选择市
   cityTap:function(event){
     var that = this;
+    var pid = that.data.ProvinceId;
+    var pname = that.data.ProvinceName;
     var cid = event.target.dataset.id;
+    var cname = event.target.dataset.name;
     var pages = getCurrentPages();
-    
+    if (pages.length > 1) {
+      //上一个页面实例对象
+      var prePage = pages[pages.length - 2];
+      //关键在这里
+      prePage.changeProvince(pid, cid, pname + cname)
+    }
+    wx.navigateBack({
+      delta: 1
+    });
   },
   // ##:end 事件处理 
 });

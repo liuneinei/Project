@@ -35,25 +35,38 @@
   padding-top: 72rpx;
   overflow-y: auto;
   background: #ffffff;
+  padding-bottom: 30rpx;
 }
+/*未选中样式*/
 .server-container .server-width{
-  width:250rpx;
+   width:206rpx;
+  border: 1rpx solid #dddddd;
+  border-radius: 3px;
+  margin: 30rpx 0 0 30rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+/*选中样式*/
+.geo-container .checkon{
+  border: 1rpx solid #ad83e4;
+  color: #714e9e;
 }
 
 .geo-container .nav-dorpmenu{
     display: flex;
     flex-direction: row;
-    flex-wrap:wrap;
     overflow-y: auto;
     overflow-x: hidden;
 }
 /*省*/
 .geo-container .province-container{
   height: 100%;
-  width: 250rpx;
+  width: 280rpx;
   padding-top: 72rpx;
   overflow-y: auto;
   background: #f4f4f4;
+  overflow-x: hidden;
 }
 
 .geo-container .nav-dorpmenu .province-container .checkon{
