@@ -107,8 +107,11 @@
   flex-direction: row;
 }
 
-.item-content .item-content-main .item-pic-row{
-  padding-right: 30rpx;
+.item-content .item-content-main .item-pic-row1{
+  padding-right: 40rpx;
+}
+.item-content .item-content-main .item-pic-row2{
+  padding-right: 25rpx;
 }
 
 .item-pic-row__lable,.item-content .item-content-main .item-pic-row .item-desc{

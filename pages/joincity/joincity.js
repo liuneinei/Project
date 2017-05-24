@@ -30,10 +30,10 @@ Page({
 
     // 本地存储 - 城市
     wx.getStorage({
-      key: 'region',
+      key: 'config',
       success: function(res) {
         that.setData({
-          region: res.data
+          region: res.data.provinces
         })
       },
     })

@@ -1,16 +1,29 @@
 var api = require('../../api/api.js')
 var region = require('../../api/testdata/region.js')
+var util = require('../../utils/util.js')
 //index.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
+    // 用户信息
     userInfo: {},
+    // 屏幕高度
     wHeight: 300,
+    // 主机域名
+    host:'',
     // 选中的城市
     checkProvince: '点击选择',
     // 选中的分类集
     checkClassName:'点击选择',
+    // 上传key
+    filetoken:{
+      uptoken:'',
+      uptime:new Date()
+    },
+    // 证书上传URL
+    CertUrls:[],
+    // 提交的对象
     objoin:{
       isedit:false,
       province: 0,
@@ -46,10 +59,12 @@ Page({
     })
     that.setData({
       region: region.region,
-      wHeight: wHeight
+      wHeight: wHeight,
+      host: api.host
     }); 
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
+      console.log(userInfo);
       //更新数据
       that.setData({
         userInfo: userInfo
@@ -57,9 +72,6 @@ Page({
     });
     // 定时保存
     timesave(that);
-
-    // 地区拉取API
-    GetRegion();
   },
   // ##:beging 事件处理 
   // 选择城市
@@ -100,7 +112,8 @@ Page({
   // 上传头像
   uploadheadTap: function (event) {
     var that = this;
-    didPressChooesImage(that);
+    // 获取Key
+    GetUpToken(that, 'face/openidheadimg.jpg')
   },
   // 名字
   HandleName:function(event){
@@ -179,6 +192,23 @@ Page({
       objoin: objoin
     })
   },
+  // 上传身份证正面
+  IdCardZTap:function(event){
+    var that = this;
+    // 获取Key
+    GetUpToken(that, 'id/[openid]/0.jpg')
+  },
+  // 上传身份证反面
+  IdCardFTap:function(event){
+    var that = this;
+    // 获取Key
+    GetUpToken(that, 'id/[openid]/1.jpg')
+  },
+  // 证书URL
+  CertTap:function(event){
+    var that = this;
+
+  }
   // ##:end from表单处理
 });
 
@@ -194,8 +224,35 @@ function timesave(that){
   setTimeout(function () { timesave(that)},30000); 
 }
 
+// 获取uptoken
+function GetUpToken(that,filename,types){
+  var filetoken = that.data.filetoken
+  var NowTime = new Date();
+    api.wxRequest({
+      filename: filename,
+      success:function(res){
+        var data = res.data;
+        if (data.status == 0){
+          filetoken.uptoken = data.uploadtoken;
+          filetoken.uptime = util.addDate(NowTime,1);
+          // 处理
+          that.setData({
+            filetoken: filetoken
+          })
+          // 获取到Key后，执行选择上传文件
+          ChooesImage(that, filename, types);
+        }
+      }
+    }, api.host + api.iuploadtoken)
+}
+
 // 上传
-function didPressChooesImage(that) {
+// 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
+// 头像 ：  face/[openid].jpg
+// 证照 ：  cert/[openid]/[unixtime].jpg
+function ChooesImage(that, key, types) {
+  console.log(key);
+  console.log(that.data.filetoken.uptoken);
   // 微信 API 选文件
   wx.chooseImage({
       count: 1,
@@ -207,12 +264,20 @@ function didPressChooesImage(that) {
             filePath: filePath,
             name: 'file',
             formData: {
-              'key': 'test.jpg',
-              'token': 'QrQSGz8wX13Pe5ezSmRpZgmEMRXdkJtILiHcK4d0:ZZP86Up6Jc-lRQDAz6ZC9p8lVSM=:eyJzY29wZSI6Inlhbm1hLWVkdS13eGFwcDp0ZXN0LmpwZyIsImRlYWRsaW5lIjoxNDk1MTIyOTAyLCJ1cEhvc3RzIjpbImh0dHA6XC9cL3VwLXoyLnFpbml1LmNvbSIsImh0dHA6XC9cL3VwbG9hZC16Mi5xaW5pdS5jb20iLCItSCB1cC16Mi5xaW5pdS5jb20gaHR0cDpcL1wvMTgzLjYwLjIxNC4xOTgiXX0='
+              'key': key,
+              'token': that.data.filetoken.uptoken
             },
             success: function(res) {
+              var objoin = that.data.objoin;
                 //返回hash值、key值
                 console.log(res);
+                if (types == 'headimg'){
+                  // objoin.img = 
+                }else if(types == 'idcardz'){
+                  // objoin.idcard_z =
+                }else if(types == 'idcardf'){
+                  // objoin.idcard_f
+                }
             },
             fail(error) {
                 console.log(error)
@@ -222,5 +287,50 @@ function didPressChooesImage(that) {
             }
        });
      }
+  })
+}
+
+
+// 上传
+// 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
+// 头像 ：  face/[openid].jpg
+// 证照 ：  cert/[openid]/[unixtime].jpg
+function CertChooesImage(that, key, types) {
+  console.log(key);
+  console.log(that.data.filetoken.uptoken);
+  // 微信 API 选文件
+  wx.chooseImage({
+    count: 1,
+    success: function (res) {
+      var filePath = res.tempFilePaths[0];
+      //上传
+      wx.uploadFile({
+        url: 'https://up-z2.qbox.me',
+        filePath: filePath,
+        name: 'file',
+        formData: {
+          'key': key,
+          'token': that.data.filetoken.uptoken
+        },
+        success: function (res) {
+          var objoin = that.data.objoin;
+          //返回hash值、key值
+          console.log(res);
+          if (types == 'headimg') {
+            // objoin.img = 
+          } else if (types == 'idcardz') {
+            // objoin.idcard_z =
+          } else if (types == 'idcardf') {
+            // objoin.idcard_f
+          }
+        },
+        fail(error) {
+          console.log(error)
+        },
+        complete(res) {
+          console.log(res)
+        }
+      });
+    }
   })
 }

@@ -5,7 +5,7 @@ const iwxlogin = '/wxlogin';
 // 上传文件
 const iuploadtoken = '/uploadtoken';
 // 省市
-const igetRegion = '/getRegion';
+const iconfig = '/config';
 
 // 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
@@ -45,7 +45,7 @@ module.exports = {
   // 上传文件
   iuploadtoken,
   // 省市
-  igetRegion,
+  iconfig,
   // 公共请求函数
   wxRequest,
   // 地图Key

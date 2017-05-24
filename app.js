@@ -20,20 +20,19 @@ App({
           wx.getUserInfo({
             success: function (res) {
               var uinfo = res.userInfo;
-              uinfo.encryptedData = res.encryptedData;
+              uinfo.encryptedData = encodeURIComponent(res.encryptedData);
               uinfo.iv = res.iv;
               uinfo.code = code;
               that.globalData.userInfo = uinfo
+              console.log(uinfo);
               
               //一定要把加密串转成URI编码
               var encryptedData = encodeURIComponent(res.encryptedData);
               var iv = res.iv;
               //请求自己的服务器
-              Login(code, encryptedData, iv);
-
+              Login(that,code, encryptedData, iv);
               // 地区拉取API
               GetRegion();
-              
               typeof cb == "function" && cb(that.globalData.userInfo)
             }
           })
@@ -46,15 +45,15 @@ App({
   }
 })
 // 小程序登录
-function Login(code, encryptedData, iv) {
+function Login(that,code, encryptedData, iv) {
   //创建一个dialog
   // wx.showToast({
   //   title: '正在登录...',
   //   icon: 'loading',
   //   duration: 10000
   // });
-
-  //请求服务器
+ 
+  // //请求服务器
   wx.request({
     url: api.host + api.iwxlogin,
     data: {
@@ -64,11 +63,32 @@ function Login(code, encryptedData, iv) {
     },
     method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
     header: {
-      'content-type': 'application/json'
+      'Content-Type': 'json'
     }, // 设置请求的 header
     success: function (res) {
       // success
       wx.hideToast();
+      that.globalData.userInfo = res.data.data;
+      console.log('5-24获取222222');
+      console.log(res);
+      var ii='';
+      ii='\'[]';
+      for(var i=0;i=res.data.length;i++){
+        ii[i]=res.data[i];
+      }
+      ii += ']\'';
+      console.log(ii);
+      console.log(JSON.parse(ii));
+      console.log(res.header);
+      
+      // console.log(that.globalData.userInfo);
+      console.log('5-24获取结束2');
+      
+      // 保存本地缓存
+      wx.setStorage({
+        key: 'userInfo',
+        data: res.data.data,
+      })
     },
     fail: function () {
       // fail
@@ -84,16 +104,12 @@ function Login(code, encryptedData, iv) {
 function GetRegion() {
   api.wxRequest({
     success: (res) => {
-      console.log('请求地区api成功');
-      console.log(res.data.provinces);
       wx.setStorage({
-        key: 'region',
-        data: res.data.provinces,
+        key: 'config',
+        data: res.data.data,
       })
     },
     fail: function (res) {
-      console.log('请求地区api失败');
-      console.log(res);
     }
-  }, api.host + api.igetRegion)
+  }, api.host + api.iconfig)
 }

@@ -4,14 +4,7 @@ var api = require('../../api/api.js')
 var app = getApp()
 Page({
   data: {
-    citys: [{
-      "id": 1,
-      "name": "分类1",
-    },
-    {
-      "id": 2,
-      "name": "分类2",
-    },],//城市
+    services: [],//城市
     wHeight: 300,
     check:[],
     // 选中的id集
@@ -33,6 +26,18 @@ Page({
           wHeight: res.windowHeight - 40
         })
       }
+    })
+
+    // 本地存储 - 城市
+    wx.getStorage({
+      key: 'config',
+      success: function (res) {
+        console.log('服务项')
+        console.log(res)
+        that.setData({
+          services: res.data.services
+        })
+      },
     })
   },
   // ##:beging 事件处理 

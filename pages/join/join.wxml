@@ -2,7 +2,12 @@
   <form bindsubmit="formSubmit">
   <view class="item-top">
     <view class="top-img">
-      <image src="/images/head_portrait.png" class="top__head"></image>
+      <block wx:if="{{objoin.img == ''}}">
+        <image src="/images/head_portrait.png" class="top__head"></image>
+      </block>
+      <block wx:if="{{objoin.img != ''}}">
+        <image src="{{objoin.img}}" class="top__head"></image>
+      </block>
     </view>
     <view class="top-btn">
       <view class="btn_upload" bindtap="uploadheadTap">上传头像</view>
@@ -67,18 +72,28 @@
     <view class="item-content item-pic-list">
       <view class="item-lable">身份证</view>
       <view class="item-content-main">
-        <view class="item-pic-row">
+        <view class="item-pic-row item-pic-row1">
           <view class="item-pic">
-            <view class="item-pic-frame">
-              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            <view class="item-pic-frame" bindtap="IdCardZTap">
+              <block wx:if="{{objoin.idcard_z == ''}}">
+                <image src="/images/btn_add_img.png" class="item__pic"></image>
+              </block>
+              <block wx:if="{{objoin.idcard_z != ''}}">
+                <image src="{{objoin.idcard_z}}" class="top__head"></image>
+              </block>
             </view>
           </view>
           <view class="item-desc">正面</view>
         </view>
-        <view class="item-pic-row">
+        <view class="item-pic-row item-pic-row1">
           <view class="item-pic">
-            <view class="item-pic-frame">
-              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            <view class="item-pic-frame" bindtap="IdCardFTap">
+              <block wx:if="{{objoin.idcard_f == ''}}">
+                <image src="/images/btn_add_img.png" class="item__pic"></image>
+              </block>
+              <block wx:if="{{objoin.idcard_f != ''}}">
+                <image src="{{objoin.idcard_f}}" class="top__head"></image>
+              </block>
             </view>
           </view>
           <view class="item-desc">反面</view>
@@ -89,7 +104,21 @@
     <view class="item-content">
       <view class="item-lable">专业证书</view>
       <view class="item-content-main">
-        <view class="item-pic-row">
+        <view class="item-pic-row item-pic-row2">
+          <view class="item-pic item-pic-cert">
+            <view class="item-pic-frame">
+              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            </view>
+          </view>
+        </view>
+        <view class="item-pic-row item-pic-row2">
+          <view class="item-pic item-pic-cert">
+            <view class="item-pic-frame">
+              <image src="/images/btn_add_img.png" class="item__pic"></image>
+            </view>
+          </view>
+        </view>
+        <view class="item-pic-row item-pic-row2" bindtap="CertTap">
           <view class="item-pic item-pic-cert">
             <view class="item-pic-frame">
               <image src="/images/btn_add_img.png" class="item__pic"></image>

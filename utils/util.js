@@ -11,6 +11,13 @@ function formatTime(date) {
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
+function addDate(date, days) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  var m = d.getMonth() + 1;
+  return new Date(d.getFullYear() + '-' + m + '-' + d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds());
+} 
+
 function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
@@ -27,5 +34,6 @@ Array.prototype.remove=function(dx){
 }
 
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  addDate: addDate
 }
