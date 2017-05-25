@@ -25,16 +25,15 @@ App({
               uinfo.iv = res.iv;
               uinfo.code = code;
               that.globalData.userInfo = uinfo
-              console.log(uinfo);
               
               //一定要把加密串转成URI编码
               var encryptedData = encodeURIComponent(res.encryptedData);
               var iv = res.iv;
               //请求自己的服务器
-              Login(that,code, encryptedData, iv);
+              Login(that,code, encryptedData, iv,cb);
               // 地区拉取API
               GetRegion();
-              typeof cb == "function" && cb(that.globalData.userInfo)
+              
             }
           })
         }
@@ -46,7 +45,7 @@ App({
   }
 })
 // 小程序登录
-function Login(that,code, encryptedData, iv) {
+function Login(that, code, encryptedData, iv, cb) {
   //创建一个dialog
   // wx.showToast({
   //   title: '正在登录...',
@@ -56,10 +55,7 @@ function Login(that,code, encryptedData, iv) {
  
   // 请求服务器
   wx.request({
-    url: 
-    'http://pingmm.xyz/applet',
-    //'http://www.ruanshiyy.com/AjaxSources/AsyncApi/wx.ashx',
-    // api.host + api.iwxlogin,
+    url: api.host + api.iwxlogin,
     data: {
       code: code,
       encrypteddata: encryptedData,
@@ -71,15 +67,14 @@ function Login(that,code, encryptedData, iv) {
     }, // 设置请求的 header
     success: function (res) {
       //wx.hideToast();
-      console.log('5-24获取:begin');
-      console.log(res);
-      console.log('5-24获取:end');
-      that.globalData.userInfo = res.data;
+      that.globalData.userInfo = res.data.data;
       // 保存本地缓存
       wx.setStorage({
         key: 'userInfo',
         data: res.data.data,
       })
+
+      typeof cb == "function" && cb(that.globalData.userInfo)
     },
     fail: function () {
       // wx.hideToast();
@@ -101,4 +96,8 @@ function GetRegion() {
     fail: function (res) {
     }
   }, api.host + api.iconfig)
+}
+
+function STrim(str){
+  return str.replace(/(^\s*)|(\s*$)/g, "");
 }

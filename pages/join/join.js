@@ -16,15 +16,11 @@ Page({
     checkProvince: '点击选择',
     // 选中的分类集
     checkClassName:'点击选择',
-    // 上传key
-    filetoken:{
-      uptoken:'',
-      uptime:new Date()
-    },
     // 证书上传URL
     CertUrls:[],
     // 提交的对象
     objoin:{
+      types: 0,//0未填写 1填写未提交 2已提交审核中 3已提交审核成功 4提交审核失败,
       isedit:false,
       province: 0,
       city: 0,
@@ -60,14 +56,19 @@ Page({
     that.setData({
       region: region.region,
       wHeight: wHeight,
-      host: api.host
+      host: api.iQiniu
     }); 
+
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
-      console.log(userInfo);
-      //更新数据
-      that.setData({
-        userInfo: userInfo
+      wx.getStorage({
+        key: 'userInfo',
+        success: function (res) {
+          //更新数据
+          that.setData({
+            userInfo: res.data
+          })
+        },
       })
     });
     // 定时保存
@@ -112,7 +113,7 @@ Page({
   // 上传头像
   uploadheadTap: function (event) {
     var that = this;
-    var openid = that.data.userInfo.data.openId;
+    var openid = that.data.userInfo.openId;
     var url='face/'+openid+'.jpg'
     // 获取Key
     GetUpToken(that, url,'headimg')
@@ -197,19 +198,134 @@ Page({
   // 上传身份证正面
   IdCardZTap:function(event){
     var that = this;
+    var openid = that.data.userInfo.openId;
+    var url = 'id/' + openid + '0.jpg'
     // 获取Key
-    GetUpToken(that, 'id/[openid]/0.jpg')
+    GetUpToken(that, url,'idcardz')
   },
   // 上传身份证反面
   IdCardFTap:function(event){
     var that = this;
+    var openid = that.data.userInfo.openId;
+    var url = 'id/' + openid + '1.jpg'
     // 获取Key
-    GetUpToken(that, 'id/[openid]/1.jpg')
+    GetUpToken(that, url, 'idcardf')
   },
   // 证书URL
   CertTap:function(event){
     var that = this;
+    // 用户OpenId
+    var openid = that.data.userInfo.openId;
+    // 微信 API 选文件
+    wx.chooseImage({
+      count: 9,
+      success: function (res) {
+        var tempFilePaths = res.tempFilePaths;
+        // 递归函数
+        function UpFile(i){
+          if (i < tempFilePaths.length){
+          // 微信选择文件的名称
+          var filePath = res.tempFilePaths[i];
+          // 时间戳-毫秒级
+          var unixtime = (new Date()).getTime();
+          // 自定义名称
+          var filename = 'cert/' + openid + '/' + unixtime+'.jpg';
+          // 获取七牛 uptoken
+          api.wxRequest({
+            data: {
+              filename: filename
+            },
+            success: function (res) {
+              var data = res.data;
+              if (data.status == 0) {
+                // 七牛上传必须的 uptoken
+                var uploadtoken = data.uploadtoken;
+                // 七牛上传文件
+                wx.uploadFile({
+                  url: 'https://up-z2.qbox.me',
+                  filePath: filePath,
+                  name: 'file',
+                  formData: {
+                    'key': filename,
+                    'token': uploadtoken
+                  },
+                  success: function (res) {
+                    // Page data对象
+                    var tdata = that.data;
+                    // data - objoin对象
+                    var objoin = tdata.objoin;
+                    // 证书URL集
+                    var CertUrls = tdata.CertUrls
+                    // 证书URL
+                    var dataKey = JSON.parse(res.data).key;
 
+                    objoin.certificate += dataKey+',';
+                    // 编辑状态
+                    objoin.isedit = true
+                    CertUrls.push(dataKey)
+                  
+                    that.setData({
+                      objoin: objoin,
+                      CertUrls: CertUrls
+                    })
+                    console.log(that.CertUrls);
+                    i=i+1;
+                    UpFile(i);
+                  }
+                });
+              }
+            }
+          }, api.host + api.iuploadtoken)
+        }
+        }
+        UpFile(0);
+      }
+    })
+  },
+  // 提交申请
+  btnSubmit:function(event){
+    var that = this;
+    // 用户OpenId
+    var openid = that.data.userInfo.openId;
+    // 数据对象
+    var objoin = that.data.objoin;
+    console.log('提交信息');
+    console.log(that);
+    api.wxRequest({
+      method:'POST',
+      data:{
+        openid: openid,
+        provinceid: objoin.province,
+        cityid: objoin.city,
+        face_img: objoin.img,
+        name: objoin.name,
+        phone: objoin.phone,
+        wechat: objoin.wxname,
+        intro: objoin.desc,
+        about: objoin.notice,
+        train: objoin.institutions,
+        referees: objoin.referee,
+        idcard_up_img: objoin.idcard_z,
+        idcard_down_img: objoin.idcard_f,
+        cert_imgs: objoin.certificate,
+        serverids: objoin.classid,
+      },
+      success:function(res){
+        console.log('申请加入成功');
+        console.log(res);
+        var data = res.data;
+        if (data.status==0){
+          // 提交成功，想想接下来要怎么处理
+
+        }else{
+          // 提交失败，
+        }
+      },
+      fail:function(res){
+        console.log('申请加入失败');
+        console.log(res);
+      }
+    }, api.host + api.iPostLecturer);
   }
   // ##:end from表单处理
 });
@@ -236,8 +352,6 @@ function GetUpToken(that,filename,types){
       success:function(res){
         var data = res.data;
         if (data.status == 0){
-          console.log('上传图片');
-          console.log(res);
           // 获取到Key后，执行选择上传文件
           ChooesImage(that, filename,data.uploadtoken, types);
         }
@@ -265,7 +379,6 @@ function ChooesImage(that, key,uptoken, types) {
             formData: {
               'key': key,
               'token': uptoken
-              //that.data.filetoken.uptoken,
             },
             success: function(res) {
               var objoin = that.data.objoin;
@@ -279,6 +392,7 @@ function ChooesImage(that, key,uptoken, types) {
                 }else if(types == 'idcardf'){
                    objoin.idcard_f = dataObject.key
                 }
+                objoin.isedit=true
                 that.setData({
                   objoin:objoin
                 })
@@ -291,50 +405,5 @@ function ChooesImage(that, key,uptoken, types) {
             }
        });
      }
-  })
-}
-
-
-// 上传
-// 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
-// 头像 ：  face/[openid].jpg
-// 证照 ：  cert/[openid]/[unixtime].jpg
-function CertChooesImage(that, key, types) {
-  console.log(key);
-  console.log(that.data.filetoken.uptoken);
-  // 微信 API 选文件
-  wx.chooseImage({
-    count: 1,
-    success: function (res) {
-      var filePath = res.tempFilePaths[0];
-      //上传
-      wx.uploadFile({
-        url: 'https://up-z2.qbox.me',
-        filePath: filePath,
-        name: 'file',
-        formData: {
-          'key': key,
-          'token': that.data.filetoken.uptoken
-        },
-        success: function (res) {
-          var objoin = that.data.objoin;
-          //返回hash值、key值
-          console.log(res);
-          if (types == 'headimg') {
-            // objoin.img = 
-          } else if (types == 'idcardz') {
-            // objoin.idcard_z =
-          } else if (types == 'idcardf') {
-            // objoin.idcard_f
-          }
-        },
-        fail(error) {
-          console.log(error)
-        },
-        complete(res) {
-          console.log(res)
-        }
-      });
-    }
   })
 }

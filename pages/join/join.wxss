@@ -40,6 +40,9 @@
 .item-main .item-content{
   padding: 40rpx 30rpx 0rpx 30rpx; 
 }
+.item-main .item-content2{
+  padding: 40rpx 0rpx 0rpx 30rpx; 
+}
 .item-main .item-pic-list{
   padding: 40rpx 0rpx 0rpx 30rpx; 
 }
@@ -109,11 +112,16 @@
   flex-direction: row;
 }
 
+.item-content .item-content-main2{
+  flex-wrap:wrap;
+}
+
 .item-content .item-content-main .item-pic-row1{
   padding-right: 40rpx;
 }
 .item-content .item-content-main .item-pic-row2{
   padding-right: 25rpx;
+  padding-top: 16rpx;
 }
 
 .item-pic-row__lable,.item-content .item-content-main .item-pic-row .item-desc{

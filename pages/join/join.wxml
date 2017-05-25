@@ -73,49 +73,41 @@
       <view class="item-lable">身份证</view>
       <view class="item-content-main">
         <view class="item-pic-row item-pic-row1">
-          <view class="item-pic">
-            <view class="item-pic-frame" bindtap="IdCardZTap">
+          <view class="item-pic" bindtap="IdCardZTap">
               <block wx:if="{{objoin.idcard_z == ''}}">
-                <image src="/images/btn_add_img.png" class="item__pic"></image>
+                <view class="item-pic-frame">
+                    <image src="/images/btn_add_img.png" class="item__pic"></image>
+                </view>
               </block>
               <block wx:if="{{objoin.idcard_z != ''}}">
-                <image src="{{host}}/{{objoin.idcard_z}}" class="top__head"></image>
+                <image src="{{host}}/{{objoin.idcard_z}}" class="item-pic"></image>
               </block>
-            </view>
           </view>
           <view class="item-desc">正面</view>
         </view>
         <view class="item-pic-row item-pic-row1">
-          <view class="item-pic">
-            <view class="item-pic-frame" bindtap="IdCardFTap">
+          <view class="item-pic" bindtap="IdCardFTap">
               <block wx:if="{{objoin.idcard_f == ''}}">
-                <image src="/images/btn_add_img.png" class="item__pic"></image>
+                <view class="item-pic-frame">
+                  <image src="/images/btn_add_img.png" class="item__pic"></image>
+                </view>
               </block>
               <block wx:if="{{objoin.idcard_f != ''}}">
-                <image src="{{host}}/{{objoin.idcard_f}}" class="top__head"></image>
+                <image src="{{host}}/{{objoin.idcard_f}}" class="item-pic"></image>
               </block>
-            </view>
+            
           </view>
           <view class="item-desc">反面</view>
         </view>
       </view>
     </view>
     <view class="blank10 backfff"></view>
-    <view class="item-content">
+    <view class="item-content item-content2">
       <view class="item-lable">专业证书</view>
-      <view class="item-content-main">
-        <view class="item-pic-row item-pic-row2">
+      <view class="item-content-main item-content-main2">
+        <view wx:for="{{CertUrls}}" wx:for-item="item" class="item-pic-row item-pic-row2">
           <view class="item-pic item-pic-cert">
-            <view class="item-pic-frame">
-              <image src="/images/btn_add_img.png" class="item__pic"></image>
-            </view>
-          </view>
-        </view>
-        <view class="item-pic-row item-pic-row2">
-          <view class="item-pic item-pic-cert">
-            <view class="item-pic-frame">
-              <image src="/images/btn_add_img.png" class="item__pic"></image>
-            </view>
+              <image src="{{host}}/{{item}}" class="item-pic-cert"></image>
           </view>
         </view>
         <view class="item-pic-row item-pic-row2" bindtap="CertTap">
@@ -132,7 +124,7 @@
     请上传您申请的各行业认证专业证书
     </view>
     <view class="blank80 backfff"></view>
-    <view class="item-btn">
+    <view class="item-btn" bindtap="btnSubmit">
       <view class="item-btn__lable">提交申请</view>
     </view>
     <view class="blank70 backfff"></view>

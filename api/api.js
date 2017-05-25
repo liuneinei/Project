@@ -6,6 +6,10 @@ const iwxlogin = '/wxlogin';
 const iuploadtoken = '/uploadtoken';
 // 省市
 const iconfig = '/config';
+// 七牛文件域名
+const iQiniu = 'http://oq53vzp2j.bkt.clouddn.com'
+// 加入我们
+const iPostLecturer ='/postlecturer'
 
 // 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
@@ -50,4 +54,8 @@ module.exports = {
   wxRequest,
   // 地图Key
   QQMapKey,
+  // 七牛文件域名
+  iQiniu,
+  // 加入我们
+  iPostLecturer,
 }
