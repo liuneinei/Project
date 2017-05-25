@@ -16,7 +16,15 @@
 .blank50{
     height: 50rpx;
 }
-
+.blank60{
+    height: 60rpx;
+}
+.blank70{
+    height: 70rpx;
+}
+.blank80{
+    height: 80rpx;
+}
 .backfff{
     background: #ffffff;
 }

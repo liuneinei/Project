@@ -1,4 +1,5 @@
 var api = require('api/api.js')
+var json2 = require('utils/json2.js')
 
 //app.js
 App({
@@ -53,9 +54,12 @@ function Login(that,code, encryptedData, iv) {
   //   duration: 10000
   // });
  
-  // //请求服务器
+  // 请求服务器
   wx.request({
-    url: api.host + api.iwxlogin,
+    url: 
+    'http://pingmm.xyz/applet',
+    //'http://www.ruanshiyy.com/AjaxSources/AsyncApi/wx.ashx',
+    // api.host + api.iwxlogin,
     data: {
       code: code,
       encrypteddata: encryptedData,
@@ -66,24 +70,11 @@ function Login(that,code, encryptedData, iv) {
       'Content-Type': 'json'
     }, // 设置请求的 header
     success: function (res) {
-      // success
-      wx.hideToast();
-      that.globalData.userInfo = res.data.data;
-      console.log('5-24获取222222');
+      //wx.hideToast();
+      console.log('5-24获取:begin');
       console.log(res);
-      var ii='';
-      ii='\'[]';
-      for(var i=0;i=res.data.length;i++){
-        ii[i]=res.data[i];
-      }
-      ii += ']\'';
-      console.log(ii);
-      console.log(JSON.parse(ii));
-      console.log(res.header);
-      
-      // console.log(that.globalData.userInfo);
-      console.log('5-24获取结束2');
-      
+      console.log('5-24获取:end');
+      that.globalData.userInfo = res.data;
       // 保存本地缓存
       wx.setStorage({
         key: 'userInfo',
@@ -91,11 +82,9 @@ function Login(that,code, encryptedData, iv) {
       })
     },
     fail: function () {
-      // fail
       // wx.hideToast();
     },
     complete: function () {
-      // complete
     }
   })
 }

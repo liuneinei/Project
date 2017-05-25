@@ -112,8 +112,10 @@ Page({
   // 上传头像
   uploadheadTap: function (event) {
     var that = this;
+    var openid = that.data.userInfo.data.openId;
+    var url='face/'+openid+'.jpg'
     // 获取Key
-    GetUpToken(that, 'face/openidheadimg.jpg')
+    GetUpToken(that, url,'headimg')
   },
   // 名字
   HandleName:function(event){
@@ -226,21 +228,18 @@ function timesave(that){
 
 // 获取uptoken
 function GetUpToken(that,filename,types){
-  var filetoken = that.data.filetoken
   var NowTime = new Date();
     api.wxRequest({
-      filename: filename,
+      data:{
+       filename: filename
+      },
       success:function(res){
         var data = res.data;
         if (data.status == 0){
-          filetoken.uptoken = data.uploadtoken;
-          filetoken.uptime = util.addDate(NowTime,1);
-          // 处理
-          that.setData({
-            filetoken: filetoken
-          })
+          console.log('上传图片');
+          console.log(res);
           // 获取到Key后，执行选择上传文件
-          ChooesImage(that, filename, types);
+          ChooesImage(that, filename,data.uploadtoken, types);
         }
       }
     }, api.host + api.iuploadtoken)
@@ -250,9 +249,9 @@ function GetUpToken(that,filename,types){
 // 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
 // 头像 ：  face/[openid].jpg
 // 证照 ：  cert/[openid]/[unixtime].jpg
-function ChooesImage(that, key, types) {
+function ChooesImage(that, key,uptoken, types) {
   console.log(key);
-  console.log(that.data.filetoken.uptoken);
+  console.log(uptoken);
   // 微信 API 选文件
   wx.chooseImage({
       count: 1,
@@ -265,19 +264,24 @@ function ChooesImage(that, key, types) {
             name: 'file',
             formData: {
               'key': key,
-              'token': that.data.filetoken.uptoken
+              'token': uptoken
+              //that.data.filetoken.uptoken,
             },
             success: function(res) {
               var objoin = that.data.objoin;
+              var dataObject = JSON.parse(res.data);
                 //返回hash值、key值
-                console.log(res);
+                console.log(res.data);
                 if (types == 'headimg'){
-                  // objoin.img = 
+                   objoin.img = dataObject.key
                 }else if(types == 'idcardz'){
-                  // objoin.idcard_z =
+                   objoin.idcard_z = dataObject.key
                 }else if(types == 'idcardf'){
-                  // objoin.idcard_f
+                   objoin.idcard_f = dataObject.key
                 }
+                that.setData({
+                  objoin:objoin
+                })
             },
             fail(error) {
                 console.log(error)

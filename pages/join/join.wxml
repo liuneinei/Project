@@ -6,7 +6,7 @@
         <image src="/images/head_portrait.png" class="top__head"></image>
       </block>
       <block wx:if="{{objoin.img != ''}}">
-        <image src="{{objoin.img}}" class="top__head"></image>
+        <image src="{{host}}/{{objoin.img}}" class="top__head"></image>
       </block>
     </view>
     <view class="top-btn">
@@ -17,14 +17,14 @@
   <view class="item-main">
     <view class="item-content">
       <view class="item-lable">您提供服务城市</view>
-      <view class="item-input">
-        <view class="item__input" bindtap="ProvinceEvent">{{checkProvince}}</view>
+      <view class="item-input" bindtap="ProvinceEvent">
+        <view class="item__input item_names">{{checkProvince}}</view>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">认证行业</view>
-      <view class="item-input">
-        <view class="item__input" bindtap="ClassEvent">{{checkClassName}}</view>
+      <view class="item-input" bindtap="ClassEvent">
+        <view class="item__input item_names">{{checkClassName}}</view>
       </view>
     </view>
     <view class="item-content">
@@ -54,7 +54,7 @@
     <view class="item-content">
       <view class="item-lable">介绍</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea item__textareah" placeholder="" maxlength="400"  bindblur="HandleNotice" />
+        <textarea class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" maxlength="400"  bindblur="HandleNotice" />
       </view>
     </view>
     <view class="item-content">
@@ -79,7 +79,7 @@
                 <image src="/images/btn_add_img.png" class="item__pic"></image>
               </block>
               <block wx:if="{{objoin.idcard_z != ''}}">
-                <image src="{{objoin.idcard_z}}" class="top__head"></image>
+                <image src="{{host}}/{{objoin.idcard_z}}" class="top__head"></image>
               </block>
             </view>
           </view>
@@ -92,7 +92,7 @@
                 <image src="/images/btn_add_img.png" class="item__pic"></image>
               </block>
               <block wx:if="{{objoin.idcard_f != ''}}">
-                <image src="{{objoin.idcard_f}}" class="top__head"></image>
+                <image src="{{host}}/{{objoin.idcard_f}}" class="top__head"></image>
               </block>
             </view>
           </view>
@@ -131,9 +131,11 @@
     <view class="item-pic-row__lable">
     请上传您申请的各行业认证专业证书
     </view>
+    <view class="blank80 backfff"></view>
     <view class="item-btn">
       <view class="item-btn__lable">提交申请</view>
     </view>
+    <view class="blank70 backfff"></view>
   </view>
   </form>
 </view>

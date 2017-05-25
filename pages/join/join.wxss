@@ -1,8 +1,6 @@
 /*.container{
   position: fixed;
   z-index: 0;
-  
-  说说您的经历和专业介绍，不超过400字
 }*/
 /*头部*/
 .item-top{
@@ -56,6 +54,10 @@
   border: 1px solid #dddddd;
   border-radius: 3px;
   padding: 0rpx 20rpx 0rpx 20rpx;
+}
+
+.item_names{
+  color: #808080;
 }
 
 .item-content .item-input .item__textarea{
@@ -123,4 +125,16 @@
 .container .item-pic-row__lable{
   text-align: left;
   padding-left: 30rpx;
+}
+
+.item-btn{
+  text-align: center;
+}
+.item-btn .item-btn__lable{
+  color: #999999;
+  line-height: 80rpx;
+  background-color: #EEEEEE;
+  width: 710rpx;
+  margin: 0 auto;
+  border-radius: 3px;
 }
