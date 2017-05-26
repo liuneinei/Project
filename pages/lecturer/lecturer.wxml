@@ -4,29 +4,42 @@
         <view class="weui-tab">
           <view class="weui-navbar">
             <view class="weui-navbar__item" bindtap="ClassdTap">
-              <view class="weui-navbar__item__lable">选择类别</view>
-              <view class="weui-navbar__item__icon">
-                <image src="/images/open_up.png" class="navbar__item__i"></image>
-              </view>
+              <block wx:if="{{classshow != 1}}">
+                <view class="weui-navbar__item__lable">选择类别</view>
+                <view class="weui-navbar__item__icon">
+                  <image src="/images/open_up.png" class="navbar__item__i"></image>
+                </view>
+              </block>
+              <block wx:if="{{classshow == 1}}">
+                <view class="weui-navbar__item__lable_on">选择类别</view>
+                <view class="weui-navbar__item__icon">
+                  <image src="/images/pack_up.png" class="navbar__item__i"></image>
+                </view>
+              </block>
             </view>
             <view class="navbar__item__border">
               <view class="navbar__item__bi"></view>
             </view>
             <view class="weui-navbar__item weui-bar__item_on" bindtap="RegionTap">
-              <view class="weui-navbar__item__lable">选择地区</view>
-              <view class="weui-navbar__item__icon">
-                <image src="/images/open_up.png" class="navbar__item__i"></image>
-              </view>
+              <block wx:if="{{classshow < 2}}">
+                <view class="weui-navbar__item__lable">选择地区</view>
+                <view class="weui-navbar__item__icon">
+                  <image src="/images/open_up.png" class="navbar__item__i"></image>
+                </view>
+              </block>
+              <block wx:if="{{classshow == 2}}">
+                <view class="weui-navbar__item__lable_on">选择地区</view>
+                <view class="weui-navbar__item__icon">
+                  <image src="/images/pack_up.png" class="navbar__item__i"></image>
+                </view>
+              </block>
             </view>
           </view>
           <view class="weui-tab__panel">
             <view class="geo-container" hidden="{{geoshow}}">
             <block wx:if="{{classshow == 1}}">
                 <view class="server-container">
-                   <view class="geo-item server-width {{classid == 0 ?'checkon' :''}}" data-id="0" bindtap="ClassTap">分类分类</view>
-                   <view class="geo-item server-width">分类分类</view>
-                   <view class="geo-item server-width">分类分类</view>
-                   <view class="geo-item server-width">分类分类</view>
+                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon':''}}" bindtap="ClassTap" data-id="{{item.id}}">{{item.title}}</view>
                 </view>
               </block>
               <block wx:if="{{classshow == 2}}">

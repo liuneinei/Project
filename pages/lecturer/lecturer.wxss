@@ -119,6 +119,10 @@
   font-size: 28rpx;
   color: #333333;
 }
+.weui-navbar__item .weui-navbar__item__lable_on{
+  font-size: 28rpx;
+  color: #714e9e;
+}
 .weui-navbar__item .weui-navbar__item__icon{
   padding-left: 10rpx;
 }

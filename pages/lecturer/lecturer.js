@@ -66,10 +66,11 @@ Page({
     })
     // 本地存储 - 城市
     wx.getStorage({
-      key: 'region',
+      key: 'config',
       success: function (res) {
         that.setData({
-          region: res.data
+          region: res.data.provinces,
+          classl:res.data.services
         })
       },
     })
@@ -93,12 +94,35 @@ Page({
           },
           success: function (res) {
             console.log(res);
-          },
-          fail: function (res) {
-            console.log(res);
-          },
-          complete: function (res) {
-            console.log(res);
+            var Lprovince = res.result.ad_info.province;
+            var Lcity = res.result.ad_info.city;
+
+            console.log(Lprovince);
+            console.log(Lcity);
+            console.log(that.data.region);
+            // 选中的省
+            var provinceid = that.data.provinceid;
+              // 选中的市
+            var cityid = that.data.provinceid;
+
+            [].forEach.call(that.data.region, function (item, i, arr) {
+              if (item.name == Lprovince) {
+                // 记录省ID
+                provinceid = item.id;
+                [].forEach.call(item.citys,function(itemc,ic,arrc){
+                  if (itemc.name == Lcity){
+                    cityid = itemc.id
+                  }
+                })
+              }
+            })
+            console.log('得到省市ID');
+            console.log(provinceid);
+            console.log(cityid);
+            that.setData({
+              provinceid: provinceid,
+              cityid: cityid
+            })
           }
         });
       }
@@ -148,12 +172,15 @@ Page({
       [].forEach.call(_this.data.region, function (item, i, arr) {
         if (item.id == pid) {
           citys = item.citys;
+          if(citys[0].id != 0){
+            citys.splice(0, 0, {
+              "id": 0,
+              "name": "全省"
+            });
+          }
         }
       });
-      citys.splice(0, 0, {
-        "id": 0,
-        "name": "全省"
-      });
+      
       _this.setData({
         provinceid: pid,
         citys: citys
@@ -161,7 +188,11 @@ Page({
   },
   // 选择类别
   ClassTap:function(event){
+    var that = this;
     var cid = event.target.dataset.id;
+    that.setData({
+      classid: cid
+    });
   },
   // :end 事件处理
 })
