@@ -1,5 +1,4 @@
 var api = require('api/api.js')
-var json2 = require('utils/json2.js')
 
 //app.js
 App({

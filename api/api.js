@@ -1,15 +1,22 @@
 // 主机域名
 const host = 'https://edu.yanma.com';
+const iQiniuUp = 'https://up-z2.qbox.me';
+// 七牛文件域名
+const iQiniu = 'http://oq53vzp2j.bkt.clouddn.com'
 // 微信登录
 const iwxlogin = '/wxlogin';
 // 上传文件
 const iuploadtoken = '/uploadtoken';
 // 省市
 const iconfig = '/config';
-// 七牛文件域名
-const iQiniu = 'http://oq53vzp2j.bkt.clouddn.com'
 // 加入我们
 const iPostLecturer ='/postlecturer'
+// 讲师列表 /getlecturer?provinceid=0&cityid=0&serverid=0&page=2
+const iLecturer = '/getlecturer';
+// 首页推荐
+const iRecommend = '/getrecommend';
+// 删除图片 /deleteImg?filename=face/undefined.jpg
+const iDeleteImg = '/deleteImg';
 
 // 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
@@ -54,8 +61,16 @@ module.exports = {
   wxRequest,
   // 地图Key
   QQMapKey,
+  // 七牛域名上传
+  iQiniuUp,
   // 七牛文件域名
   iQiniu,
   // 加入我们
   iPostLecturer,
+  // 讲师列表
+  iLecturer,
+  // 首页推荐
+  iRecommend,
+  // 删除图片
+  iDeleteImg,
 }

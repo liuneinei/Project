@@ -10,6 +10,10 @@
     padding: 0px;
 }
 
+.page__bd .weui-tab .weui-navbar{
+  background: #ffffff;
+}
+
 /*GEO 地区选择 :begin*/
 .geo-container{
     height: 100%;

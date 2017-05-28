@@ -1,59 +1,59 @@
 <view class="container">
     <view class="blank8 backfff"></view>
     <view class="item-nav">
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="1" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav1.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">分娩导乐</view>
         </view>
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="2" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav2.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">生育教育讲师</view>
         </view>
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="3" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav3.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">催眠分娩讲师</view>
         </view>
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="4" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav4.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">生育舞蹈讲师</view>
         </view>
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="5" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav5.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">母乳指导</view>
         </view>
-        <view class="nav-width nav-tabber">
+        <view class="nav-width nav-tabber" data-id="0" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav6.png" class="nav-tabbar__icon"></image>
                 </view>
             </view>
-            <view class="nav__label">分类分类</view>
+            <view class="nav__label">更多服务</view>
         </view>
     </view>
     <view class="blank8 backfff"></view>
     <view class="item-main">
-        <view class="main-nav">-- 为你推荐 --</view>
-        <view class="main-list">
+        <view class="main-nav">- 为你推荐 -</view>
+        <view class="main-list" data-id="1" bindtap="LecturerInfoTap">
             <view class="module__left module__item">
                 <view class="module__left__img">
                     <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
@@ -69,7 +69,7 @@
                 </view>
             </view>
         </view>
-        <view class="main-list">
+        <view class="main-list" data-id="2" bindtap="LecturerInfoTap">
             <view class="module__left module__item">
                 <view class="module__left__img">
                     <image src="/images/icon_tabbar.png" class="module__left__icon"></image>

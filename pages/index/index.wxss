@@ -30,3 +30,9 @@
 }
 /*导航部分 :end*/
 
+.main-left{
+  height: 2rpx;
+  widows: 20rpx;
+  color: #cccccc;
+  
+}

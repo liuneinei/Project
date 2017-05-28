@@ -9,12 +9,11 @@ Page({
   },
   onReady: function () {
     wx.setNavigationBarTitle({
-      title: '加入我们'
+      title: '专家主页'
     })
   },
-  onLoad: function () {
+  onLoad: function (option) {
     var that = this;
-
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
       //更新数据

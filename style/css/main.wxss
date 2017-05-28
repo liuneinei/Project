@@ -7,6 +7,8 @@
 .item-main .main-nav{
     text-align: center;
     padding-top:30rpx;
+    font-size: 30rpx;
+    color: #555555;
 }
 .main-list{
     width: 750rpx;

@@ -10,7 +10,7 @@ Page({
     userInfo: {},
     // 屏幕高度
     wHeight: 300,
-    // 主机域名
+    // 主机域名 - 七牛文件
     host:'',
     // 选中的城市
     checkProvince: '点击选择',
@@ -226,10 +226,8 @@ Page({
           if (i < tempFilePaths.length){
           // 微信选择文件的名称
           var filePath = res.tempFilePaths[i];
-          // 时间戳-毫秒级
-          var unixtime = (new Date()).getTime();
           // 自定义名称
-          var filename = 'cert/' + openid + '/' + unixtime+'.jpg';
+          var filename = 'cert/' + openid + '/' + i+'.jpg';
           // 获取七牛 uptoken
           api.wxRequest({
             data: {
@@ -242,7 +240,7 @@ Page({
                 var uploadtoken = data.uploadtoken;
                 // 七牛上传文件
                 wx.uploadFile({
-                  url: 'https://up-z2.qbox.me',
+                  url: api.iQiniuUp,
                   filePath: filePath,
                   name: 'file',
                   formData: {
@@ -268,7 +266,6 @@ Page({
                       objoin: objoin,
                       CertUrls: CertUrls
                     })
-                    console.log(that.CertUrls);
                     i=i+1;
                     UpFile(i);
                   }
@@ -289,8 +286,6 @@ Page({
     var openid = that.data.userInfo.openId;
     // 数据对象
     var objoin = that.data.objoin;
-    console.log('提交信息');
-    console.log(that);
     api.wxRequest({
       method:'POST',
       data:{
@@ -373,7 +368,7 @@ function ChooesImage(that, key,uptoken, types) {
         var filePath = res.tempFilePaths[0];
         //上传
         wx.uploadFile({
-          url: 'https://up-z2.qbox.me',
+          url: api.iQiniuUp,
             filePath: filePath,
             name: 'file',
             formData: {

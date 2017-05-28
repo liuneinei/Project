@@ -1,23 +1,18 @@
 {
   "pages":[
-    
-    "pages/join/join",
     "pages/index/index",
-    "pages/lecturerinfo/lecturerinfo",
     "pages/lecturer/lecturer",
+    "pages/join/join",
+    "pages/lecturerinfo/lecturerinfo",
     "pages/joinclass/joinclass",
     "pages/joincity/joincity",
-    "pages/adduser/adduser",
-    "pages/yanma/yanma",
-    "pages/detail/detail",
-    
     "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#714E9E",
     "navigationBarTitleText": "亲密育儿人才库",
-    "navigationBarTextStyle":"#fff"
+    "navigationBarTextStyle":"#ffffff"
   } ,
   "tabBar": {
     "color": "#5D5D5D",

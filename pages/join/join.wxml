@@ -30,25 +30,25 @@
     <view class="item-content">
       <view class="item-lable">姓名</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" maxlength="20" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">手机</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone"/>
+        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone" maxlength="11"/>
       </view>
     </view>
      <view class="item-content">
       <view class="item-lable">微信号</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" />
+        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" maxlength="50"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">简介</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" />
+        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" maxlength="20" />
       </view>
     </view>
     <view class="item-content">
@@ -60,13 +60,13 @@
     <view class="item-content">
       <view class="item-lable">培训机构</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" maxlength="50" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">推荐人</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" />
+        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" maxlength="50" />
       </view>
     </view>
     <view class="item-content item-pic-list">

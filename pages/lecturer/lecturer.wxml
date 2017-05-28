@@ -59,8 +59,140 @@
     </view>
     <view class="blank20"></view>
     <view class="item-main">
-    <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
+    <scroll-view style="height: {{wHeight}}px;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
         <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="{{host}}/{{lecturer.face_img}}" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">{{lecturer.name}}</view>
+                        <view class="m_t_r">
+                          <block wx:for="{{lecturer.service}}">
+                            {{item.title}}
+                          </block>
+                        </view>
+                    </view>
+                    <view class="m_b">
+                    {{lecturer.intro}}
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+                <view class="module__left module__item">
+                    <view class="module__left__img">
+                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    </view>
+                </view>
+                <view class="module__right module__item">
+                    <view class="m_t">
+                        <view class="m_t_l">崔老师</view>
+                        <view class="m_t_r">分娩导乐</view>
+                    </view>
+                    <view class="m_b">
+                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
+                    </view>
+                </view>
+            </view>
             <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
                 <view class="module__left module__item">
                     <view class="module__left__img">

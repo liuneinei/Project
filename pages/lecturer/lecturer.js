@@ -1,16 +1,14 @@
 var api = require('../../api/api.js')
 // 引入SDK核心类
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
-
-//测试数据
-var lecturer = require('../../api/testdata/lecturer.js')
-
 //index.js
 //获取应用实例
 var app = getApp()
 Page({
   data: {
     userInfo: {},
+    // 主机域名 - 七牛文件
+    host: '',
     // 屏幕高度
     wHeight: 300,
     // 是否显示
@@ -29,23 +27,31 @@ Page({
     provinceid: 0,
     // 选中的市
     cityid: 0,
+    // 分页指数
+    requests:{
+      page:0,
+      total:1,
+      isfail:false
+    },
     // 讲师列表
     lecturers: []
   },
   onPullDownRefresh: function () {
       wx.stopPullDownRefresh();
-      console.log('onPullDownRefresh', new Date());
+      // console.log('onPullDownRefresh', new Date());
   },
   scroll: function (e) {
-    //console.log('scroll'+e)
+    // console.log('scroll'+e)
   },
   scrolltolower: function () {
-    console.log('scrolltolower')
+    // console.log('scrolltolower')
     var that = this
     wx.showToast({
       title: '加载中',
       icon: 'loading'
     })
+    // 讲师列表
+    GetLecturer(that)
   },
   // 详情
   bingInfo:function(event){
@@ -60,9 +66,13 @@ Page({
     wx.getSystemInfo({
         success: function(res) {
             that.setData({
-                wHeight:res.windowHeight-53
+                wHeight:res.windowHeight-35
             })
         }
+    })
+    that.setData({
+      // 七牛文件查看域名
+      host: api.iQiniu
     })
     // 本地存储 - 城市
     wx.getStorage({
@@ -74,13 +84,11 @@ Page({
         })
       },
     })
-    that.setData({
-      lecturers: lecturer.lecturer
-    })
     // 实例化API核心类
     var qqmapwx = new QQMapWX({
       key: api.QQMapKey // 必填
     });
+    // 获取地理信息
     wx.getLocation({
       type: 'wgs84',
       success: function(res) {
@@ -93,18 +101,13 @@ Page({
             longitude: res.longitude
           },
           success: function (res) {
-            console.log(res);
             var Lprovince = res.result.ad_info.province;
             var Lcity = res.result.ad_info.city;
-
-            console.log(Lprovince);
-            console.log(Lcity);
-            console.log(that.data.region);
             // 选中的省
             var provinceid = that.data.provinceid;
-              // 选中的市
+            // 选中的市
             var cityid = that.data.provinceid;
-
+            // 遍历集
             [].forEach.call(that.data.region, function (item, i, arr) {
               if (item.name == Lprovince) {
                 // 记录省ID
@@ -116,9 +119,6 @@ Page({
                 })
               }
             })
-            console.log('得到省市ID');
-            console.log(provinceid);
-            console.log(cityid);
             that.setData({
               provinceid: provinceid,
               cityid: cityid
@@ -127,6 +127,10 @@ Page({
         });
       }
     });
+
+    // 讲师列表
+    GetLecturer(that)
+
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
       //更新数据
@@ -196,3 +200,54 @@ Page({
   },
   // :end 事件处理
 })
+
+// 讲师列表
+function GetLecturer(that){
+  var requests = that.data.requests;
+  var page = (requests.page + 1)
+  // 获取讲师列表
+  api.wxRequest({
+    data: {
+      provinceid: that.data.provinceid,
+      cityid: that.data.cityid,
+      serverid: that.data.classid,
+      page: page,
+    },
+    success: function (res) {
+      console.log('lecturer success');
+      console.log(res);
+      var dataObj = res.data;
+      if (dataObj.status == 0) {
+        // 分页信息
+        var pageObj = dataObj.data;
+        // 结果信息
+        var result = pageObj.data;
+        // 没有出错
+        requests.isfail = false;
+        requests.page = page;
+        // 总页数
+        requests.total = pageObj.pageObj;
+        // 
+        var lecturers = that.data.lecturers.concat(result);
+        that.setData({
+          lecturers: lecturers,
+          requests: requests
+        })
+      }else{
+        requests.page = 0;
+        requests.total = 1;
+        that.setData({
+          lecturers: [],
+          requests: requests
+        })
+      }
+    },
+    fail: function (res) {
+      console.log('lecturer fail');
+      requests.isfail = true
+      that.setData({
+        requests: requests
+      })
+    }
+  }, api.host + api.iLecturer)
+}

@@ -11,6 +11,8 @@ Page({
     checkids: '',
     // 选中的Name集
     checknames:'',
+    // 按钮颜色
+    btnColor:'',
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -27,18 +29,23 @@ Page({
         })
       }
     })
-
     // 本地存储 - 城市
     wx.getStorage({
       key: 'config',
       success: function (res) {
-        console.log('服务项')
-        console.log(res)
         that.setData({
           services: res.data.services
         })
       },
     })
+
+    //获取页面栈
+    var pages = getCurrentPages();
+    if (pages.length > 1) {
+      //上一个页面实例对象
+      var prePage = pages[pages.length - 2];
+     console.log(prePage.data)
+    }
   },
   // ##:beging 事件处理 
   ClassTap:function(event){
@@ -71,10 +78,17 @@ Page({
           }
         }
     }
+
+    var btnColor = '';
+    if (checkids != ''){
+      btnColor = 'color:#ffffff';
+    }
+    
     that.setData({
       check: check,
       checkids: checkids,
-      checknames: checknames
+      checknames: checknames,
+      btnColor: btnColor,
     })
   },
   // 确认
@@ -86,6 +100,9 @@ Page({
       //上一个页面实例对象
       var prePage = pages[pages.length - 2];
       var checkids = that.data.checkids;
+      if (checkids == ''){
+        return;
+      }
       checkids = checkids.substr(0, checkids.length - 1);
       var checknames = that.data.checknames;
       checknames = checknames.substr(0, checknames.length-1);
