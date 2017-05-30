@@ -31,12 +31,12 @@
   line-height:80rpx;
   justify-content:center;
   color: #333333;
-  font-size: 28rpx;
+  font-size: 30rpx;
 }
 
 /*服务*/
 .geo-container .server-container{
-  padding-top: 72rpx;
+  padding-top: 100rpx;
   overflow-y: auto;
   background: #ffffff;
   padding-bottom: 30rpx;
@@ -47,13 +47,13 @@
   border: 1rpx solid #dddddd;
   border-radius: 3px;
   margin: 30rpx 0 0 30rpx;
-  height: 60rpx;
-  line-height: 60rpx;
+  height: 70rpx;
+  line-height: 70rpx;
 }
 
 /*选中样式*/
 .geo-container .checkon{
-  border: 1rpx solid #ad83e4;
+  /*border: 1rpx solid #ad83e4;*/
   color: #714e9e;
 }
 
@@ -67,7 +67,7 @@
 .geo-container .province-container{
   height: 100%;
   width: 280rpx;
-  padding-top: 72rpx;
+  padding-top: 102rpx;
   overflow-y: auto;
   background: #f4f4f4;
   overflow-x: hidden;
@@ -88,9 +88,10 @@
 .geo-container .city-container{
   height: 100%;
   overflow-y: auto;
-  padding-top: 72rpx;
+  padding-top: 102rpx;
   width: 500rpx;
   background: #ffffff;
+  overflow-x:hidden;
 }
 /*宽度*/
 .geo-container .city-width{
@@ -101,7 +102,7 @@
 }
 /*GEO 地区选择 :end*/
 .weui-navbar__item{
-  line-height: 72rpx;
+  line-height: 100rpx;
 }
 .weui-navbar__item::after{
   border-right: none;
@@ -112,7 +113,7 @@
 .navbar__item__border .navbar__item__bi{
   border: 0.5rpx solid #CCCCCC;
   height: 32rpx;
-  margin-top: 20rpx;
+  margin-top: 32rpx;
 }
 .weui-navbar__item{
   display: flex;
@@ -120,11 +121,11 @@
   justify-content: center;
 } 
 .weui-navbar__item .weui-navbar__item__lable{
-  font-size: 28rpx;
+  font-size: 32rpx;
   color: #333333;
 }
 .weui-navbar__item .weui-navbar__item__lable_on{
-  font-size: 28rpx;
+  font-size: 32rpx;
   color: #714e9e;
 }
 .weui-navbar__item .weui-navbar__item__icon{
@@ -133,4 +134,12 @@
 .weui-navbar__item .weui-navbar__item__icon .navbar__item__i{
  width: 20rpx;
  height: 20rpx; 
+}
+
+.box-load-none{
+display:flex;
+align-items:stretch;
+justify-content:center;
+margin-top:50%;
+padding-bottom:50%;
 }

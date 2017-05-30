@@ -1,8 +1,10 @@
 {
   "pages":[
+    
     "pages/index/index",
-    "pages/lecturer/lecturer",
     "pages/join/join",
+    "pages/lecturers/lecturers",
+    "pages/lecturer/lecturer",
     "pages/lecturerinfo/lecturerinfo",
     "pages/joinclass/joinclass",
     "pages/joincity/joincity",
@@ -18,14 +20,14 @@
     "color": "#5D5D5D",
     "selectedColor": "#AD83E5",
     "backgroundColor": "#fff",
-    "borderStyle": "white",
+    "borderStyle": "black",
     "list": [{
       "pagePath": "pages/index/index",
       "text": "首页",
       "iconPath": "images/home.png",
       "selectedIconPath": "images/home_active.png"
     }, {
-      "pagePath": "pages/lecturer/lecturer",
+      "pagePath": "pages/lecturers/lecturers",
       "text": "找专家",
       "iconPath": "images/lecturer.png",
       "selectedIconPath": "images/lecturer_active.png"

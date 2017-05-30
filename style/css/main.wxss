@@ -1,13 +1,13 @@
 
 /*内容部分 :beging*/
 .item-main{
-    margin-top: 16rpx;
+    margin-top: 30rpx;
     background: #ffffff;
 }
 .item-main .main-nav{
     text-align: center;
     padding-top:30rpx;
-    font-size: 30rpx;
+    font-size: 34rpx;
     color: #555555;
 }
 .main-list{
@@ -22,34 +22,38 @@
 }
 .main-list .module__right{
     width: 530rpx;
+    display:flex;
+flex-direction:column;
+justify-content:center;
 }
 
 .module__left .module__left__img{
     text-align: center;
 }
 .module__left .module__left__img .module__left__icon{
-    width: 160rpx;
-    height: 160rpx;
+    width: 190rpx;
+    height: 190rpx;
 }
 
 .module__right .m_t{
     display: flex;
     flex-direction: row;
-    padding-top:20rpx;
+    align-items:flex-end;
+    /*padding-top:15rpx;*/
 }
 .module__right .m_t .m_t_l{
     color: #333333;
-    font-size: 30rpx;
+    font-size: 34rpx;
 }
 .module__right .m_t .m_t_r{
     padding-left: 12rpx;
     color: #714e9e;
-    font-size: 24rpx;
-    padding-top: 6rpx;
+    font-size: 28rpx;
+    margin-top: 10rpx;
 }
 
 .main-list .module__item .m_b{
-    font-size: 26rpx;
+    font-size: 30rpx;
     color: #999999;
     padding-right: 30rpx;
 }

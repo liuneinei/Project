@@ -6,7 +6,7 @@
         <image src="/images/head_portrait.png" class="top__head"></image>
       </block>
       <block wx:if="{{objoin.img != ''}}">
-        <image src="{{host}}/{{objoin.img}}" class="top__head"></image>
+        <image src="{{host}}/{{objoin.img}}?{{utctime}}" class="top__head"></image>
       </block>
     </view>
     <view class="top-btn">
@@ -30,43 +30,43 @@
     <view class="item-content">
       <view class="item-lable">姓名</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" maxlength="20" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" maxlength="20" placeholder-style="item__input-holder" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">手机</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone" maxlength="11"/>
+        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone" maxlength="11"  placeholder-style="item__input-holder"/>
       </view>
     </view>
      <view class="item-content">
       <view class="item-lable">微信号</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" maxlength="50"/>
+        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" maxlength="50"  placeholder-style="item__input-holder"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">简介</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" maxlength="20" />
+        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" maxlength="20"  placeholder-style="item__input-holder"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">介绍</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" maxlength="400"  bindblur="HandleNotice" />
+        <textarea class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" maxlength="400"  bindblur="HandleNotice"  placeholder-style="item__input-holder"/>
       </view>
     </view>
-    <view class="item-content">
+     <view class="item-content">
       <view class="item-lable">培训机构</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" maxlength="50" />
+        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" maxlength="50"  placeholder-style="item__input-holder"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">推荐人</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" maxlength="50" />
+        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" maxlength="50"  placeholder-style="item__input-holder"/>
       </view>
     </view>
     <view class="item-content item-pic-list">
@@ -80,7 +80,7 @@
                 </view>
               </block>
               <block wx:if="{{objoin.idcard_z != ''}}">
-                <image src="{{host}}/{{objoin.idcard_z}}" class="item-pic"></image>
+                <image src="{{host}}/{{objoin.idcard_z}}?{{utctime}}" class="item-pic"></image>
               </block>
           </view>
           <view class="item-desc">正面</view>
@@ -93,9 +93,8 @@
                 </view>
               </block>
               <block wx:if="{{objoin.idcard_f != ''}}">
-                <image src="{{host}}/{{objoin.idcard_f}}" class="item-pic"></image>
+                <image src="{{host}}/{{objoin.idcard_f}}?{{utctime}}" class="item-pic"></image>
               </block>
-            
           </view>
           <view class="item-desc">反面</view>
         </view>
@@ -106,8 +105,11 @@
       <view class="item-lable">专业证书</view>
       <view class="item-content-main item-content-main2">
         <view wx:for="{{CertUrls}}" wx:for-item="item" class="item-pic-row item-pic-row2">
+          <view class="item-pic-cert-CloseX" data-certImg="{{item}}" bindtap="CloseXTap">
+            <view class="weui-icon-cancel"></view>
+          </view>
           <view class="item-pic item-pic-cert">
-              <image src="{{host}}/{{item}}" class="item-pic-cert"></image>
+              <image src="{{host}}/{{item}}?{{utctime}}" class="item-pic-cert"></image>
           </view>
         </view>
         <view class="item-pic-row item-pic-row2" bindtap="CertTap">
@@ -125,7 +127,7 @@
     </view>
     <view class="blank80 backfff"></view>
     <view class="item-btn" bindtap="btnSubmit">
-      <view class="item-btn__lable">提交申请</view>
+      <view class="item-btn__lable" style="{{BtnColor}}">提交申请</view>
     </view>
     <view class="blank70 backfff"></view>
   </view>

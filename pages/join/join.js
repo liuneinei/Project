@@ -1,5 +1,4 @@
 var api = require('../../api/api.js')
-var region = require('../../api/testdata/region.js')
 var util = require('../../utils/util.js')
 //index.js
 //获取应用实例
@@ -36,8 +35,12 @@ Page({
       referee: '',
       idcard_z: '',
       idcard_f: '',
-      certificate: ''
+      certificate: '',
     },//保存填写信息
+    // 时间戳
+    utctime: (new Date()).getTime(),
+    // 按钮颜色
+    BtnColor: 'background-color:#714e9e;color: #ffffff;'
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -54,7 +57,6 @@ Page({
       }
     })
     that.setData({
-      region: region.region,
       wHeight: wHeight,
       host: api.iQiniu
     }); 
@@ -228,99 +230,93 @@ Page({
           var filePath = res.tempFilePaths[i];
           // 自定义名称
           var filename = 'cert/' + openid + '/' + i+'.jpg';
-          // 获取七牛 uptoken
+
+          // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
           api.wxRequest({
             data: {
               filename: filename
             },
             success: function (res) {
-              var data = res.data;
-              if (data.status == 0) {
-                // 七牛上传必须的 uptoken
-                var uploadtoken = data.uploadtoken;
-                // 七牛上传文件
-                wx.uploadFile({
-                  url: api.iQiniuUp,
-                  filePath: filePath,
-                  name: 'file',
-                  formData: {
-                    'key': filename,
-                    'token': uploadtoken
-                  },
-                  success: function (res) {
-                    // Page data对象
-                    var tdata = that.data;
-                    // data - objoin对象
-                    var objoin = tdata.objoin;
-                    // 证书URL集
-                    var CertUrls = tdata.CertUrls
-                    // 证书URL
-                    var dataKey = JSON.parse(res.data).key;
+              
+              // :begin 获取七牛 uptoken
+              api.wxRequest({
+                data: {
+                  filename: filename
+                },
+                success: function (res) {
+                  var data = res.data;
+                  if (data.status == 0) {
+                    // 七牛上传必须的 uptoken
+                    var uploadtoken = data.uploadtoken;
+                    // 七牛上传文件
+                    wx.uploadFile({
+                      url: api.iQiniuUp,
+                      filePath: filePath,
+                      name: 'file',
+                      formData: {
+                        'key': filename,
+                        'token': uploadtoken
+                      },
+                      success: function (res) {
+                        // Page data对象
+                        var tdata = that.data;
+                        // data - objoin对象
+                        var objoin = tdata.objoin;
+                        // 证书URL集
+                        var CertUrls = tdata.CertUrls
+                        // 证书URL
+                        var dataKey = JSON.parse(res.data).key;
 
-                    objoin.certificate += dataKey+',';
-                    // 编辑状态
-                    objoin.isedit = true
-                    CertUrls.push(dataKey)
-                  
-                    that.setData({
-                      objoin: objoin,
-                      CertUrls: CertUrls
-                    })
-                    i=i+1;
-                    UpFile(i);
+                        objoin.certificate += dataKey+',';
+                        // 编辑状态
+                        objoin.isedit = true
+                        CertUrls.push(dataKey)
+                      
+                        that.setData({
+                          objoin: objoin,
+                          CertUrls: CertUrls
+                        })
+                        i=i+1;
+                        UpFile(i);
+                      }
+                    });
                   }
-                });
-              }
+                }
+              }, api.host + api.iuploadtoken)
+              // :end 获取七牛 uptoken
             }
-          }, api.host + api.iuploadtoken)
+          }, api.host + api.iDeleteImg)
+          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
         }
         }
         UpFile(0);
       }
     })
   },
+  // 删除图片
+  CloseXTap:function(event){
+    var that = this;
+    var filename = event.currentTarget.dataset.certImg;
+    // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
+    api.wxRequest({
+      data: {
+        filename: filename
+      },
+      success: function (res) {
+        var CertUrls = that.data.CertUrls;
+        var index = CertUrls.indexOf(filename);
+        CertUrls.splice(index,1);
+        that.setData({
+          CertUrls: CertUrls
+        })
+      }
+    }, api.host + api.iDeleteImg)
+          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
+  },
   // 提交申请
   btnSubmit:function(event){
     var that = this;
-    // 用户OpenId
-    var openid = that.data.userInfo.openId;
-    // 数据对象
-    var objoin = that.data.objoin;
-    api.wxRequest({
-      method:'POST',
-      data:{
-        openid: openid,
-        provinceid: objoin.province,
-        cityid: objoin.city,
-        face_img: objoin.img,
-        name: objoin.name,
-        phone: objoin.phone,
-        wechat: objoin.wxname,
-        intro: objoin.desc,
-        about: objoin.notice,
-        train: objoin.institutions,
-        referees: objoin.referee,
-        idcard_up_img: objoin.idcard_z,
-        idcard_down_img: objoin.idcard_f,
-        cert_imgs: objoin.certificate,
-        serverids: objoin.classid,
-      },
-      success:function(res){
-        console.log('申请加入成功');
-        console.log(res);
-        var data = res.data;
-        if (data.status==0){
-          // 提交成功，想想接下来要怎么处理
-
-        }else{
-          // 提交失败，
-        }
-      },
-      fail:function(res){
-        console.log('申请加入失败');
-        console.log(res);
-      }
-    }, api.host + api.iPostLecturer);
+    BtnSave(that,true);
   }
   // ##:end from表单处理
 });
@@ -336,10 +332,55 @@ function timesave(that){
   }
   setTimeout(function () { timesave(that)},30000); 
 }
+// 保存信息提交
+function BtnSave(that,tp){
+  // 用户OpenId
+  var openid = that.data.userInfo.openId;
+  // 数据对象
+  var objoin = that.data.objoin;
+  api.wxRequest({
+    method: 'POST',
+    data: {
+      openid: openid,
+      provinceid: objoin.province,
+      cityid: objoin.city,
+      face_img: objoin.img,
+      name: objoin.name,
+      phone: objoin.phone,
+      wechat: objoin.wxname,
+      intro: objoin.desc,
+      about: objoin.notice,
+      train: objoin.institutions,
+      referees: objoin.referee,
+      idcard_up_img: objoin.idcard_z,
+      idcard_down_img: objoin.idcard_f,
+      cert_imgs: objoin.certificate,
+      serverids: objoin.classid,
+    },
+    success: function (res) {
+      console.log('申请加入成功');
+      console.log(res);
+      var data = res.data;
+      if (data.status == 0) {
+        // 提交成功，想想接下来要怎么处理
+        if (tp){
+
+        }
+      } else {
+        // 提交失败，
+      }
+    },
+    fail: function (res) {
+      console.log('申请加入失败');
+      console.log(res);
+    }
+  }, api.host + api.iPostLecturer);
+}
 
 // 获取uptoken
 function GetUpToken(that,filename,types){
   var NowTime = new Date();
+  // 获取七牛相对应文件 upToken
     api.wxRequest({
       data:{
        filename: filename
@@ -347,8 +388,17 @@ function GetUpToken(that,filename,types){
       success:function(res){
         var data = res.data;
         if (data.status == 0){
-          // 获取到Key后，执行选择上传文件
-          ChooesImage(that, filename,data.uploadtoken, types);
+          // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
+          api.wxRequest({
+            data:{
+              filename: filename
+            },
+            success:function(res){
+              // 获取到Key后，执行选择上传文件
+              ChooesImage(that, filename, data.uploadtoken, types);
+            }
+          }, api.host + api.iDeleteImg)
+          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
         }
       }
     }, api.host + api.iuploadtoken)
@@ -366,6 +416,11 @@ function ChooesImage(that, key,uptoken, types) {
       count: 1,
       success: function (res) {
         var filePath = res.tempFilePaths[0];
+        wx.showToast({
+          title: '上传中',
+          icon: 'loading',
+          duration: 2000
+        })
         //上传
         wx.uploadFile({
           url: api.iQiniuUp,
@@ -389,16 +444,23 @@ function ChooesImage(that, key,uptoken, types) {
                 }
                 objoin.isedit=true
                 that.setData({
-                  objoin:objoin
+                  objoin:objoin,
+                  utctime: (new Date()).getTime(),
                 })
             },
             fail(error) {
                 console.log(error)
             },
             complete(res) {
-                console.log(res)
+              // 隐藏弹窗
+              wx.hideLoading();
             }
        });
      }
   })
+}
+
+// 按钮颜色改变
+function UpdateBtnColor(that,objoinid){
+
 }

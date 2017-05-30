@@ -1,7 +1,7 @@
 <view class="container">
     <view class="blank8 backfff"></view>
     <view class="item-nav">
-        <view class="nav-width nav-tabber" data-id="1" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="1" data-title="分娩导乐" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav1.png" class="nav-tabbar__icon"></image>
@@ -9,7 +9,7 @@
             </view>
             <view class="nav__label">分娩导乐</view>
         </view>
-        <view class="nav-width nav-tabber" data-id="2" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="2" data-title="生育教育讲师" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav2.png" class="nav-tabbar__icon"></image>
@@ -17,7 +17,7 @@
             </view>
             <view class="nav__label">生育教育讲师</view>
         </view>
-        <view class="nav-width nav-tabber" data-id="3" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="3" data-title="催眠分娩讲师" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav3.png" class="nav-tabbar__icon"></image>
@@ -25,7 +25,7 @@
             </view>
             <view class="nav__label">催眠分娩讲师</view>
         </view>
-        <view class="nav-width nav-tabber" data-id="4" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="4" data-title="生育舞蹈讲师" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav4.png" class="nav-tabbar__icon"></image>
@@ -33,7 +33,7 @@
             </view>
             <view class="nav__label">生育舞蹈讲师</view>
         </view>
-        <view class="nav-width nav-tabber" data-id="5" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="5" data-title="母乳指导" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav5.png" class="nav-tabbar__icon"></image>
@@ -41,7 +41,7 @@
             </view>
             <view class="nav__label">母乳指导</view>
         </view>
-        <view class="nav-width nav-tabber" data-id="0" bindtap="LecturerTap">
+        <view class="nav-width nav-tabber" data-id="0" data-title="全部" bindtap="LecturerTap">
             <view class="nav__pic">
                 <view class="nav-tabbar-icon">
                     <image src="/images/nav6.png" class="nav-tabbar__icon"></image>
@@ -53,51 +53,25 @@
     <view class="blank8 backfff"></view>
     <view class="item-main">
         <view class="main-nav">- 为你推荐 -</view>
-        <view class="main-list" data-id="1" bindtap="LecturerInfoTap">
-            <view class="module__left module__item">
+        <view wx:for="{{lecturers}}" wx:for-item="lecturer" class="main-list" data-id="{{lecturer.id}}" data-obj="{{lecturer}}" bindtap="LecturerInfoTap">
+          <view class="module__left module__item">
                 <view class="module__left__img">
-                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
+                    <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}" class="module__left__icon"></image>
                 </view>
             </view>
             <view class="module__right module__item">
                 <view class="m_t">
-                    <view class="m_t_l">崔老师</view>
-                    <view class="m_t_r">分娩导乐</view>
+                    <view class="m_t_l">{{lecturer.name}}</view>
+                    <view class="m_t_r">
+                      <block wx:for="{{lecturer.service}}">
+                        <block wx:if="{{index == 0}}">
+                        {{item.title}}
+                        </block>
+                      </block>
+                    </view>
                 </view>
                 <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
-                </view>
-            </view>
-        </view>
-        <view class="main-list" data-id="2" bindtap="LecturerInfoTap">
-            <view class="module__left module__item">
-                <view class="module__left__img">
-                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                </view>
-            </view>
-            <view class="module__right module__item">
-                <view class="m_t">
-                    <view class="m_t_l">崔老师</view>
-                    <view class="m_t_r">分娩导乐</view>
-                </view>
-                <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
-                </view>
-            </view>
-        </view>
-        <view class="main-list">
-            <view class="module__left module__item">
-                <view class="module__left__img">
-                    <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                </view>
-            </view>
-            <view class="module__right module__item">
-                <view class="m_t">
-                    <view class="m_t_l">崔老师</view>
-                    <view class="m_t_r">分娩导乐</view>
-                </view>
-                <view class="m_b">
-                主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病
+                  {{lecturer.intro}}
                 </view>
             </view>
         </view>

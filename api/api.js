@@ -3,6 +3,8 @@ const host = 'https://edu.yanma.com';
 const iQiniuUp = 'https://up-z2.qbox.me';
 // 七牛文件域名
 const iQiniu = 'http://oq53vzp2j.bkt.clouddn.com'
+// 图片后缀
+const iImgExt ='?imageView2/1/w/160/h/160/format/jpg/q/76|imageslim';
 // 微信登录
 const iwxlogin = '/wxlogin';
 // 上传文件
@@ -22,10 +24,6 @@ const iDeleteImg = '/deleteImg';
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
 
 const wxRequest = (params, url) => {
-  wx.showToast({
-    title: '加载中',
-    icon: 'loading'
-  })
   wx.request({
     url: url,
     method: params.method || 'GET',
@@ -35,7 +33,6 @@ const wxRequest = (params, url) => {
     },
     success: (res) => {
       params.success && params.success(res)
-      wx.hideToast()
     },
     fail: (res) => {
       params.fail && params.fail(res)
@@ -63,6 +60,8 @@ module.exports = {
   QQMapKey,
   // 七牛域名上传
   iQiniuUp,
+  // 图片后缀
+  iImgExt,
   // 七牛文件域名
   iQiniu,
   // 加入我们

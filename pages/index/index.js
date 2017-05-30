@@ -6,8 +6,16 @@ var app = getApp()
 Page({
   data: {
     userInfo: {},
+    // 主机域名 - 七牛文件
+    host: '',
+    iImgExt: '',
     // 讲师列表
-    lecturers: []
+    lecturers: [],
+    // 分页指数
+    requests: {
+      // 查看的详情实体
+      Model: {},
+    },
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -16,6 +24,11 @@ Page({
   },
   onLoad: function () {
     var that = this;
+    that.setData({
+      // 七牛文件查看域名
+      host: api.iQiniu,
+      iImgExt: api.iImgExt
+    })
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function(userInfo){
       //更新数据
@@ -23,7 +36,8 @@ Page({
         userInfo:userInfo
       })
     });
-
+    console.log('app.js');
+    console.log(app.globalData);
     // 讲师推荐
     GetRecommend(that)
   },
@@ -35,15 +49,36 @@ Page({
   },
   // 导航栏
   LecturerTap: function (event) {
-    var id = event.target.dataset.id;
-    wx.redirectTo({
-      url: '../lecturer/lecturer?id=' + id,
+    var id = event.currentTarget.dataset.id;
+    var title = event.currentTarget.dataset.title;
+    var goblaLec = app.globalData.lecturer
+    goblaLec.classid = id
+    goblaLec.isShow = true;
+    goblaLec.className = title;
+    app.globalData.lecturer = goblaLec
+    wx.switchTab({
+      url: '../lecturers/lecturers' ,
+      success:function(res){
+        console.log('index success')
+        console.log(res)
+      },
+      fail:function(res){
+        console.log('index fail')
+        console.log(res)
+      }
     })
   },
   // 讲师详情
   LecturerInfoTap:function(event){
+    var that = this;
     var id = event.target.dataset.id;
-    wx.redirectTo({
+    var obj = event.currentTarget.dataset.obj;
+    var requests = that.data.requests;
+    requests.Model = obj;
+    that.setData({
+      requests: requests
+    })
+    wx.navigateTo({
       url: '../lecturerinfo/lecturerinfo?id='+id,
     })
   }
@@ -57,10 +92,13 @@ function GetRecommend(that){
       var dataObj = res.data
       var result = dataObj.data;
       console.log(dataObj);
-      that.setData(function(){
+      that.setData({
         lecturers: result
       })
     },
-    fail:function(res){}
+    fail:function(res){
+      console.log('index lecturere fail');
+      console.log(res);
+    }
   }, api.host + api.iRecommend)
 }

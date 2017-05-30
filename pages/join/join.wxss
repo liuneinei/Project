@@ -5,7 +5,7 @@
 /*头部*/
 .item-top{
   background: #71509e;
-  height: 260rpx;
+  height: 270rpx;
   text-align: center;
 }
 .item-top .top-img{
@@ -25,10 +25,11 @@
 }
 
 .item-top .top-btn .btn_upload{
-  width: 130rpx;
-  height: 40rpx;
+  width: 160rpx;
+  height: 46rpx;
+  line-height: 46rpx;
   border: 1px solid #e7e3ee;
-  font-size: 24rpx;
+  font-size: 28rpx;
   border-radius: 25rpx;
   margin: 0 auto;
 }
@@ -47,7 +48,7 @@
   padding: 40rpx 0rpx 0rpx 30rpx; 
 }
 .item-content .item-lable{
-  font-size: 28rpx;
+  font-size: 34rpx;
   color: #333333;
   padding-bottom: 16rpx;
 }
@@ -58,7 +59,9 @@
   border-radius: 3px;
   padding: 0rpx 20rpx 0rpx 20rpx;
 }
-
+.item-content .item-input .item__input-holder{
+  font-size:20rpx;
+}
 .item_names{
   color: #808080;
 }
@@ -116,12 +119,13 @@
   flex-wrap:wrap;
 }
 
-.item-content .item-content-main .item-pic-row1{
+.item-content .item-content-main .item-pic-row1:first-child{
   padding-right: 40rpx;
 }
 .item-content .item-content-main .item-pic-row2{
   padding-right: 25rpx;
   padding-top: 16rpx;
+  position: relative;
 }
 
 .item-pic-row__lable,.item-content .item-content-main .item-pic-row .item-desc{
@@ -146,3 +150,34 @@
   margin: 0 auto;
   border-radius: 3px;
 }
+
+.item-pic-cert-CloseX{
+  position: absolute;
+  right:10rpx;
+z-index:666;
+top:-5px;
+
+}
+
+/* :begin 删除按钮*/
+.weui-icon-cancel {
+    color: #F43530;
+    font-size: 22px;
+}
+.weui-icon-cancel:before {
+    content: "\EA0D";
+}
+[class^="weui-icon-"]:before, [class*=" weui-icon-"]:before {
+    display: inline-block;
+    /*margin-left: .2em;
+    margin-right: .2em;*/
+}
+[class^="weui-icon-"], [class*=" weui-icon-"] {
+    display: inline-block;
+    vertical-align: middle;
+    font: normal normal normal 14px/1 "weui";
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+/* :end 删除按钮*/

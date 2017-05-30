@@ -5,13 +5,13 @@
           <view class="weui-navbar">
             <view class="weui-navbar__item" bindtap="ClassdTap">
               <block wx:if="{{classshow != 1}}">
-                <view class="weui-navbar__item__lable">选择类别</view>
+                <view class="weui-navbar__item__lable">{{ClassName}}</view>
                 <view class="weui-navbar__item__icon">
                   <image src="/images/open_up.png" class="navbar__item__i"></image>
                 </view>
               </block>
               <block wx:if="{{classshow == 1}}">
-                <view class="weui-navbar__item__lable_on">选择类别</view>
+                <view class="weui-navbar__item__lable_on">{{ClassName}}</view>
                 <view class="weui-navbar__item__icon">
                   <image src="/images/pack_up.png" class="navbar__item__i"></image>
                 </view>
@@ -22,13 +22,13 @@
             </view>
             <view class="weui-navbar__item weui-bar__item_on" bindtap="RegionTap">
               <block wx:if="{{classshow < 2}}">
-                <view class="weui-navbar__item__lable">选择地区</view>
+                <view class="weui-navbar__item__lable">{{RegionName}}</view>
                 <view class="weui-navbar__item__icon">
                   <image src="/images/open_up.png" class="navbar__item__i"></image>
                 </view>
               </block>
               <block wx:if="{{classshow == 2}}">
-                <view class="weui-navbar__item__lable_on">选择地区</view>
+                <view class="weui-navbar__item__lable_on">{{RegionName}}</view>
                 <view class="weui-navbar__item__icon">
                   <image src="/images/pack_up.png" class="navbar__item__i"></image>
                 </view>
@@ -36,19 +36,24 @@
             </view>
           </view>
           <view class="weui-tab__panel">
-            <view class="geo-container" hidden="{{geoshow}}">
+            <view class="geo-container" hidden="{{geoshow}}" catchtap="HideGeoTap">
             <block wx:if="{{classshow == 1}}">
                 <view class="server-container">
-                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon':''}}" bindtap="ClassTap" data-id="{{item.id}}">{{item.title}}</view>
+                  <view  class="geo-item server-width {{classid == 0 ? 'checkon':''}}" bindtap="ClassTap" data-id="0">全部</view>
+                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon':''}}" catchtap="ClassTap" data-id="{{item.id}}" data-title="{{item.title}}">{{item.title}}</view>
                 </view>
               </block>
               <block wx:if="{{classshow == 2}}">
               <view class="nav-dorpmenu">
                 <view class="province-container" style="height:{{wHeight}}px">
-                    <view wx:for="{{region}}" wx:for-item="item" class="geo-item province-width {{item.id == provinceid ? 'checkon':''}}" bindtap="ProvinceTap" data-id="{{item.id}}">{{item.name}}</view>
+                  <block wx:for="{{region}}">
+                    <block wx:if="{{item.nop > 0}}">
+                      <view class="geo-item province-width {{item.id == provinceid ? 'checkon':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                    </block>
+                  </block>
                 </view>
                 <view class="city-container" style="height:{{wHeight}}px">
-                  <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width">{{item.name}}</view>
+                  <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
                 </view>
                 </view>
               </block>
@@ -59,12 +64,12 @@
     </view>
     <view class="blank20"></view>
     <view class="item-main">
-    <scroll-view style="height: {{wHeight}}px;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
+    <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
         <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
+            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}" data-obj="{{lecturer}}">
                 <view class="module__left module__item">
                     <view class="module__left__img">
-                        <image src="{{host}}/{{lecturer.face_img}}" class="module__left__icon"></image>
+                        <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}" class="module__left__icon"></image>
                     </view>
                 </view>
                 <view class="module__right module__item">
@@ -72,7 +77,9 @@
                         <view class="m_t_l">{{lecturer.name}}</view>
                         <view class="m_t_r">
                           <block wx:for="{{lecturer.service}}">
+                            <block wx:if="{{index == 0}}">
                             {{item.title}}
+                            </block>
                           </block>
                         </view>
                     </view>
@@ -81,136 +88,13 @@
                     </view>
                 </view>
             </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="/images/icon_tabbar.png" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">崔老师</view>
-                        <view class="m_t_r">分娩导乐</view>
-                    </view>
-                    <view class="m_b">
-                    主治医师;从事儿科临床工作20余年，对儿科常见病、新生儿疾病方面有着丰富经验
-                    </view>
-                </view>
-            </view>
         </block>
     </scroll-view>
+    <block wx:if="{{requests.total <= 0}}">
+          <view class="box-load-none">
+            无数据
+          </view>
+        </block>
     </view>
 </view>
    

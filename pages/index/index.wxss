@@ -22,6 +22,7 @@
 }
 .item-nav .nav-tabber .nav__label{
     padding-top: 18rpx;
+    font-size: 32rpx;
 }
 .nav-tabber .nav__pic .nav-tabbar-icon .nav-tabbar__icon{
     width: 120rpx;

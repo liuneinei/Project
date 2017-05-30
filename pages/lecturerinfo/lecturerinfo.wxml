@@ -1,14 +1,22 @@
 <view class="container">
   <view class="item-top">
     <view class="top-img">
-      <image src="/images/head_portrait.png" class="top__head" bindtap="imgTap"></image>
+      <image src="{{host}}/{{Model.face_img}}{{iImgExt}}" class="top__head"></image>
     </view>
     <view class="top-btn">
-      <view class="btn_upload">崔玉涛</view>
+      <view class="btn_upload">{{Model.name}}</view>
     </view>
     <view class="top-desc">
       <view class="top__desc">
-        儿科医生 睡眠顾问  /  广东省 广州市
+      <block wx:if="{{Model.service.length > 0}}">
+        <block wx:for="{{Model.service}}">
+          <block wx:if="{{index == 0}}">
+            {{item.title}}
+          </block>
+        </block>
+        /  
+      </block>
+      {{Model.province}} {{Model.city}}
       </view>
     </view>
   </view>
@@ -21,7 +29,9 @@
       <view class="item-i_d">·</view>
       <view class="item-title_lable">关于专家</view>
       </view>
-      <view class="item-content item-indent">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
+      <view class="blank40 backfff"></view>
+      <view class="item-content item-indent">{{Model.about}}</view>
+      <view class="blank50 backfff"></view>
     </view>
     <view class="blank10"></view>
     <view class="item__frame">
@@ -32,18 +42,19 @@
         <view class="item-i_d">·</view>
         <view class="item-title_lable">服务须知</view>
       </view>
-      <view class="item-content">内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容</view>
+      <view class="blank40 backfff"></view>
+      <view class="item-content">{{Model.about}}</view>
     </view>
     <view class="blank50 backfff"></view>
   </view>
   <view class="item-tabber">
-    <view class="tabber-item">
+    <view class="tabber-item" data-phone="{{Model.phone}}" bindtap="PhoneTap">
       <view class="tabbar__i">
         <image src="/images/btn_phone.png" class="tabbar__icon"></image>
       </view>
       <view class="tabbar__label">电话联系</view>
     </view>
-    <view class="tabber-item">
+    <view class="tabber-item" style="display:none">
       <view class="tabbar__i">
         <image src="/images/btn_qrcode.png" class="tabbar__icon"></image>
       </view>

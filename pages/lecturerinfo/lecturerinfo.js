@@ -6,6 +6,11 @@ var app = getApp()
 Page({
   data: {
     userInfo: {},
+    // 主机域名 - 七牛文件
+    host: '',
+    iImgExt: '',
+    // 实体对象
+    Model:{},
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -13,24 +18,61 @@ Page({
     })
   },
   onLoad: function (option) {
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1000
+    })
     var that = this;
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function (userInfo) {
-      //更新数据
-      that.setData({
-        userInfo: userInfo
-      })
-    });
+    that.setData({
+      // 七牛文件查看域名
+      host: api.iQiniu,
+      iImgExt: api.iImgExt
+    })
+
+    //获取页面栈
+    var pages = getCurrentPages();
+    if (pages.length > 1) {
+      //上一个页面实例对象
+      var prePage = pages[pages.length - 2];
+      var Model = prePage.data.requests.Model;
+      // 省名
+      Model.province = '';
+      // 市名
+      Model.city='';
+      // 服务须知
+      Model.notice='';
+      // 本地存储 - 城市
+      var provinces = app.globalData.GeoMap.Config.provinces;
+      [].forEach.call(provinces,function(item,i){
+        if (item.id == Model.province_id) {
+          Model.province = item.name;
+          var pIndex = item.name.indexOf('市');
+          if (pIndex < 0) {
+            var citys = item.citys;
+            // :begin 遍历市
+            [].forEach.call(citys, function (citem, ci, carr) {
+              if (citem.id == Model.city_id) {
+                // 市名
+                Model.city = citem.name;
+              }
+            });
+          }
+        }
+      });
+      if (Model.id == option.id){
+        that.setData({
+          Model: Model
+        })
+      }
+    }
   },
   // :begin 事件处理
-  imgTap:function(event){
-    console.log('处理');
-    var objoin = app.globalData.objoin;
-    objoin.referee = '我是推荐人';
-    app.globalData.objoin = objoin;
-
-    wx.navigateBack({
-      delta:1
+  // 拨打电话
+  PhoneTap:function(event){
+    var phone = event.currentTarget.dataset.phone;
+    wx.makePhoneCall({
+      phoneNumber: phone //仅为示例，并非真实的电话号码
     })
   }
   // :end 事件处理
