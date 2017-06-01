@@ -69,6 +69,10 @@ Page({
     var pname = that.data.ProvinceName;
     var cid = event.target.dataset.id;
     var cname = event.target.dataset.name;
+    var pnameIndex = pname.indexOf('市');
+    if(pnameIndex >=0){
+      cname='';
+    }
     var pages = getCurrentPages();
     if (pages.length > 1) {
       //上一个页面实例对象

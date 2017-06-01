@@ -91,14 +91,25 @@ function GetRecommend(that){
     success:function(res){
       var dataObj = res.data
       var result = dataObj.data;
-      console.log(dataObj);
       that.setData({
         lecturers: result
+      })
+      wx.setStorage({
+        key: 'recommend',
+        data: result,
       })
     },
     fail:function(res){
       console.log('index lecturere fail');
       console.log(res);
+      wx.getStorage({
+        key: 'recommend',
+        success: function(res) {
+          that.setData({
+            lecturers: res.data
+          })
+        },
+      })
     }
   }, api.host + api.iRecommend)
 }

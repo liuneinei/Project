@@ -146,9 +146,6 @@ Page({
         RegionName: GeoMap.ProvinceName,
       })
     }
-    console.log('奇怪了')
-    console.log(GeoMap)
-    
     // :end 处理默认值
 
     // 获取选项信息
@@ -196,9 +193,6 @@ Page({
   RegionTap:function(e){
     var that = this; 
     var region = that.data.region;
-    console.log('城市数据加载');
-    console.log(that);
-    console.log('城市项数据加载，count=>' + region.length);
     if (region.length > 0) {
       // 本地存储 - 城市
       wx.getStorage({
@@ -358,6 +352,7 @@ function GetLecturer(that){
           requests: requests
         })
       }
+      wx.hideToast();
     },
     fail: function (res) {
       console.log('lecturer fail');

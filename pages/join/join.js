@@ -19,7 +19,7 @@ Page({
     CertUrls:[],
     // 提交的对象
     objoin:{
-      types: 0,//0未填写 1填写未提交 2已提交审核中 3已提交审核成功 4提交审核失败,
+      status: 99,//0未填写 1已提交审核中 2提交审核失败 3已提交审核成功,
       isedit:false,
       province: 0,
       city: 0,
@@ -36,6 +36,7 @@ Page({
       idcard_z: '',
       idcard_f: '',
       certificate: '',
+      msg:'正在加载中'
     },//保存填写信息
     // 时间戳
     utctime: (new Date()).getTime(),
@@ -48,31 +49,27 @@ Page({
     })
   },
   onLoad: function () {
-    var that = this;
-    let wHeight = that.data.wHeight;
-    // 获取系统信息，提取屏幕高度
-    wx.getSystemInfo({
-      success: function (res) {
-        wHeight = res.windowHeight - 40
-      }
+    wx.showToast({
+      title: '加载中',
+      icon:'loading',
+      duration:1500
     })
+    var that = this;
     that.setData({
-      wHeight: wHeight,
-      host: api.iQiniu
-    }); 
+      // 七牛文件查看域名
+      host: api.iQiniu,
+      iImgExt: api.iImgExt
+    })
 
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function (userInfo) {
-      wx.getStorage({
-        key: 'userInfo',
-        success: function (res) {
-          //更新数据
-          that.setData({
-            userInfo: res.data
-          })
-        },
-      })
-    });
+    var userInfo = app.globalData.userInfo;
+    that.setData({
+      userInfo: userInfo
+    })
+    // OpenId
+    var openid = userInfo.openId;
+    // 获取加入我们
+    Getislecturer(that, openid)
+
     // 定时保存
     timesave(that);
   },
@@ -201,7 +198,7 @@ Page({
   IdCardZTap:function(event){
     var that = this;
     var openid = that.data.userInfo.openId;
-    var url = 'id/' + openid + '0.jpg'
+    var url = 'id/' + openid + '/0.jpg'
     // 获取Key
     GetUpToken(that, url,'idcardz')
   },
@@ -209,7 +206,7 @@ Page({
   IdCardFTap:function(event){
     var that = this;
     var openid = that.data.userInfo.openId;
-    var url = 'id/' + openid + '1.jpg'
+    var url = 'id/' + openid + '/1.jpg'
     // 获取Key
     GetUpToken(that, url, 'idcardf')
   },
@@ -317,9 +314,95 @@ Page({
   btnSubmit:function(event){
     var that = this;
     BtnSave(that,true);
+  },
+  // 修改信息
+  btnUpdateTap:function(event){
+    var that = this;
+    BtnSave(that, false);
   }
   // ##:end from表单处理
 });
+
+// 获取加入我们
+function Getislecturer(that, openid){
+  api.wxRequest({
+    data:{
+      openid: openid
+    },
+    success:function(res){
+      console.log(res);
+      var resObj = res.data.data;
+      // 本地保存对象
+      var objoin = that.data.objoin;
+      var checkProvince = '点击选择';
+      var checkClassName = '点击选择';
+      var CertUrls=[];
+      // 提交的对象
+      objoin.openid = resObj.wx_openid;
+      objoin.province = resObj.province_id;
+      objoin.city = resObj.city_id;
+      var provinces = app.globalData.GeoMap.Config.provinces
+      if(provinces != 'undefined' && provinces.length >0){
+        checkProvince='';
+        [].forEach.call(provinces,function(item,i){
+          if (item.id == resObj.province_id){
+            checkProvince+=item.name;
+            var checkProIndex = checkProvince.indexOf('市');
+            var citys = item.citys;
+            if (citys.length > 0 && checkProIndex<0){
+              [].forEach.call(citys,function(itemc,ic){
+                if (itemc.id == resObj.city_id){
+                  checkProvince += itemc.name;
+                }
+              })
+            }
+          }
+        })
+      }
+      var service = resObj.service;
+      objoin.classid = '';
+      if (service.length > 0){
+        checkClassName = '';
+        [].forEach.call(service,function(item,i){
+          objoin.classid += item.id+',';
+          checkClassName += item.title+',';
+        })
+        objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
+        checkClassName = checkClassName.substr(0, checkClassName.length-1);
+      }
+      objoin.img = resObj.face_img;
+      objoin.name = resObj.name;
+      objoin.phone = resObj.phone;
+      objoin.wxname = resObj.wechat;
+      objoin.desc = resObj.intro;
+      objoin.notice = resObj.about;
+      objoin.institutions = resObj.train;
+      objoin.referee = resObj.referees;
+      objoin.idcard_z = resObj.idcard_up_img;
+      objoin.idcard_f = resObj.idcard_down_img;
+      objoin.certificate = resObj.cert_imgs;
+      CertUrls = resObj.cert_imgs.split(',');
+      objoin.status = resObj.status;
+      if (objoin.status==1){
+        objoin.msg='已提交，请等待审核';
+      }else if(objoin.status ==3){
+        objoin.msg = '您的信息审核已通过';
+      }else if(objoin.status == 2){
+        objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
+      }
+      
+      that.setData({
+        objoin: objoin,
+        checkProvince: checkProvince,
+        checkClassName: checkClassName,
+        CertUrls: CertUrls
+      })
+    },
+    complete:function(res){
+      wx.hideToast();
+    }
+  }, api.host + api.igGetIsLecturer);
+}
 
 // 定时保存
 function timesave(that){
@@ -338,6 +421,106 @@ function BtnSave(that,tp){
   var openid = that.data.userInfo.openId;
   // 数据对象
   var objoin = that.data.objoin;
+  if ((openid == 'undefined' || openid == '') && tp){
+    wx.showToast({
+      title: '未授权登录',
+      duration:500
+    })
+    return;
+  }
+  if (objoin.img == '' && tp) {
+    wx.showToast({
+      title: '请上传头像',
+      duration: 500
+    })
+    return;
+  }
+  if ((objoin.province == '' || objoin.city == '') && tp) {
+    wx.showToast({
+      title: '请选择城市',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.classid == '' && tp) {
+    wx.showToast({
+      title: '请选择认证行业',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.name == '' && tp) {
+    wx.showToast({
+      title: '请填写姓名',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.phone == '' && tp) {
+    wx.showToast({
+      title: '请填写手机',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.wxname == '' && tp) {
+    wx.showToast({
+      title: '请填写微信号',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.desc == '' && tp) {
+    wx.showToast({
+      title: '请填写简介',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.notice == '' && tp) {
+    wx.showToast({
+      title: '请填写介绍',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.institutions == '' && tp) {
+    wx.showToast({
+      title: '请填写培训机构',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.idcard_z == '' && tp) {
+    wx.showToast({
+      title: '请上传身份正面',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.idcard_f == '' && tp) {
+    wx.showToast({
+      title: '请上传身份反面',
+      duration: 500
+    })
+    return;
+  }
+  if (objoin.certificate == '' && tp) {
+    wx.showToast({
+      title: '请上传专业证书',
+      duration: 500
+    })
+    return;
+  }
+  var certificate_str = objoin.certificate;
+  var cert_lastindex = certificate_str.lastIndexOf(',');
+  if (cert_lastindex == (certificate_str.length -1)){
+    certificate_str = certificate_str.substr(0, certificate_str.length - 1);
+  }
+  var status=1;
+  if(!tp){
+    status=0
+  }
   api.wxRequest({
     method: 'POST',
     data: {
@@ -354,8 +537,10 @@ function BtnSave(that,tp){
       referees: objoin.referee,
       idcard_up_img: objoin.idcard_z,
       idcard_down_img: objoin.idcard_f,
-      cert_imgs: objoin.certificate,
+      cert_imgs: certificate_str,
       serverids: objoin.classid,
+      // 提交审核
+      status: status
     },
     success: function (res) {
       console.log('申请加入成功');
@@ -363,11 +548,17 @@ function BtnSave(that,tp){
       var data = res.data;
       if (data.status == 0) {
         // 提交成功，想想接下来要怎么处理
-        if (tp){
-
-        }
+        objoin.status = status;
+        objoin.msg = '已提交，请等待审核';
+          that.setData({
+            objoin: objoin
+          })
       } else {
         // 提交失败，
+        wx.showToast({
+          title: '处理失败',
+          duration:1000
+        })
       }
     },
     fail: function (res) {

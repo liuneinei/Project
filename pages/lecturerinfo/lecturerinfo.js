@@ -44,27 +44,30 @@ Page({
       Model.notice='';
       // 本地存储 - 城市
       var provinces = app.globalData.GeoMap.Config.provinces;
-      [].forEach.call(provinces,function(item,i){
-        if (item.id == Model.province_id) {
-          Model.province = item.name;
-          var pIndex = item.name.indexOf('市');
-          if (pIndex < 0) {
-            var citys = item.citys;
-            // :begin 遍历市
-            [].forEach.call(citys, function (citem, ci, carr) {
-              if (citem.id == Model.city_id) {
-                // 市名
-                Model.city = citem.name;
-              }
-            });
+      if(typeof provinces != 'undefined'){
+        [].forEach.call(provinces,function(item,i){
+          if (item.id == Model.province_id) {
+            Model.province = item.name;
+            var pIndex = item.name.indexOf('市');
+            if (pIndex < 0) {
+              var citys = item.citys;
+              // :begin 遍历市
+              [].forEach.call(citys, function (citem, ci, carr) {
+                if (citem.id == Model.city_id) {
+                  // 市名
+                  Model.city = citem.name;
+                }
+              });
+            }
           }
-        }
-      });
-      if (Model.id == option.id){
+        });
+      }
+      // if (Model.id == option.id){
         that.setData({
           Model: Model
         })
-      }
+      // }
+      wx.hideToast();
     }
   },
   // :begin 事件处理

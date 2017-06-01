@@ -11,8 +11,10 @@ const iwxlogin = '/wxlogin';
 const iuploadtoken = '/uploadtoken';
 // 省市
 const iconfig = '/config';
+// 获取加入我们
+const igGetIsLecturer = '/getislecturer';
 // 加入我们
-const iPostLecturer ='/postlecturer'
+const iPostLecturer ='/postlecturer';
 // 讲师列表 /getlecturer?provinceid=0&cityid=0&serverid=0&page=2
 const iLecturer = '/getlecturer';
 // 首页推荐
@@ -64,6 +66,8 @@ module.exports = {
   iImgExt,
   // 七牛文件域名
   iQiniu,
+  // 获取加入我们
+  igGetIsLecturer,
   // 加入我们
   iPostLecturer,
   // 讲师列表

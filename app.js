@@ -116,7 +116,6 @@ function Login(that, code, encryptedData, iv) {
         key: 'userInfo',
         data: res.data.data,
       })
-
       //typeof cb == "function" && cb(that.globalData.userInfo)
     },
     fail: function () {
@@ -138,6 +137,8 @@ function GetRegion(that) {
       that.globalData.GeoMap.Config = res.data.data;
     },
     fail: function (res) {
+      console.log('地区失败');
+      console.log(res);
     }
   }, api.host + api.iconfig)
 }

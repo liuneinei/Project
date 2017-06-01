@@ -171,9 +171,6 @@ Page({
   ClassdTap: function (e) {
     var that = this;
     var classl = that.data.classl;
-    console.log('服务数据加载');
-    console.log(that);
-    console.log('服务项数据加载，count=>' + classl.length);
     if (classl.length === 0) {
       var Config = app.globalData.GeoMap.Config;
       that.setData({
@@ -336,8 +333,6 @@ function GetLecturer(that) {
   that.setData({
     requests: requests
   })
-
-  console.log('请求');
   var requests = that.data.requests;
   var page = (requests.page + 1)
   // 获取讲师列表
@@ -394,6 +389,8 @@ function GetLecturer(that) {
           requests: requests
         })
       }
+
+      wx.hideToast();
     },
     fail: function (res) {
       console.log('lecturer fail');
@@ -402,6 +399,8 @@ function GetLecturer(that) {
       that.setData({
         requests: requests
       })
+
+      wx.hideToast();
     }
   }, api.host + api.iLecturer)
 }
@@ -461,16 +460,17 @@ function IndexSwitch(that) {
 // 获取选项信息
 function GetConfig(_app, _that) {
   var config = _app.globalData.GeoMap.Config;
-  if (config.length <= 0) {
+  if (typeof config.length == 'undefined') {
     // 本地存储 - 城市
     wx.getStorage({
       key: 'config',
       success: function (res) {
-        if (res.data.length > 0) {
+        if (res.data) {
           _that.setData({
             region: res.data.provinces,
             classl: res.data.services
           })
+          app.globalData.GeoMap.Config = res.data;
         } else {
           GetConfigHttp(_app, _that);
         }
