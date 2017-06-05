@@ -1,6 +1,5 @@
 {
   "pages":[
-    
     "pages/index/index",
     "pages/join/join",
     "pages/lecturers/lecturers",
@@ -8,7 +7,8 @@
     "pages/lecturerinfo/lecturerinfo",
     "pages/joinclass/joinclass",
     "pages/joincity/joincity",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/joinalbum/joinalbum"
   ],
   "window":{
     "backgroundTextStyle":"light",

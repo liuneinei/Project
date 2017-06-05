@@ -74,9 +74,7 @@
           <view class="directors">
             <text class="label">{{lecturer.name}}</text>
             <block wx:for-items="{{lecturer.service}}" wx:for-item="services">
-              <block wx:if="{{index == 0}}">
                 <text class="person">{{services.title}}</text>
-              </block>
             </block>
           </view>
           <view class="film-rating">

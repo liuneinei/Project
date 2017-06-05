@@ -451,6 +451,8 @@ function IndexSwitch(that) {
     app.globalData.lecturer = goblaLec
     // 讲师列表
     GetLecturer(that)
+  }else{
+    wx.hideToast();
   }
 
   // 如果省ID 大于0 ，则初始化默认加载市

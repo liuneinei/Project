@@ -36,20 +36,21 @@ justify-content:center;
 }
 
 .module__right .m_t{
-    display: flex;
-    flex-direction: row;
-    align-items:flex-end;
-    /*padding-top:15rpx;*/
+    display:inline-block;
+    padding-right:30rpx;
 }
 .module__right .m_t .m_t_l{
     color: #333333;
     font-size: 34rpx;
+    float: left;
 }
 .module__right .m_t .m_t_r{
     padding-left: 12rpx;
     color: #714e9e;
     font-size: 28rpx;
     margin-top: 10rpx;
+    height: 34rpx;
+    overflow: hidden;
 }
 
 .main-list .module__item .m_b{

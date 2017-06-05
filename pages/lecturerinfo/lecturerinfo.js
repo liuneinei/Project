@@ -11,6 +11,7 @@ Page({
     iImgExt: '',
     // 实体对象
     Model:{},
+    Notice:'',
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -29,6 +30,23 @@ Page({
       host: api.iQiniu,
       iImgExt: api.iImgExt
     })
+    var Notice = app.globalData.GeoMap.Config.Notice;
+    if(Notice == 'undefined' || Notice == null){
+      Notice ='';
+      wx.getStorage({
+        key: 'config',
+        success: function(res) {
+          Notice = res.data.Notice;
+          that.setData({
+            Notice: Notice
+          });
+        },
+      })
+    }else{
+      that.setData({
+        Notice: Notice
+      });
+    }
 
     //获取页面栈
     var pages = getCurrentPages();

@@ -330,67 +330,71 @@ function Getislecturer(that, openid){
       openid: openid
     },
     success:function(res){
-      console.log(res);
-      var resObj = res.data.data;
       // 本地保存对象
       var objoin = that.data.objoin;
       var checkProvince = '点击选择';
       var checkClassName = '点击选择';
-      var CertUrls=[];
-      // 提交的对象
-      objoin.openid = resObj.wx_openid;
-      objoin.province = resObj.province_id;
-      objoin.city = resObj.city_id;
-      var provinces = app.globalData.GeoMap.Config.provinces
-      if(provinces != 'undefined' && provinces.length >0){
-        checkProvince='';
-        [].forEach.call(provinces,function(item,i){
-          if (item.id == resObj.province_id){
-            checkProvince+=item.name;
-            var checkProIndex = checkProvince.indexOf('市');
-            var citys = item.citys;
-            if (citys.length > 0 && checkProIndex<0){
-              [].forEach.call(citys,function(itemc,ic){
-                if (itemc.id == resObj.city_id){
-                  checkProvince += itemc.name;
-                }
-              })
+      var CertUrls = [];
+      // --返回结果集
+      var resObj = res.data.data;
+      var dataObj = res.data;
+      if (dataObj.status != 0){
+        objoin.status = 0
+      }else{
+        // 提交的对象
+        objoin.openid = resObj.wx_openid;
+        objoin.province = resObj.province_id;
+        objoin.city = resObj.city_id;
+        var provinces = app.globalData.GeoMap.Config.provinces
+        if(provinces != 'undefined' && provinces.length >0){
+          checkProvince='';
+          [].forEach.call(provinces,function(item,i){
+            if (item.id == resObj.province_id){
+              checkProvince+=item.name;
+              var checkProIndex = checkProvince.indexOf('市');
+              var citys = item.citys;
+              if (citys.length > 0 && checkProIndex<0){
+                [].forEach.call(citys,function(itemc,ic){
+                  if (itemc.id == resObj.city_id){
+                    checkProvince += itemc.name;
+                  }
+                })
+              }
             }
-          }
-        })
+          })
+        }
+        var service = resObj.service;
+        objoin.classid = '';
+        if (service.length > 0){
+          checkClassName = '';
+          [].forEach.call(service,function(item,i){
+            objoin.classid += item.id+',';
+            checkClassName += item.title+',';
+          })
+          objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
+          checkClassName = checkClassName.substr(0, checkClassName.length-1);
+        }
+        objoin.img = resObj.face_img;
+        objoin.name = resObj.name;
+        objoin.phone = resObj.phone;
+        objoin.wxname = resObj.wechat;
+        objoin.desc = resObj.intro;
+        objoin.notice = resObj.about;
+        objoin.institutions = resObj.train;
+        objoin.referee = resObj.referees;
+        objoin.idcard_z = resObj.idcard_up_img;
+        objoin.idcard_f = resObj.idcard_down_img;
+        objoin.certificate = resObj.cert_imgs;
+        CertUrls = resObj.cert_imgs.split(',');
+        objoin.status = resObj.status;
+        if (objoin.status==1){
+          objoin.msg='已提交，请等待审核';
+        }else if(objoin.status ==3){
+          objoin.msg = '您的信息审核已通过';
+        }else if(objoin.status == 2){
+          objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
+        }
       }
-      var service = resObj.service;
-      objoin.classid = '';
-      if (service.length > 0){
-        checkClassName = '';
-        [].forEach.call(service,function(item,i){
-          objoin.classid += item.id+',';
-          checkClassName += item.title+',';
-        })
-        objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
-        checkClassName = checkClassName.substr(0, checkClassName.length-1);
-      }
-      objoin.img = resObj.face_img;
-      objoin.name = resObj.name;
-      objoin.phone = resObj.phone;
-      objoin.wxname = resObj.wechat;
-      objoin.desc = resObj.intro;
-      objoin.notice = resObj.about;
-      objoin.institutions = resObj.train;
-      objoin.referee = resObj.referees;
-      objoin.idcard_z = resObj.idcard_up_img;
-      objoin.idcard_f = resObj.idcard_down_img;
-      objoin.certificate = resObj.cert_imgs;
-      CertUrls = resObj.cert_imgs.split(',');
-      objoin.status = resObj.status;
-      if (objoin.status==1){
-        objoin.msg='已提交，请等待审核';
-      }else if(objoin.status ==3){
-        objoin.msg = '您的信息审核已通过';
-      }else if(objoin.status == 2){
-        objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
-      }
-      
       that.setData({
         objoin: objoin,
         checkProvince: checkProvince,
@@ -521,13 +525,34 @@ function BtnSave(that,tp){
   if(!tp){
     status=0
   }
+  var face_img = objoin.img;
+  var face_index = objoin.img.indexOf('?wximg');
+  if(face_index > 0){
+    face_img = face_img.substr(0, face_index);
+  }
+  
+  var idcard_up_img = objoin.idcard_z;
+  var idcard_up_index = idcard_up_img.indexOf('?wximg') 
+  if (idcard_up_index > 0) {
+    idcard_up_img = idcard_up_img.substr(0, idcard_up_index);
+  }
+
+  var idcard_down_img = objoin.idcard_f;
+  var idcard_down_index = idcard_down_img.indexOf('?wximg')
+  if (idcard_down_index > 0) {
+    idcard_down_img = idcard_down_img.substr(0, idcard_down_index);
+  }
+  
+  console.log(face_img);
+  console.log(idcard_up_img);
+  console.log(idcard_down_img);
   api.wxRequest({
     method: 'POST',
     data: {
       openid: openid,
       provinceid: objoin.province,
       cityid: objoin.city,
-      face_img: objoin.img,
+      face_img: face_img,
       name: objoin.name,
       phone: objoin.phone,
       wechat: objoin.wxname,
@@ -535,8 +560,8 @@ function BtnSave(that,tp){
       about: objoin.notice,
       train: objoin.institutions,
       referees: objoin.referee,
-      idcard_up_img: objoin.idcard_z,
-      idcard_down_img: objoin.idcard_f,
+      idcard_up_img: idcard_up_img,
+      idcard_down_img: idcard_down_img,
       cert_imgs: certificate_str,
       serverids: objoin.classid,
       // 提交审核
@@ -626,17 +651,18 @@ function ChooesImage(that, key,uptoken, types) {
               var dataObject = JSON.parse(res.data);
                 //返回hash值、key值
                 console.log(res.data);
+                var utctime = (new Date()).getTime();
                 if (types == 'headimg'){
-                   objoin.img = dataObject.key
+                  objoin.img = dataObject.key + '?wximg' + utctime;
                 }else if(types == 'idcardz'){
-                   objoin.idcard_z = dataObject.key
+                  objoin.idcard_z = dataObject.key + '?wximg' + utctime;
                 }else if(types == 'idcardf'){
-                   objoin.idcard_f = dataObject.key
+                  objoin.idcard_f = dataObject.key + '?wximg' + utctime;
                 }
                 objoin.isedit=true
                 that.setData({
                   objoin:objoin,
-                  utctime: (new Date()).getTime(),
+                  //utctime: (new Date()).getTime(),
                 })
             },
             fail(error) {

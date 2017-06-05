@@ -1,7 +1,7 @@
 /*头部*/
 .item-top{
   background: #71509e;
-  height: 347rpx;
+  /*height: 347rpx;*/
   text-align: center;
 }
 .item-top .top-img{
@@ -14,8 +14,7 @@
 }
 
 .item-top .top-btn{
-  padding-top: 20rpx;
-  padding-bottom: 10rpx;
+  margin-bottom: 10rpx;
   color: #e7e3ee;
   text-align: center;
 }
@@ -28,10 +27,15 @@
   color: #ffffff;
 }
 
+.btn-city{
+  color: #e7e3ee;
+  font-size: 28rpx;
+}
+
 .item-top .top-desc .top__desc{
   font-size: 28rpx;
   color: #e7e3ee;
-  padding: 24rpx 0 40rpx 0rpx;
+  padding: 24rpx 40rpx 40rpx 40rpx;
 }
 
 /*内容*/
@@ -67,6 +71,7 @@
  color: #555555;
  line-height: 50rpx;
  padding: 0 30rpx 0 30rpx; 
+ display:block;
 }
 .item-main .item__frame .item-indent{
   text-indent: 2em;

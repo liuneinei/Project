@@ -6,17 +6,16 @@
     <view class="top-btn">
       <view class="btn_upload">{{Model.name}}</view>
     </view>
+    <view class="btn-city">
+    {{Model.province}} {{Model.city}}
+    </view>
     <view class="top-desc">
       <view class="top__desc">
       <block wx:if="{{Model.service.length > 0}}">
         <block wx:for="{{Model.service}}">
-          <block wx:if="{{index == 0}}">
             {{item.title}}
-          </block>
         </block>
-        /  
       </block>
-      {{Model.province}} {{Model.city}}
       </view>
     </view>
   </view>
@@ -30,7 +29,7 @@
       <view class="item-title_lable">关于专家</view>
       </view>
       <view class="blank40 backfff"></view>
-      <view class="item-content item-indent">{{Model.about}}</view>
+      <text class="item-content item-indent">{{Model.about}}</text>
       <view class="blank50 backfff"></view>
     </view>
     <view class="blank10"></view>
@@ -43,7 +42,7 @@
         <view class="item-title_lable">服务须知</view>
       </view>
       <view class="blank40 backfff"></view>
-      <view class="item-content">{{Model.about}}</view>
+      <text class="item-content">{{Notice}}</text>
     </view>
     <view class="blank50 backfff"></view>
   </view>

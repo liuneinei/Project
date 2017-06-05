@@ -265,7 +265,12 @@ page{
   width: 474rpx;
 }
 .film-info view{
-  margin-bottom: 24rpx;
+  /*margin-bottom: 24rpx;*/
+}
+
+.film-info .directors{
+  height: 50rpx;
+  overflow: hidden;
 }
 
 .film-info .directors .label{
@@ -278,6 +283,7 @@ page{
   color: #714e9e;
 }
 .film-info .film-rating{
+  margin-top:9rpx;
   margin-bottom: 0rpx;
   font-size: 30rpx;
   color: #999999;
