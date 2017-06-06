@@ -51,7 +51,11 @@
                   </block>
                 </view>
                 <view class="city-container" style="height:{{wHeight}}px">
-                  <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                  <block wx:for="{{citys}}">
+                    <block wx:if="{{item.nop > 0}}">
+                      <view class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                    </block>
+                  </block>
                 </view>
                 </view>
               </block>

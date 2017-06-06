@@ -267,8 +267,9 @@ Page({
                         objoin.certificate += dataKey+',';
                         // 编辑状态
                         objoin.isedit = true
+                        var utctime = (new Date()).getTime();
+                        dataKey = dataKey + '?wxcert' + utctime;
                         CertUrls.push(dataKey)
-                      
                         that.setData({
                           objoin: objoin,
                           CertUrls: CertUrls
@@ -374,7 +375,9 @@ function Getislecturer(that, openid){
           objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
           checkClassName = checkClassName.substr(0, checkClassName.length-1);
         }
-        objoin.img = resObj.face_img;
+        var utctime = (new Date()).getTime();
+
+        objoin.img = resObj.face_img + '?wximg' + utctime;
         objoin.name = resObj.name;
         objoin.phone = resObj.phone;
         objoin.wxname = resObj.wechat;
@@ -382,10 +385,15 @@ function Getislecturer(that, openid){
         objoin.notice = resObj.about;
         objoin.institutions = resObj.train;
         objoin.referee = resObj.referees;
-        objoin.idcard_z = resObj.idcard_up_img;
-        objoin.idcard_f = resObj.idcard_down_img;
-        objoin.certificate = resObj.cert_imgs;
-        CertUrls = resObj.cert_imgs.split(',');
+        objoin.idcard_z = resObj.idcard_up_img + '?wximg' + utctime;;
+        objoin.idcard_f = resObj.idcard_down_img + '?wximg' + utctime;;
+        objoin.certificate = resObj.cert_imgs+',';
+        var CertUrlses = resObj.cert_imgs.split(',');
+        if(CertUrlses.length > 0){
+          [].forEach.call(CertUrlses,function(item,i){
+            CertUrls.push(item + '?wxcert' + utctime);
+          });
+        }
         objoin.status = resObj.status;
         if (objoin.status==1){
           objoin.msg='已提交，请等待审核';
@@ -546,6 +554,8 @@ function BtnSave(that,tp){
   console.log(face_img);
   console.log(idcard_up_img);
   console.log(idcard_down_img);
+  console.log(certificate_str);
+  
   api.wxRequest({
     method: 'POST',
     data: {

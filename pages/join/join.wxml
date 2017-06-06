@@ -90,7 +90,7 @@
                 </view>
               </block>
               <block wx:else>
-                <image src="{{host}}/{{objoin.idcard_z}}?{{utctime}}" class="item-pic"></image>
+                <image src="{{host}}/{{objoin.idcard_z}}" class="item-pic"></image>
               </block>
           </view>
           <view class="item-desc">正面</view>
@@ -103,7 +103,7 @@
                 </view>
               </block>
               <block wx:else>
-                <image src="{{host}}/{{objoin.idcard_f}}?{{utctime}}" class="item-pic"></image>
+                <image src="{{host}}/{{objoin.idcard_f}}" class="item-pic"></image>
               </block>
           </view>
           <view class="item-desc">反面</view>
