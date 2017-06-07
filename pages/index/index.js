@@ -19,7 +19,7 @@ Page({
   },
   onShareAppMessage: function () {
       return {
-        title: '亲密育儿人才库',
+        title: '亲密孕育专业人才库',
         path: '/pages/index/index',
         success: function(res) {
           // 转发成功
@@ -29,11 +29,6 @@ Page({
         }
       }
     },
-  onReady: function () {
-    wx.setNavigationBarTitle({
-      title: '亲密育儿人才库'
-    })
-  },
   onLoad: function () {
     var that = this;
     that.setData({

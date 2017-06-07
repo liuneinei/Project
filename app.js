@@ -1,4 +1,5 @@
 var api = require('api/api.js')
+var aldstat = require('utils/ald-stat.js');
 // 引入SDK核心类
 var QQMapWX = require('utils/qqmap-wx-jssdk.min.js');
 

@@ -1,4 +1,5 @@
 var api = require('../../api/api.js')
+var aldstat = require('../../utils/ald-stat.js');
 var url = api.host + api.iLecturer
 var pageSize = 10
 //获取应用实例
@@ -43,6 +44,8 @@ Page({
       isscrolltolower: true,
       // 查看的详情实体
       Model: {},
+      // 是否参数进来的
+      isarg:false,
     },
     // 分类标题
     ClassName: '全部',
@@ -51,16 +54,34 @@ Page({
     ProvinceName: '',
     // 讲师列表
     lecturers: [],
-
     films: [],
     hasMore: true,
     showLoading: true,
     start: 0,
   },
   onShareAppMessage: function () {
+    var that = this;
+    var title ='亲密孕育专业人才库';
+    var arg='';
+    if(that !='undefined' && that != undefined){
+      title = that.data.RegionName;
+      if (that.data.classid > 0){
+        [].forEach.call(that.data.classl,function(item,i){
+          if (item.id == that.data.classid){
+            title += ' - ' + item.title;
+          }
+        })
+        title += ' - ' + '专家列表';
+      }else{
+        title += ' - 孕育专家';
+      }
+      arg = '?provinceid=' + that.data.provinceid;
+      arg += '&cityid=' + that.data.cityid;
+      arg += '&classid=' + that.data.classid;
+    }
       return {
-        title: '专家名 - 亲密育儿人才库',
-        path: '/pages/lecturers/lecturers',
+        title: title,
+        path: '/pages/lecturers/lecturers' + arg,
         success: function(res) {
           // 转发成功
         },
@@ -86,14 +107,18 @@ Page({
     })
     // 首页传过来的处理
     IndexSwitch(that);
+    
   },
-  onLoad: function () {
+  onLoad: function (option) {
     wx.showToast({
       title: '加载中',
       icon: 'loading',
       duration: 1500
-    })
-    var that = this
+    });
+    var provinceid = option.provinceid || 0;
+    var cityid = option.cityid || 0;
+    var classid = option.classid || 0;
+    var that = this;
     that.setData({
       // 七牛文件查看域名
       host: api.iQiniu,
@@ -101,37 +126,44 @@ Page({
     })
     // :begin 处理默认值
     var GeoMap = app.globalData.GeoMap;
-    if (GeoMap.CityId > 0) {
-      that.setData({
-        // 选中的省
-        provinceid: GeoMap.ProvinceId,
-        // 选中的市
-        cityid: GeoMap.CityId,
-        // 地区标题
-        RegionName: GeoMap.CityName,
-      })
-    } else {
-      that.setData({
-        // 选中的省
-        provinceid: GeoMap.ProvinceId,
-        // 地区标题
-        RegionName: GeoMap.ProvinceName,
-      })
-    }
-    console.log('奇怪了')
-    console.log(GeoMap)
+      if (GeoMap.CityId > 0) {
+        that.setData({
+          // 选中的省
+          provinceid: GeoMap.ProvinceId,
+          // 选中的市
+          cityid: GeoMap.CityId,
+          // 地区标题
+          RegionName: GeoMap.CityName,
+        });
+      } else {
+        that.setData({
+          // 选中的省
+          provinceid: GeoMap.ProvinceId,
+          // 地区标题
+          RegionName: GeoMap.ProvinceName,
+        });
+      }
+    
     // :end 处理默认值
-
+    if (provinceid > 0 || cityid > 0 || classid > 0) {
+      var requests = that.data.requests;
+      requests.isarg = true;
+      that.setData({
+        provinceid: provinceid,
+        cityid: cityid,
+        classid: classid,
+        requests: requests
+      });
+    }
     // 获取选项信息
     GetConfig(app, that);
-
+    // GetConfigHttp(app,that);
     // 首页传过来的处理
-    IndexSwitch(that);
-
+    // IndexSwitch(that);
     var requests = that.data.requests;
     if (!requests.isLoad){
       // 讲师列表
-      GetLecturer(that)
+      GetLecturer(that);
     }
   },
   scrolltolower: function () {
@@ -150,19 +182,6 @@ Page({
     }else{
       console.log('scrolltolower => 刷新 => 驳回');
     }
-  },
-  viewDetail: function (event) {
-    var that = this;
-    var id = event.currentTarget.dataset.id;
-    var obj = event.currentTarget.dataset.obj;
-    var requests = that.data.requests;
-    requests.Model = obj;
-    that.setData({
-      requests: requests
-    })
-    wx.navigateTo({
-      url: '../lecturerinfo/lecturerinfo?id=' + id
-    })
   },
   // 详情
   bingInfo: function (event) {
@@ -336,9 +355,6 @@ Page({
 })
 
 
-
-
-
 // 讲师列表
 function GetLecturer(that) {
   var requests = that.data.requests;
@@ -347,7 +363,9 @@ function GetLecturer(that) {
     requests: requests
   })
   var requests = that.data.requests;
-  var page = (requests.page + 1)
+  var page = (requests.page + 1);
+  console.log('lec加载');
+  console.log(that);
   // 获取讲师列表
   api.wxRequest({
     data: {
@@ -463,7 +481,7 @@ function IndexSwitch(that) {
     options.className = '';
     app.globalData.lecturer = goblaLec
     // 讲师列表
-    GetLecturer(that)
+    GetLecturer(that);
   }else{
     wx.hideToast();
   }
@@ -473,46 +491,53 @@ function IndexSwitch(that) {
 }
 
 // 获取选项信息
-function GetConfig(_app, _that) {
+function GetConfig(_app, that) {
   var config = _app.globalData.GeoMap.Config;
-  if (typeof config.length == 'undefined') {
+  console.log('获取全局');
+  console.log((config.provinces == undefined || config.provinces == 'undefined' || config.provinces.length <= 0 || config.services.length <= 0));
+  if (config.provinces == undefined || config.provinces == 'undefined' || config.provinces.length <= 0 || config.services.length<=0) {
     // 本地存储 - 城市
     wx.getStorage({
       key: 'config',
       success: function (res) {
         if (res.data) {
-          _that.setData({
+          that.setData({
             region: res.data.provinces,
             classl: res.data.services
           })
           app.globalData.GeoMap.Config = res.data;
+          GetNavName(that);
         } else {
-          GetConfigHttp(_app, _that);
+          GetConfigHttp(_app, that);
         }
       },
       fail: function (res) {
-        GetConfigHttp(_app, _that);
+        GetConfigHttp(_app, that);
       }
     })
   } else {
-    _that.setData({
+    that.setData({
       region: config.provinces,
       classl: config.services
     })
+
+    GetNavName(that);
   }
 }
-function GetConfigHttp(_app, _that) {
+function GetConfigHttp(_app, that) {
   api.wxRequest({
-    success: (res) => {
+    success: function(res){
       wx.setStorage({
         key: 'config',
         data: res.data.data,
       })
       _app.globalData.GeoMap.Config = res.data.data;
-      _that.setData({
-        region: res.data.provinces,
-        classl: res.data.services
+      that.setData({
+        region: res.data.data.provinces,
+        classl: res.data.data.services
       })
+
+      GetNavName(that);
     },
     fail: function (res) {
     }
@@ -536,5 +561,44 @@ function GetCitys(that, ProvinceId) {
         })
       }
     })
+  }
+}
+
+// 如果是参数进来，则获取名称
+function GetNavName(that){
+  console.log('参数进来了');
+  console.log(that);
+  var requests = that.data.requests;
+  if (requests.isarg){
+    requests.isarg=false;
+    if (that.classid > 0 && that.classl.length >0){
+      [].forEach.call(that.classl,function(item,i){
+        if (item.id == that.classid){
+          that.setData({
+            ClassName: item.title,
+            requests: requests
+          })
+        }
+      })
+    }
+    if ((that.provinceid > 0 || that.cityid > 0) && that.region.length>0){
+      var regionName ='';
+      [].forEach.call(that.region,function(item,i){
+        if (that.provinceid == item.id){
+          regionName=item.name;
+          if (item.citys.length > 0 && that.cityid>0){
+            [].forEach.call(item.citys,function(itemc,ic){
+              if(itemc.id == that.cityid){
+                regionName = itemc.name;
+              }
+            })
+          }
+          that.setData({
+            RegionName: regionName,
+            requests: requests
+          })
+        }
+      })
+    }
   }
 }

@@ -13,6 +13,18 @@ Page({
     Model:{},
     Notice:'',
   },
+  onShareAppMessage: function () {
+    return {
+      title: '专家名 - 亲密孕育专业人才库',
+      path: '/pages/lecturers/lecturers',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
+  },
   onReady: function () {
     wx.setNavigationBarTitle({
       title: '专家主页'

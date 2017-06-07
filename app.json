@@ -1,7 +1,7 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/lecturers/lecturers",
+   "pages/lecturers/lecturers",
     "pages/lecturer/lecturer",
     "pages/lecturerinfo/lecturerinfo",
     "pages/join/join",
@@ -13,7 +13,7 @@
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#714E9E",
-    "navigationBarTitleText": "亲密育儿人才库",
+    "navigationBarTitleText": "亲密孕育专业人才库",
     "navigationBarTextStyle":"#ffffff"
   } ,
   "tabBar": {
