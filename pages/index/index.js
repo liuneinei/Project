@@ -15,11 +15,23 @@ Page({
     requests: {
       // 查看的详情实体
       Model: {},
-    },
+    }
   },
+  onShareAppMessage: function () {
+      return {
+        title: '亲密育儿人才库',
+        path: '/pages/index/index',
+        success: function(res) {
+          // 转发成功
+        },
+        fail: function(res) {
+          // 转发失败
+        }
+      }
+    },
   onReady: function () {
     wx.setNavigationBarTitle({
-      title: '预约服务'
+      title: '亲密育儿人才库'
     })
   },
   onLoad: function () {

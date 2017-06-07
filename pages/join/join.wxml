@@ -144,3 +144,9 @@
   </form>
 </view>
 </block>
+<view class="showTost" hidden="{{tost.ishide}}">
+  <view class="tostConten">
+    <icon type="warn" size="35" />
+    <view class="tost-tip">{{tost.tip}}</view>
+  </view>
+</view>

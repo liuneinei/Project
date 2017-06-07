@@ -86,11 +86,11 @@ App({
       // 集合对象
       Config:{},
       // 默认定位北京市的
-      ProvinceId:1,
+      ProvinceId:20,
       // 默认定位北京市
-      ProvinceName:'北京市',
-      CityId:0,
-      CityName:'北京市'
+      ProvinceName:'广东省',
+      CityId:213,
+      CityName:'广州市'
     }
   }
 })
@@ -178,8 +178,8 @@ function GetGeo(that,region){
               // 记录省ID
               that.globalData.GeoMap.ProvinceId = item1.id;
               that.globalData.GeoMap.ProvinceName = item1.name;
-              [].forEach.call(item.citys, function (itemc, ic, arrc) {
-                if (itemc.name == Lcity && item.nop > 0) {
+              [].forEach.call(item1.citys, function (itemc, ic, arrc) {
+                if (itemc.name == Lcity && itemc.nop > 0) {
                   that.globalData.GeoMap.CityId = itemc.id;
                   that.globalData.GeoMap.CityName = itemc.name;
                 }

@@ -62,7 +62,7 @@
             </view>
 <block wx:if="{{requests.total <= 0}}">
   <view class="page-loading">
-    <text class="loading-text">抱歉,请求无数据</text>
+    <text class="loading-text">暂无专家</text>
   </view>
 </block>
 <block wx:else>

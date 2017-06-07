@@ -85,6 +85,20 @@ Page({
           Model: Model
         })
       // }
+
+
+    api.wxRequest({
+      data:{
+        id:Model.id
+      },
+      success:function(res){
+        console.log('讲师统计成功');
+      },
+      fail:function(res){
+        console.log('讲师统计失败');
+      }
+    },api.host+api.iUpdatePV);
+
       wx.hideToast();
     }
   },

@@ -55,8 +55,20 @@ Page({
     films: [],
     hasMore: true,
     showLoading: true,
-    start: 0
+    start: 0,
   },
+  onShareAppMessage: function () {
+      return {
+        title: '专家名 - 亲密育儿人才库',
+        path: '/pages/lecturers/lecturers',
+        success: function(res) {
+          // 转发成功
+        },
+        fail: function(res) {
+          // 转发失败
+        }
+      }
+    },
   onPullDownRefresh: function () {
     console.log('onPullDownRefresh', new Date())
   },
@@ -233,6 +245,7 @@ Page({
         if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
           citys.splice(0, 0, {
             "id": 0,
+            "nop":1,
             "name": "全省"
           });
         }
@@ -510,8 +523,16 @@ function GetCitys(that, ProvinceId) {
   if (ProvinceId > 0) {
     [].forEach.call(app.globalData.GeoMap.Config.provinces, function (item, i) {
       if (item.id == ProvinceId) {
+        var citys = item.citys;
+        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
+          citys.splice(0, 0, {
+            "id": 0,
+            "nop":1,
+            "name": "全省"
+          });
+        }
         that.setData({
-          citys: item.citys
+          citys: citys
         })
       }
     })

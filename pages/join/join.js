@@ -41,7 +41,13 @@ Page({
     // 时间戳
     utctime: (new Date()).getTime(),
     // 按钮颜色
-    BtnColor: 'background-color:#714e9e;color: #ffffff;'
+    BtnColor: 'background-color:#714e9e;color: #ffffff;',   
+    tost:{
+      ishide:true,
+      tip:'',
+      time:1,
+      js:0
+    }
   },
   onReady: function () {
     wx.setNavigationBarTitle({
@@ -339,7 +345,7 @@ function Getislecturer(that, openid){
       // --返回结果集
       var resObj = res.data.data;
       var dataObj = res.data;
-      if (dataObj.status != 0){
+      if (dataObj.status != 0 || resObj.length <= 0){
         objoin.status = 0
       }else{
         // 提交的对象
@@ -374,33 +380,36 @@ function Getislecturer(that, openid){
           })
           objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
           checkClassName = checkClassName.substr(0, checkClassName.length-1);
-        }
-        var utctime = (new Date()).getTime();
+        
+          var utctime = (new Date()).getTime();
 
-        objoin.img = resObj.face_img + '?wximg' + utctime;
-        objoin.name = resObj.name;
-        objoin.phone = resObj.phone;
-        objoin.wxname = resObj.wechat;
-        objoin.desc = resObj.intro;
-        objoin.notice = resObj.about;
-        objoin.institutions = resObj.train;
-        objoin.referee = resObj.referees;
-        objoin.idcard_z = resObj.idcard_up_img + '?wximg' + utctime;;
-        objoin.idcard_f = resObj.idcard_down_img + '?wximg' + utctime;;
-        objoin.certificate = resObj.cert_imgs+',';
-        var CertUrlses = resObj.cert_imgs.split(',');
-        if(CertUrlses.length > 0){
-          [].forEach.call(CertUrlses,function(item,i){
-            CertUrls.push(item + '?wxcert' + utctime);
-          });
-        }
-        objoin.status = resObj.status;
-        if (objoin.status==1){
-          objoin.msg='已提交，请等待审核';
-        }else if(objoin.status ==3){
-          objoin.msg = '您的信息审核已通过';
-        }else if(objoin.status == 2){
-          objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
+          objoin.img = resObj.face_img + '?wximg' + utctime;
+          objoin.name = resObj.name;
+          objoin.phone = resObj.phone;
+          objoin.wxname = resObj.wechat;
+          objoin.desc = resObj.intro;
+          objoin.notice = resObj.about;
+          objoin.institutions = resObj.train;
+          objoin.referee = resObj.referees;
+          objoin.idcard_z = resObj.idcard_up_img + '?wximg' + utctime;;
+          objoin.idcard_f = resObj.idcard_down_img + '?wximg' + utctime;;
+          objoin.certificate = resObj.cert_imgs+',';
+          var CertUrlses = resObj.cert_imgs.split(',');
+          if(CertUrlses.length > 0){
+            [].forEach.call(CertUrlses,function(item,i){
+              CertUrls.push(item + '?wxcert' + utctime);
+            });
+          }
+          objoin.status = resObj.status;
+          if (objoin.status==1){
+            objoin.msg='已提交，请等待审核';
+          }else if(objoin.status ==3){
+            objoin.msg = '您的信息审核已通过';
+          }else if(objoin.status == 2){
+            objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
+          }
+        }else{
+          objoin.status = 0;
         }
       }
       that.setData({
@@ -419,11 +428,8 @@ function Getislecturer(that, openid){
 // 定时保存
 function timesave(that){
   var _objoin = that.data.objoin;
-  if (_objoin.isedit){
-    wx.setStorage({
-      key: 'objoin',
-      data: _objoin,
-    })
+  if (_objoin.status == 0){
+    //BtnSave(that, false);
   }
   setTimeout(function () { timesave(that)},30000); 
 }
@@ -433,95 +439,137 @@ function BtnSave(that,tp){
   var openid = that.data.userInfo.openId;
   // 数据对象
   var objoin = that.data.objoin;
+
+  var tost = that.data.tost;
+
   if ((openid == 'undefined' || openid == '') && tp){
-    wx.showToast({
-      title: '未授权登录',
-      duration:500
+    tost.ishide = false;
+    tost.tip ='未授权登录';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.img == '' && tp) {
-    wx.showToast({
-      title: '请上传头像',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请上传头像';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if ((objoin.province == '' || objoin.city == '') && tp) {
-    wx.showToast({
-      title: '请选择城市',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请选择城市';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.classid == '' && tp) {
-    wx.showToast({
-      title: '请选择认证行业',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请选择认证行业';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.name == '' && tp) {
-    wx.showToast({
-      title: '请填写姓名',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写姓名';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.phone == '' && tp) {
-    wx.showToast({
-      title: '请填写手机',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写手机';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.wxname == '' && tp) {
-    wx.showToast({
-      title: '请填写微信号',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写微信号';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.desc == '' && tp) {
-    wx.showToast({
-      title: '请填写简介',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写简介';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.notice == '' && tp) {
-    wx.showToast({
-      title: '请填写介绍',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写介绍';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.institutions == '' && tp) {
-    wx.showToast({
-      title: '请填写培训机构',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请填写培训机构';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.idcard_z == '' && tp) {
-    wx.showToast({
-      title: '请上传身份正面',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请上传身份正面';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.idcard_f == '' && tp) {
-    wx.showToast({
-      title: '请上传身份反面',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请上传身份反面';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   if (objoin.certificate == '' && tp) {
-    wx.showToast({
-      title: '请上传专业证书',
-      duration: 500
+    tost.ishide = false;
+    tost.tip ='请上传专业证书';
+    that.setData({
+      tost:tost
     })
+    // 隐藏
+    hideToasts(that);
     return;
   }
   var certificate_str = objoin.certificate;
@@ -690,4 +738,25 @@ function ChooesImage(that, key,uptoken, types) {
 // 按钮颜色改变
 function UpdateBtnColor(that,objoinid){
 
+}
+// 隐藏
+function hideToasts(that){
+  var tost = that.data.tost;
+  if(tost.js <= 0){
+    tost.js = tost.time;
+  }else{
+    tost.js = tost.js - 1;
+  }
+  if(tost.js<=0){
+    tost.ishide = true;
+    tost.tip = '';
+    tost.js = 0;
+    that.setData({
+      tost:tost
+    })
+  }else{
+    setTimeout(function(){
+      hideToasts(that);
+    },1200);
+  }
 }

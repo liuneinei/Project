@@ -63,8 +63,10 @@
                 <view class="m_t">
                     <view class="m_t_l">{{lecturer.name}}</view>
                     <view class="m_t_r">
-                      <block wx:for="{{lecturer.service}}">
-                        {{item.title}}
+                      <block wx:if="{{lecturer.service.length > 0}}">
+                        <block wx:for="{{lecturer.service}}">
+                            {{item.title}}
+                        </block>
                       </block>
                     </view>
                 </view>

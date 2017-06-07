@@ -21,6 +21,8 @@ const iLecturer = '/getlecturer';
 const iRecommend = '/getrecommend';
 // 删除图片 /deleteImg?filename=face/undefined.jpg
 const iDeleteImg = '/deleteImg';
+// 讲师详情页发起统计
+const iUpdatePV = '/updatePV';
 
 // 地图Key
 const QQMapKey = 'CHMBZ-NCVWU-QQDVS-BVMRK-RYFNZ-FDFXA';
@@ -76,4 +78,6 @@ module.exports = {
   iRecommend,
   // 删除图片
   iDeleteImg,
+  // 讲师详情页发起统计
+  iUpdatePV,
 }

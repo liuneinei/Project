@@ -72,6 +72,8 @@
  line-height: 50rpx;
  padding: 0 30rpx 0 30rpx; 
  display:block;
+ white-space:pre-line;
+ word-break: normal;
 }
 .item-main .item__frame .item-indent{
   text-indent: 2em;
