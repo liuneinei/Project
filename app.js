@@ -153,6 +153,8 @@ function GetGeo(that,region){
   wx.getLocation({
     type: 'wgs84',
     success: function (res) {
+      console.log('wgs 84 success');
+      console.log(res);
       // 调用接口
       qqmapwx.reverseGeocoder({
         location: {
@@ -162,6 +164,8 @@ function GetGeo(that,region){
           longitude: res.longitude
         },
         success: function (res) {
+          console.log('get location success');
+          console.log(res);
           var region2 = region;
           var Lprovince = res.result.ad_info.province;
           var Lcity = res.result.ad_info.city;
@@ -185,8 +189,20 @@ function GetGeo(that,region){
               })
             }
           });
+        },
+        fail: function (res) {
+          console.log('get location fail.');
+          console.log(res);
         }
       });
+    },
+    fail: function (res) {
+      console.log('get wgs84 fail.');
+      console.log(res);
+    },
+    complete:function(res){
+      console.log('get wgs84 complete.');
+      console.log(res);
     }
   });
 }

@@ -474,7 +474,7 @@ function IndexSwitch(that) {
       provinceid: options.provinceid,
       // 省的标题
       RegionName: options.province,
-      ProvinceName: '',
+      ProvinceName: GeoMap.ProvinceName,
       // 选中的市
       cityid: options.CityId,
       requests: requests,
@@ -535,18 +535,26 @@ function SetDataNav(that){
   console.log('b1');
   var dataObj= that.data;
   console.log(that);
+  var ProvinceName='';
   var regionName='';
-  var ClassName='';
   var citys=[];
   if(dataObj.region.length>0){
     [].forEach.call(dataObj.region,function(item,i){
       if(item.id== dataObj.provinceid){
         regionName=item.name;
+        ProvinceName = item.name;
         citys = item.citys;
+        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
+          citys.splice(0, 0, {
+            "id": 0,
+            "nop": 1,
+            "name": "全省"
+          });
+        }
          if (item.name.indexOf('市') < 0) {
            if(item.citys.length >0){
              [].forEach.call(item.citys,function(itemc,i){
-               if(itemc.id == dataObj.cityid){
+               if (itemc.id > 0 && itemc.id == dataObj.cityid){
                  regionName = itemc.name;
                }
              });
@@ -554,19 +562,21 @@ function SetDataNav(that){
          }
       }
     });
-    that.setData({
-      RegionName:regionName,
-      citys:citys
-    });
+    if (regionName != ''){
+      that.setData({
+        ProvinceName: ProvinceName,
+        RegionName:regionName,
+        citys:citys
+      });
+    }
   }
   if(dataObj.classl.length>0){
     [].forEach.call(dataObj.classl,function(citem,i){
       if(citem.id == dataObj.classid){
-        ClassName = citem.title
+        that.setData({
+          ClassName: citem.title
+        });
       }
-    });
-    that.setData({
-      ClassName:ClassName
     });
   }
 }

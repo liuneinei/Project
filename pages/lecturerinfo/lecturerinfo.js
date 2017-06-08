@@ -1,4 +1,6 @@
-var api = require('../../api/api.js')
+var api = require('../../api/api.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
 
 //index.js
 //获取应用实例
@@ -37,7 +39,12 @@ Page({
       title: '加载中',
       icon: 'loading',
       duration: 2500
-    })
+    });
+    // functions.getconfig(function(res){
+    //   functions.setdatas()
+    //   console.log('config - res');
+    //   console.log(res);
+    // })
     var that = this;
     that.setData({
       // 七牛文件查看域名
@@ -64,8 +71,8 @@ Page({
         });
       }
     }
-   var config = wx.getStorageSync('config')||{};
-   if(config.Config == 'undefined' || config.Config == undefined){
+   var config = wx.getStorageSync('config')||null;
+   if(!config){
     // 地区拉取API
     api.wxRequest({
       success: (res) => { 
@@ -79,7 +86,7 @@ Page({
     }, api.host + api.iconfig);
    }else{
      that.setData({
-        Notice: config.Config.Notice
+        Notice: config.Notice
       });
       GetAPi(that);
    }
@@ -109,11 +116,10 @@ function GetAPi(that){
             Model.city='';
             // 服务须知
             Model.notice='';
-            var config = wx.getStorageSync('config')||{};
-            console.log(config);
-            // 本地存储 - 城市
-            var provinces = config.provinces;// app.globalData.GeoMap.Config.provinces;
-            if(typeof provinces != 'undefined' && provinces != ''){
+            var config = wx.getStorageSync('config')||null;
+            if (config){
+              // 本地存储 - 城市
+              var provinces = config.provinces;// app.globalData.GeoMap.Config.provinces;
               [].forEach.call(provinces,function(item,i){
                 if (item.id == Model.province_id) {
                   Model.province = item.name;
