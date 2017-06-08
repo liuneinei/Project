@@ -47,7 +47,7 @@ const wxRequest = (params, url) => {
   })
 }
 
-const lgoinApi = (params) => wxRequest(params,wxlogin)
+const lgoinApi = (params) => wxRequest(params,wxlogin);
 
 module.exports = {
   // 主机域名

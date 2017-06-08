@@ -130,11 +130,9 @@ function Login(that, code, encryptedData, iv) {
 // 地区拉取API
 function GetRegion(that) {
   api.wxRequest({
-    success: (res) => {   
-      wx.setStorage({
-        key: 'config',
-        data: res.data.data,
-      })
+    success: (res) => {  
+      //同步存储
+      wx.setStorageSync('config', res.data.data);
       that.globalData.GeoMap.Config = res.data.data;
     },
     fail: function (res) {

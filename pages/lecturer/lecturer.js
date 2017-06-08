@@ -149,7 +149,7 @@ Page({
     // :end 处理默认值
 
     // 获取选项信息
-    GetConfig(app,that);
+    GetConfig(that);
 
     // 首页传过来的处理
     IndexSwitch(that);
@@ -366,11 +366,17 @@ function GetLecturer(that){
 }
 // 首页导航连接
 function IndexSwitch(that){
+  console.log('1');
   var options = {};
+  console.log('2');
   var GeoMap = app.globalData.GeoMap;
+  console.log('3');
   options.provinceid = GeoMap.ProvinceId;
+  console.log('4');  
   options.province = GeoMap.ProvinceName;
+   console.log('5');  
   options.CityId = 0;
+   console.log('6');  
   var goblaLec = app.globalData.lecturer;
   if (goblaLec.isShow) {
     if (GeoMap.CityId > 0) {
@@ -418,49 +424,26 @@ function IndexSwitch(that){
 }
 
 // 获取选项信息
-function GetConfig(_app,_that){
-  var config = _app.globalData.GeoMap.Config;
-  if(config.length<=0){
-    // 本地存储 - 城市
-    wx.getStorage({
-      key: 'config',
-      success: function (res) {
-        if(res.data.length>0){
-          _that.setData({
-            region: res.data.provinces,
-            classl: res.data.services
-          })
-        }else{
-          GetConfigHttp(_app, _that);
-        }
-      },
-      fail:function(res){
-        GetConfigHttp(_app, _that);
+function GetConfig(that){
+  var config = wx.getStorageSync('config')||{};
+   if(config.Config == 'undefined' || config.Config == undefined){
+      // 地区拉取API
+    api.wxRequest({
+      success: (res) => { 
+        //同步存储
+        wx.setStorageSync('config', res.data.data);
+        that.setData({
+          region: config.provinces,
+          classl: config.services
+        });
       }
-    })
-  }else{
-    _that.setData({
-      region: config.provinces,
-      classl: config.services
-    })
-  }
-}
-function GetConfigHttp(_app, _that){
-  api.wxRequest({
-    success: (res) => {
-      wx.setStorage({
-        key: 'config',
-        data: res.data.data,
-      })
-      _app.globalData.GeoMap.Config = res.data.data;
-      _that.setData({
-        region: res.data.provinces,
-        classl: res.data.services
-      })
-    },
-    fail: function (res) {
-    }
-  }, api.host + api.iconfig)
+    }, api.host + api.iconfig);
+   }else{
+      that.setData({
+          region: config.provinces,
+          classl: config.services
+        });
+   }
 }
 
 // 如果省ID 大于0 ，则初始化默认加载市

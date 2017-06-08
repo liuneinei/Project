@@ -107,7 +107,6 @@ Page({
     })
     // 首页传过来的处理
     IndexSwitch(that);
-    
   },
   onLoad: function (option) {
     wx.showToast({
@@ -123,29 +122,11 @@ Page({
       // 七牛文件查看域名
       host: api.iQiniu,
       iImgExt: api.iImgExt
-    })
-    // :begin 处理默认值
-    var GeoMap = app.globalData.GeoMap;
-      if (GeoMap.CityId > 0) {
-        that.setData({
-          // 选中的省
-          provinceid: GeoMap.ProvinceId,
-          // 选中的市
-          cityid: GeoMap.CityId,
-          // 地区标题
-          RegionName: GeoMap.CityName,
-        });
-      } else {
-        that.setData({
-          // 选中的省
-          provinceid: GeoMap.ProvinceId,
-          // 地区标题
-          RegionName: GeoMap.ProvinceName,
-        });
-      }
-    
-    // :end 处理默认值
+    });
+    console.log('app');
+
     if (provinceid > 0 || cityid > 0 || classid > 0) {
+      console.log('1');
       var requests = that.data.requests;
       requests.isarg = true;
       that.setData({
@@ -154,14 +135,41 @@ Page({
         classid: classid,
         requests: requests
       });
+    }else{
+      console.log('2');
+      // :begin 处理默认值
+      var GeoMap = app.globalData.GeoMap||{};
+        if (GeoMap.CityId > 0) {
+          that.setData({
+            // 选中的省
+            provinceid: GeoMap.ProvinceId,
+            // 选中的市
+            cityid: GeoMap.CityId,
+            // 地区标题
+            RegionName: GeoMap.CityName,
+          });
+        } else {
+          that.setData({
+            // 选中的省
+            provinceid: GeoMap.ProvinceId,
+            // 地区标题
+            RegionName: GeoMap.ProvinceName,
+          });
+        }
+      
+      // :end 处理默认值
     }
+
+    console.log('3');
     // 获取选项信息
-    GetConfig(app, that);
+    GetConfig(that);
     // GetConfigHttp(app,that);
     // 首页传过来的处理
     // IndexSwitch(that);
     var requests = that.data.requests;
+    console.log('4');
     if (!requests.isLoad){
+      console.log('5');
       // 讲师列表
       GetLecturer(that);
     }
@@ -491,58 +499,79 @@ function IndexSwitch(that) {
 }
 
 // 获取选项信息
-function GetConfig(_app, that) {
-  var config = _app.globalData.GeoMap.Config;
-  console.log('获取全局');
-  console.log((config.provinces == undefined || config.provinces == 'undefined' || config.provinces.length <= 0 || config.services.length <= 0));
-  if (config.provinces == undefined || config.provinces == 'undefined' || config.provinces.length <= 0 || config.services.length<=0) {
-    // 本地存储 - 城市
-    wx.getStorage({
-      key: 'config',
-      success: function (res) {
-        if (res.data) {
-          that.setData({
-            region: res.data.provinces,
-            classl: res.data.services
-          })
-          app.globalData.GeoMap.Config = res.data;
-          GetNavName(that);
-        } else {
-          GetConfigHttp(_app, that);
-        }
-      },
-      fail: function (res) {
-        GetConfigHttp(_app, that);
+function GetConfig(that) {
+  console.log('a1');
+   var config = wx.getStorageSync('config')||{};
+   if(config.Config == 'undefined' || config.Config == undefined){
+     console.log('a2');
+      // 地区拉取API
+    api.wxRequest({
+      success: (res) => { 
+        console.log('a3');
+        console.log(that);
+        console.log(res);
+        //同步存储
+        wx.setStorageSync('config', res.data.data);
+        that.setData({
+          region: res.data.data.provinces,
+          classl: res.data.data.services
+        });
+        console.log('a3-1');
+      console.log(that);
+        SetDataNav(that);
       }
-    })
-  } else {
+    }, api.host + api.iconfig);
+   }else{
+     console.log('a4');
+      that.setData({
+          region: config.provinces,
+          classl: config.services
+        });
+        SetDataNav(that);
+   }
+}
+//设置标头
+function SetDataNav(that){
+  console.log('b1');
+  var dataObj= that.data;
+  console.log(that);
+  var regionName='';
+  var ClassName='';
+  var citys=[];
+  if(dataObj.region.length>0){
+    [].forEach.call(dataObj.region,function(item,i){
+      if(item.id== dataObj.provinceid){
+        regionName=item.name;
+        citys = item.citys;
+         if (item.name.indexOf('市') < 0) {
+           if(item.citys.length >0){
+             [].forEach.call(item.citys,function(itemc,i){
+               if(itemc.id == dataObj.cityid){
+                 regionName = itemc.name;
+               }
+             });
+           }
+         }
+      }
+    });
     that.setData({
-      region: config.provinces,
-      classl: config.services
-    })
-
-    GetNavName(that);
+      RegionName:regionName,
+      citys:citys
+    });
+  }
+  if(dataObj.classl.length>0){
+    [].forEach.call(dataObj.classl,function(citem,i){
+      if(citem.id == dataObj.classid){
+        ClassName = citem.title
+      }
+    });
+    that.setData({
+      ClassName:ClassName
+    });
   }
 }
-function GetConfigHttp(_app, that) {
-  api.wxRequest({
-    success: function(res){
-      wx.setStorage({
-        key: 'config',
-        data: res.data.data,
-      })
-      _app.globalData.GeoMap.Config = res.data.data;
-      that.setData({
-        region: res.data.data.provinces,
-        classl: res.data.data.services
-      })
 
-      GetNavName(that);
-    },
-    fail: function (res) {
-    }
-  }, api.host + api.iconfig)
-}
+
 // 如果省ID 大于0 ，则初始化默认加载市
 function GetCitys(that, ProvinceId) {
   if (ProvinceId > 0) {

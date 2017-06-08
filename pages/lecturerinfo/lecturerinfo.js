@@ -14,9 +14,11 @@ Page({
     Notice:'',
   },
   onShareAppMessage: function () {
+    var that = this;
+    var imodel = that.data.Model;
     return {
-      title: '专家名 - 亲密孕育专业人才库',
-      path: '/pages/lecturers/lecturers',
+      title: imodel.name + ' - 亲密孕育专业人才库',
+      path: '/pages/lecturerinfo/lecturerinfo?id='+imodel.id,
       success: function (res) {
         // 转发成功
       },
@@ -34,31 +36,14 @@ Page({
     wx.showToast({
       title: '加载中',
       icon: 'loading',
-      duration: 1000
+      duration: 2500
     })
     var that = this;
     that.setData({
       // 七牛文件查看域名
       host: api.iQiniu,
       iImgExt: api.iImgExt
-    })
-    var Notice = app.globalData.GeoMap.Config.Notice;
-    if(Notice == 'undefined' || Notice == null){
-      Notice ='';
-      wx.getStorage({
-        key: 'config',
-        success: function(res) {
-          Notice = res.data.Notice;
-          that.setData({
-            Notice: Notice
-          });
-        },
-      })
-    }else{
-      that.setData({
-        Notice: Notice
-      });
-    }
+    });
 
     //获取页面栈
     var pages = getCurrentPages();
@@ -66,53 +51,38 @@ Page({
       //上一个页面实例对象
       var prePage = pages[pages.length - 2];
       var Model = prePage.data.requests.Model;
-      // 省名
-      Model.province = '';
-      // 市名
-      Model.city='';
-      // 服务须知
-      Model.notice='';
-      // 本地存储 - 城市
-      var provinces = app.globalData.GeoMap.Config.provinces;
-      if(typeof provinces != 'undefined'){
-        [].forEach.call(provinces,function(item,i){
-          if (item.id == Model.province_id) {
-            Model.province = item.name;
-            var pIndex = item.name.indexOf('市');
-            if (pIndex < 0) {
-              var citys = item.citys;
-              // :begin 遍历市
-              [].forEach.call(citys, function (citem, ci, carr) {
-                if (citem.id == Model.city_id) {
-                  // 市名
-                  Model.city = citem.name;
-                }
-              });
-            }
-          }
-        });
-      }
-      // if (Model.id == option.id){
         that.setData({
           Model: Model
-        })
-      // }
-
-
-    api.wxRequest({
-      data:{
-        id:Model.id
-      },
-      success:function(res){
-        console.log('讲师统计成功');
-      },
-      fail:function(res){
-        console.log('讲师统计失败');
+        });
+    }else{
+      var id= option.id;
+      if(id!=undefined && id!='undefined' && id>0){
+        var Model = that.data.Model;
+        Model.id = id;
+        that.setData({
+          Model:Model
+        });
       }
-    },api.host+api.iUpdatePV);
-
-      wx.hideToast();
     }
+   var config = wx.getStorageSync('config')||{};
+   if(config.Config == 'undefined' || config.Config == undefined){
+    // 地区拉取API
+    api.wxRequest({
+      success: (res) => { 
+        //同步存储
+        wx.setStorageSync('config', res.data.data);
+        that.setData({
+          Notice: res.data.data.Notice
+        });
+         GetAPi(that);
+      }
+    }, api.host + api.iconfig);
+   }else{
+     that.setData({
+        Notice: config.Config.Notice
+      });
+      GetAPi(that);
+   }
   },
   // :begin 事件处理
   // 拨打电话
@@ -124,3 +94,50 @@ Page({
   }
   // :end 事件处理
 })
+
+function GetAPi(that){
+  var Model = that.data.Model;
+  api.wxRequest({
+      data:{
+          id:Model.id
+        },
+        success:function(res){
+            Model = res.data.data;
+            // 省名
+            Model.province = '';
+            // 市名
+            Model.city='';
+            // 服务须知
+            Model.notice='';
+            var config = wx.getStorageSync('config')||{};
+            console.log(config);
+            // 本地存储 - 城市
+            var provinces = config.provinces;// app.globalData.GeoMap.Config.provinces;
+            if(typeof provinces != 'undefined' && provinces != ''){
+              [].forEach.call(provinces,function(item,i){
+                if (item.id == Model.province_id) {
+                  Model.province = item.name;
+                  var pIndex = item.name.indexOf('市');
+                  if (pIndex < 0) {
+                    var citys = item.citys;
+                    // :begin 遍历市
+                    [].forEach.call(citys, function (citem, ci, carr) {
+                      if (citem.id == Model.city_id) {
+                        // 市名
+                        Model.city = citem.name;
+                      }
+                    });
+                  }
+                }
+              });
+            }
+            that.setData({
+              Model: Model
+            });
+            wx.hideToast();
+        },
+        fail:function(res){
+          wx.hideToast();
+        }
+      },api.host+api.iUpdatePV);
+}
