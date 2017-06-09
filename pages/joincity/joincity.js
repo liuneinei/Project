@@ -51,10 +51,6 @@ Page({
         }
       });
 
-      citys.splice(0, 0, {
-        "id": 0,
-        "name": "全省"
-      });
       that.setData({
         regnavCus: pid,
         citys: citys,

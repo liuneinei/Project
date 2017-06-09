@@ -72,9 +72,20 @@ Page({
       userInfo: userInfo
     })
     // OpenId
-    var openid = userInfo.openId;
-    // 获取加入我们
-    Getislecturer(that, openid)
+    userInfo=userInfo||{};
+    var openid = userInfo.openId || '';
+    var objoin = that.data.objoin;
+    if(openid == ''){
+      objoin.status = 0;
+      that.setData({
+        objoin:objoin
+      });
+
+      wx.hideToast();
+    }else{
+      // 获取加入我们
+      Getislecturer(that, openid);
+    }
 
     // 定时保存
     timesave(that);
