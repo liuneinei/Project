@@ -25,9 +25,14 @@ const getlocation = (fb)=>{
           typeof fb === 'function' && fb(res.result);
         },
         fail: function (res) {
-          console.log(res);
+          res.status = false;
+          typeof fb === 'function' && fb(res.result);
         }
       });
+    },
+    fail:function(res){
+      res.status = false;
+      typeof fb === 'function' && fb(res);
     }
   });
 }
@@ -54,15 +59,35 @@ const getconfig = (fb) => {
   }
 }
 
-const setdatas = (co)=>{
-  var that = this;
-  console.log(that);
-  console.log(co);
-  
+const setdatas = (map_data,fb)=>{
+  console.log('setdatas 处理地理信息');
+  var province_name = map_data.ad_info.province;
+  var city_name = map_data.ad_info.city;
+  if (configs.store.provinces != undefined){
+    // 遍历集
+    [].forEach.call(configs.store.provinces, function (item, i) {
+      if (item.name == province_name && item.nop > 0) {
+        // 记录省ID
+        configs.province_id = item.id;
+        configs.province_name = item.name;
+        if(item.citys != undefined){
+          [].forEach.call(item.citys, function (itemc, ic) {
+            if (itemc.name == city_name && itemc.nop > 0) {
+              configs.city_id = itemc.id;
+              configs.city_name = itemc.name;
+            }
+          });
+        }
+      }
+    });
+  }
+  typeof fb === 'function' && fb();
 }
 module.exports = {
   // 获取config
   getconfig,
+  // 获取location
+  getlocation,
   // 设置data
   setdatas,
 }

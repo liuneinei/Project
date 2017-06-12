@@ -1,18 +1,58 @@
 var api = require('../../api/api.js')
 var aldstat = require('../../utils/ald-stat.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
 //获取应用实例
 var app = getApp()
 Page({
   data: {
+    // 配置信息
     Config:{
       // 主机域名 - 七牛文件
       host: '',
+      // 七牛的追加后缀名
       iImgExt: '',
+      // 屏幕高度，默认值
+      wHeight: 300,
     },
-    
-    // 屏幕高度
-    wHeight: 300,
-
+    // 分类
+    Class:{
+      // 分类id
+      id:0,
+      // 分类导航名称
+      name:'全部'
+    },
+    // 城市
+    Region:{
+      // 省id
+      pid:0,
+      // 市id
+      cid:0,
+      // 省名称
+      pname:'',
+      // 城市导航名
+      showname:''
+    },
+    // 集合
+    List:{
+      // 分类集合
+      classList:[],
+      // 城市集合
+      regionList:[],
+      // 讲师集合
+      lecturerList:[]
+    },
+    // 请求参数
+    Req:{
+      // 当前页码
+      index:0,
+      // 总记录数
+      total:1,
+      // 是否正在加载，解决多次向上拉加载请求
+      loading:true,
+      // 是否为向上拉加载，解决是否需要追加集还是绑定集
+      scroll:false
+    }
   },
   onShareAppMessage: function () {
     var that = this;
@@ -31,58 +71,72 @@ Page({
     });
   },
   onLoad: function (option) {
-     var res = wx.getSystemInfoSync()
-  console.log(res.model)
+    var that = this;
     wx.showToast({
       title: '加载中',
       icon: 'loading',
       duration: 1500
     });
-    var provinceid = option.provinceid || 0;
-    var cityid = option.cityid || 0;
-    var classid = option.classid || 0;
-    var that = this;
     that.setData({
       // 七牛文件查看域名
       host: api.iQiniu,
       iImgExt: api.iImgExt
     });
 
-    if (provinceid > 0 || cityid > 0 || classid > 0) {
-      var requests = that.data.requests;
-      requests.isarg = true;
+    // 分类 Object
+    var Class = that.data.Class;
+    // 城市 Object
+    var Region = that.data.Region;
+    // 是否为参数传入 ?arg=true
+    option.arg = option.arg || false;
+    if (option.arg) {
+      Region.pid = option.provinceid || 0;
+      Region.cid = option.cityid || 0;
+      Class.id = option.classid || 0;
+      // 设置保存值
       that.setData({
-        provinceid: provinceid,
-        cityid: cityid,
-        classid: classid,
-        requests: requests
+        Class: Class,
+        Region: Region
       });
-    }else{
-      console.log('2');
-      // :begin 处理默认值
-      var GeoMap = app.globalData.GeoMap||{};
-        if (GeoMap.CityId > 0) {
-          that.setData({
-            // 选中的省
-            provinceid: GeoMap.ProvinceId,
-            // 选中的市
-            cityid: GeoMap.CityId,
-            // 地区标题
-            RegionName: GeoMap.CityName,
-          });
-        } else {
-          that.setData({
-            // 选中的省
-            provinceid: GeoMap.ProvinceId,
-            // 地区标题
-            RegionName: GeoMap.ProvinceName,
-          });
-        }
-      
-      // :end 处理默认值
     }
 
-    console.log('3');
+    // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+    functions.getconfig(function(res){
+      // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
+      if (configs.is_default){
+        console.log('第二步，获取Geo1');
+        functions.getlocation(function(res2){
+          console.log('第二步，获取location Back.');
+          res2.status = res2.status || true;
+          // 默认返回True
+          if (res2.status){
+            functions.setdatas(res2,function(){
+              console.log('打印默认值');
+              console.log(configs);
+            });
+          }else{
+            // 使用默认值
+          }
+        });
+      }else{
+        console.log('第二步，获取Geo2');
+        if (!option.arg){
+          // 不是参数值，而是定位值
+          Region.pid = configs.province_id || 0;
+          Region.cid = configs.city_id || 0;
+          Class.id = 0;
+          // 设置保存值
+          that.setData({
+            Class: Class,
+            Region: Region
+          });
+        }
+      }
+    });
+    
+    // 第三步 设置导航名称
+    // 第四步 请求讲师API
+
     // 获取选项信息
     GetConfig(that);
     // GetConfigHttp(app,that);
@@ -284,6 +338,30 @@ Page({
   // :end 事件处理
 })
 
+function SetConfigs(that,mapdata){
+  var Lprovince = res.result.ad_info.province;
+  var Lcity = res.result.ad_info.city;
+  // 遍历,得到默认的ID
+  [].forEach.call(region, function (item, i, arr) {
+    if (item.name == that.globalData.GeoMap.ProvinceName) {
+      that.globalData.GeoMap.ProvinceId = item.id;
+    }
+  });
+  // 遍历集
+  [].forEach.call(region2, function (item1, i1, arr1) {
+    if (item1.name == Lprovince && item1.nop > 0) {
+      // 记录省ID
+      that.globalData.GeoMap.ProvinceId = item1.id;
+      that.globalData.GeoMap.ProvinceName = item1.name;
+      [].forEach.call(item1.citys, function (itemc, ic, arrc) {
+        if (itemc.name == Lcity && itemc.nop > 0) {
+          that.globalData.GeoMap.CityId = itemc.id;
+          that.globalData.GeoMap.CityName = itemc.name;
+        }
+      })
+    }
+  });
+}
 
 // 讲师列表
 function GetLecturer(that) {
