@@ -1,8 +1,9 @@
 {
   "pages":[
-    "pages/index/index",
-   "pages/lecturers/lecturers",
     "pages/lecturer/lecturer",
+    "pages/index/index",
+    "pages/lecturers/lecturers",
+    
     "pages/lecturerinfo/lecturerinfo",
     "pages/join/join",
     "pages/joinclass/joinclass",

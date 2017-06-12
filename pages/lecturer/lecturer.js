@@ -1,81 +1,120 @@
 var api = require('../../api/api.js')
-// 引入SDK核心类
-var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js');
-//index.js
+var aldstat = require('../../utils/ald-stat.js');
 //获取应用实例
 var app = getApp()
 Page({
   data: {
-    userInfo: {},
-    // 主机域名 - 七牛文件
-    host: '',
-    iImgExt:'',
+    Config:{
+      // 主机域名 - 七牛文件
+      host: '',
+      iImgExt: '',
+    },
+    
     // 屏幕高度
     wHeight: 300,
-    // 是否隐藏
-    geoshow:true,
-    // 显示的操作 1分类 2城市
-    classshow:0,
-    // 分类集(json)
-    classl: [],
-    // 省集(json)
-    region: [],
-    // 市集(json)
-    citys:[],
-    // 选中的分类
-    classid: 0,
-    // 选中的省
-    provinceid: 0,
-    // 选中的市
-    cityid: 0,
-    // 分页指数
-    requests:{
-      // 当前页码
-      page:0,
-      // 总页数
-      total:1,
-      // 是否请求失败
-      isfail:false,
-      // 是否下拉
-      isscrolltolower:true,
-      // 查看的详情实体
-      Model:{},
+
+  },
+  onShareAppMessage: function () {
+    var that = this;
+      return {
+        title: '亲密孕育专业人才库',
+        path: '/pages/lecturers/lecturers' + arg
+      }
     },
-    // 分类标题
-    ClassName: '全部',
-    // 地区标题
-    RegionName: '选择地区',
-    ProvinceName:'',
-    // 讲师列表
-    lecturers: [],
+  // 显示页
+  onShow: function (options) {
+    var that = this;
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1500
+    });
   },
-  onPullDownRefresh: function () {
-      wx.stopPullDownRefresh();
-      // console.log('onPullDownRefresh', new Date());
-  },
-  scroll: function (e) {
-    // console.log('scroll'+e)
+  onLoad: function (option) {
+     var res = wx.getSystemInfoSync()
+  console.log(res.model)
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1500
+    });
+    var provinceid = option.provinceid || 0;
+    var cityid = option.cityid || 0;
+    var classid = option.classid || 0;
+    var that = this;
+    that.setData({
+      // 七牛文件查看域名
+      host: api.iQiniu,
+      iImgExt: api.iImgExt
+    });
+
+    if (provinceid > 0 || cityid > 0 || classid > 0) {
+      var requests = that.data.requests;
+      requests.isarg = true;
+      that.setData({
+        provinceid: provinceid,
+        cityid: cityid,
+        classid: classid,
+        requests: requests
+      });
+    }else{
+      console.log('2');
+      // :begin 处理默认值
+      var GeoMap = app.globalData.GeoMap||{};
+        if (GeoMap.CityId > 0) {
+          that.setData({
+            // 选中的省
+            provinceid: GeoMap.ProvinceId,
+            // 选中的市
+            cityid: GeoMap.CityId,
+            // 地区标题
+            RegionName: GeoMap.CityName,
+          });
+        } else {
+          that.setData({
+            // 选中的省
+            provinceid: GeoMap.ProvinceId,
+            // 地区标题
+            RegionName: GeoMap.ProvinceName,
+          });
+        }
+      
+      // :end 处理默认值
+    }
+
+    console.log('3');
+    // 获取选项信息
+    GetConfig(that);
+    // GetConfigHttp(app,that);
+    // 首页传过来的处理
+    // IndexSwitch(that);
+    var requests = that.data.requests;
+    console.log('4');
+    if (!requests.isLoad){
+      console.log('5');
+      // 讲师列表
+      GetLecturer(that);
+    }
   },
   scrolltolower: function () {
-    // console.log('scrolltolower')
     var that = this
+    console.log('scrolltolower => 刷新1');
+    console.log('scrolltolower => 刷新2');
     var requests = that.data.requests;
-    if (requests.page < requests.total){
-      wx.showToast({
-        title: '加载中',
-        icon: 'loading'
-      })
+    if (!requests.isLoad){
       // 处理是否为下拉刷新
-      requests.isscrolltolower=true;
+      requests.isscrolltolower = true;
       that.setData({
         requests: requests
       })
       // 讲师列表
       GetLecturer(that)
+    }else{
+      console.log('scrolltolower => 刷新 => 驳回');
     }
   },
   // 详情
-  bingInfo:function(event){
+  bingInfo: function (event) {
     var that = this;
     var id = event.currentTarget.dataset.id;
     var obj = event.currentTarget.dataset.obj;
@@ -85,114 +124,41 @@ Page({
       requests: requests
     })
     wx.navigateTo({
-      url: '../lecturerinfo/lecturerinfo?id='+id
+      url: '../lecturerinfo/lecturerinfo?id=' + id
     })
-  },
-  // 显示页
-  onShow: function (options){
-    var that = this;
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading',
-      duration: 1500
-    })
-    // 首页传过来的处理
-    IndexSwitch(that);
-  },
-  onLoad: function (options) {
-    wx.showToast({
-      title: '加载中',
-      icon: 'loading',
-      duration:1500
-    })
-    var that = this;
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function (userInfo) {
-      //更新数据
-      that.setData({
-        userInfo: userInfo
-      })
-    });
-    // 获取系统信息，提取屏幕高度
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          wHeight: res.windowHeight - 90
-        })
-      }
-    })
-    that.setData({
-      // 七牛文件查看域名
-      host: api.iQiniu,
-      iImgExt: api.iImgExt
-    })
-
-    // :begin 处理默认值
-    var GeoMap = app.globalData.GeoMap;
-    if (GeoMap.CityId > 0){
-      that.setData({
-        // 选中的省
-        provinceid: GeoMap.ProvinceId,
-        // 选中的市
-        cityid: GeoMap.CityId,
-        // 地区标题
-        RegionName: GeoMap.CityName,
-      })
-    }else{
-      that.setData({
-        // 选中的省
-        provinceid: GeoMap.ProvinceId,
-        // 地区标题
-        RegionName: GeoMap.ProvinceName,
-      })
-    }
-    // :end 处理默认值
-
-    // 获取选项信息
-    GetConfig(that);
-
-    // 首页传过来的处理
-    IndexSwitch(that);
-    
-    // 讲师列表
-    GetLecturer(that)
   },
   // :beging 事件处理
   //服务选项
-  ClassdTap:function(e){
+  ClassdTap: function (e) {
     var that = this;
     var classl = that.data.classl;
-    console.log('服务数据加载');   
-    console.log(that);     
-    console.log('服务项数据加载，count=>' + classl.length);
-    if (classl.length>0){
-      // 本地存储 - 城市
-      wx.getStorage({
-        key: 'config',
-        success: function (res) {
-          that.setData({
-            region: res.data.provinces,
-            classl: res.data.services
-          })
-        },
+    if (classl.length === 0) {
+      var Config = app.globalData.GeoMap.Config;
+      that.setData({
+        region: Config.provinces,
+        classl: Config.services
       })
     }
-    
+
     var classshow = 1;
-     var geoshow=false;
-     if (that.data.classshow == 1){
-      classshow=0;
-       geoshow=true;
+    var geoshow = false;
+    if (that.data.classshow == 1) {
+      classshow = 0;
+      geoshow = true;
     }
-     that.setData({
+    that.setData({
       geoshow: geoshow,
-      classshow: classshow,
+      classshow: classshow
     });
   },
   // 地区选择
-  RegionTap:function(e){
-    var that = this; 
+  RegionTap: function (e) {
+    var that = this;
     var region = that.data.region;
+    console.log('城市数据加载');
+    console.log(that);
+    console.log(app);
+    console.log('城市项数据加载，count=>' + region.length);
     if (region.length > 0) {
       // 本地存储 - 城市
       wx.getStorage({
@@ -206,10 +172,10 @@ Page({
       })
     }
     var classshow = 2;
-    var geoshow=false;
-    if (that.data.classshow == 2){
-      classshow=0;
-      geoshow=true;
+    var geoshow = false;
+    if (that.data.classshow == 2) {
+      classshow = 0;
+      geoshow = true;
     }
     that.setData({
       geoshow: geoshow,
@@ -217,34 +183,40 @@ Page({
     });
   },
   // 选择省
-  ProvinceTap: function (event){
-    var that = this;  
-    var citys=[];
+  ProvinceTap: function (event) {
+    var that = this;
+    var citys = [];
     var pid = event.currentTarget.dataset.id;
     var pName = event.currentTarget.dataset.name;
     [].forEach.call(that.data.region, function (item, i, arr) {
-        if (item.id == pid) {
-          citys = item.citys;
-          if(citys[0].id != 0 && item.name.indexOf('市')<0){
-            citys.splice(0, 0, {
-              "id": 0,
-              "name": "全省"
-            });
-          }
+      if (item.id == pid) {
+        citys = item.citys;
+        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
+          citys.splice(0, 0, {
+            "id": 0,
+            "nop":1,
+            "name": "全省"
+          });
         }
-      });
+      }
+    });
     that.setData({
-        provinceid: pid,
-        citys: citys,
-        ProvinceName: pName
-      })
+      provinceid: pid,
+      citys: citys,
+      ProvinceName: pName
+    })
   },
-  CityTap:function(event){
+  CityTap: function (event) {
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1500
+    })
     var that = this;
     var cid = event.currentTarget.dataset.id;
     var cName = event.currentTarget.dataset.name;
     var ProvinceName = that.data.ProvinceName;
-    if(cid > 0){
+    if (cid > 0) {
       ProvinceName = cName;
     }
     if (ProvinceName.length > 6) {
@@ -266,23 +238,29 @@ Page({
     GetLecturer(that);
   },
   // 选择类别
-  ClassTap:function(event){
+  ClassTap: function (event) {
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1500
+    })
     console.log('分类事件');
     console.log(event);
     var that = this;
     var cid = event.currentTarget.dataset.id;
     var title = event.currentTarget.dataset.title;
-    if (cid <= 0){
-      title ='全部';
-    }else{
-      if(title.length>6){
-        title = title.substr(0,6);
+    if (cid <= 0) {
+      title = '全部';
+    } else {
+      if (title.length > 6) {
+        title = title.substr(0, 6);
       }
     }
     var requests = that.data.requests;
     // 处理是否为下拉刷新
     requests.isscrolltolower = false;
     requests.page = 0;
+    requests.scrollTop = 0;
     that.setData({
       classid: cid,
       geoshow: true,
@@ -294,7 +272,7 @@ Page({
     // 讲师列表
     GetLecturer(that);
   },
-  HideGeoTap:function(event){
+  HideGeoTap: function (event) {
     var that = this;
     that.setData({
       // 是否隐藏
@@ -306,10 +284,18 @@ Page({
   // :end 事件处理
 })
 
+
 // 讲师列表
-function GetLecturer(that){
+function GetLecturer(that) {
   var requests = that.data.requests;
-  var page = (requests.page + 1)
+  requests.isLoad = true;
+  that.setData({
+    requests: requests
+  })
+  var requests = that.data.requests;
+  var page = (requests.page + 1);
+  console.log('lec加载');
+  console.log(that);
   // 获取讲师列表
   api.wxRequest({
     data: {
@@ -330,21 +316,33 @@ function GetLecturer(that){
         // 没有出错
         requests.isfail = false;
         requests.page = page;
+        requests.isLoad = false;
         // 总页数
         requests.total = pageObj.total;
+        // 是否加载
+        var hasMore =true;
+        if (result.length===0){
+          hasMore=false;
+        }
+        that.setData({
+          hasMore: hasMore,
+        })
         // 
         var lecturers = []
         // 是否为下拉显示，下拉为追元素
-        if (requests.isscrolltolower){
+        if (requests.isscrolltolower) {
+          console.log('请求结果');
+          console.log(lecturers);
+          console.log(result);
           lecturers = that.data.lecturers.concat(result);
-        }else{
+        } else {
           lecturers = result;
         }
         that.setData({
           lecturers: lecturers,
           requests: requests
         })
-      }else{
+      } else {
         requests.page = 0;
         requests.total = 1;
         that.setData({
@@ -352,6 +350,7 @@ function GetLecturer(that){
           requests: requests
         })
       }
+
       wx.hideToast();
     },
     fail: function (res) {
@@ -361,22 +360,18 @@ function GetLecturer(that){
       that.setData({
         requests: requests
       })
+
+      wx.hideToast();
     }
   }, api.host + api.iLecturer)
 }
 // 首页导航连接
-function IndexSwitch(that){
-  console.log('1');
+function IndexSwitch(that) {
   var options = {};
-  console.log('2');
   var GeoMap = app.globalData.GeoMap;
-  console.log('3');
   options.provinceid = GeoMap.ProvinceId;
-  console.log('4');  
   options.province = GeoMap.ProvinceName;
-   console.log('5');  
   options.CityId = 0;
-   console.log('6');  
   var goblaLec = app.globalData.lecturer;
   if (goblaLec.isShow) {
     if (GeoMap.CityId > 0) {
@@ -401,7 +396,7 @@ function IndexSwitch(that){
       provinceid: options.provinceid,
       // 省的标题
       RegionName: options.province,
-      ProvinceName:'',
+      ProvinceName: GeoMap.ProvinceName,
       // 选中的市
       cityid: options.CityId,
       requests: requests,
@@ -416,7 +411,9 @@ function IndexSwitch(that){
     options.className = '';
     app.globalData.lecturer = goblaLec
     // 讲师列表
-    GetLecturer(that)
+    GetLecturer(that);
+  }else{
+    wx.hideToast();
   }
 
   // 如果省ID 大于0 ，则初始化默认加载市
@@ -424,37 +421,145 @@ function IndexSwitch(that){
 }
 
 // 获取选项信息
-function GetConfig(that){
-  var config = wx.getStorageSync('config')||{};
+function GetConfig(that) {
+  console.log('a1');
+   var config = wx.getStorageSync('config')||{};
    if(config.Config == 'undefined' || config.Config == undefined){
+     console.log('a2');
       // 地区拉取API
     api.wxRequest({
       success: (res) => { 
+        console.log('a3');
+        console.log(that);
+        console.log(res);
         //同步存储
         wx.setStorageSync('config', res.data.data);
         that.setData({
-          region: config.provinces,
-          classl: config.services
+          region: res.data.data.provinces,
+          classl: res.data.data.services
         });
+        console.log('a3-1');
+      console.log(that);
+        SetDataNav(that);
       }
     }, api.host + api.iconfig);
    }else{
+     console.log('a4');
       that.setData({
           region: config.provinces,
           classl: config.services
         });
+        SetDataNav(that);
    }
 }
+//设置标头
+function SetDataNav(that){
+  console.log('b1');
+  var dataObj= that.data;
+  console.log(that);
+  var ProvinceName='';
+  var regionName='';
+  var citys=[];
+  if(dataObj.region.length>0){
+    [].forEach.call(dataObj.region,function(item,i){
+      if(item.id== dataObj.provinceid){
+        regionName=item.name;
+        ProvinceName = item.name;
+        citys = item.citys;
+        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
+          citys.splice(0, 0, {
+            "id": 0,
+            "nop": 1,
+            "name": "全省"
+          });
+        }
+         if (item.name.indexOf('市') < 0) {
+           if(item.citys.length >0){
+             [].forEach.call(item.citys,function(itemc,i){
+               if (itemc.id > 0 && itemc.id == dataObj.cityid){
+                 regionName = itemc.name;
+               }
+             });
+           }
+         }
+      }
+    });
+    if (regionName != ''){
+      that.setData({
+        ProvinceName: ProvinceName,
+        RegionName:regionName,
+        citys:citys
+      });
+    }
+  }
+  if(dataObj.classl.length>0){
+    [].forEach.call(dataObj.classl,function(citem,i){
+      if(citem.id == dataObj.classid){
+        that.setData({
+          ClassName: citem.title
+        });
+      }
+    });
+  }
+}
+
 
 // 如果省ID 大于0 ，则初始化默认加载市
-function GetCitys(that,ProvinceId){
-  if (ProvinceId > 0){
-    [].forEach.call(app.globalData.GeoMap.Config.provinces,function(item,i){
-      if(item.id == ProvinceId){
+function GetCitys(that, ProvinceId) {
+  if (ProvinceId > 0) {
+    [].forEach.call(app.globalData.GeoMap.Config.provinces, function (item, i) {
+      if (item.id == ProvinceId) {
+        var citys = item.citys;
+        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
+          citys.splice(0, 0, {
+            "id": 0,
+            "nop":1,
+            "name": "全省"
+          });
+        }
         that.setData({
-          citys: item.citys
+          citys: citys
         })
       }
     })
+  }
+}
+
+// 如果是参数进来，则获取名称
+function GetNavName(that){
+  console.log('参数进来了');
+  console.log(that);
+  var requests = that.data.requests;
+  if (requests.isarg){
+    requests.isarg=false;
+    if (that.classid > 0 && that.classl.length >0){
+      [].forEach.call(that.classl,function(item,i){
+        if (item.id == that.classid){
+          that.setData({
+            ClassName: item.title,
+            requests: requests
+          })
+        }
+      })
+    }
+    if ((that.provinceid > 0 || that.cityid > 0) && that.region.length>0){
+      var regionName ='';
+      [].forEach.call(that.region,function(item,i){
+        if (that.provinceid == item.id){
+          regionName=item.name;
+          if (item.citys.length > 0 && that.cityid>0){
+            [].forEach.call(item.citys,function(itemc,ic){
+              if(itemc.id == that.cityid){
+                regionName = itemc.name;
+              }
+            })
+          }
+          that.setData({
+            RegionName: regionName,
+            requests: requests
+          })
+        }
+      })
+    }
   }
 }

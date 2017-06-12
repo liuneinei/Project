@@ -1,98 +1,111 @@
-<view class="container">
-    <view class="page navbar js_show">
-        <view class="page__bd" style="padding-bottom:52rpx;">
-        <view class="weui-tab">
-          <view class="weui-navbar">
-            <view class="weui-navbar__item" bindtap="ClassdTap">
-              <block wx:if="{{classshow != 1}}">
-                <view class="weui-navbar__item__lable">{{ClassName}}</view>
-                <view class="weui-navbar__item__icon">
-                  <image src="/images/open_up.png" class="navbar__item__i"></image>
-                </view>
-              </block>
-              <block wx:if="{{classshow == 1}}">
-                <view class="weui-navbar__item__lable_on">{{ClassName}}</view>
-                <view class="weui-navbar__item__icon">
-                  <image src="/images/pack_up.png" class="navbar__item__i"></image>
-                </view>
-              </block>
-            </view>
-            <view class="navbar__item__border">
-              <view class="navbar__item__bi"></view>
-            </view>
-            <view class="weui-navbar__item weui-bar__item_on" bindtap="RegionTap">
-              <block wx:if="{{classshow < 2}}">
-                <view class="weui-navbar__item__lable">{{RegionName}}</view>
-                <view class="weui-navbar__item__icon">
-                  <image src="/images/open_up.png" class="navbar__item__i"></image>
-                </view>
-              </block>
-              <block wx:if="{{classshow == 2}}">
-                <view class="weui-navbar__item__lable_on">{{RegionName}}</view>
-                <view class="weui-navbar__item__icon">
-                  <image src="/images/pack_up.png" class="navbar__item__i"></image>
-                </view>
-              </block>
-            </view>
-          </view>
-          <view class="weui-tab__panel">
-            <view class="geo-container" hidden="{{geoshow}}" catchtap="HideGeoTap">
+
+  <view class="box">
+   <view class="box-item">
+    <view class="nav-item" bindtap="ClassdTap">
+      <block wx:if="{{classshow != 1}}">
+        <view class="nav-item-title weui-navbar__item__lable">{{ClassName}}</view>
+        <view class="weui-navbar__item__icon">
+          <image src="/images/open_up.png" class="navbar__item__i"></image>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="weui-navbar__item__lable_on">{{ClassName}}</view>
+          <view class="weui-navbar__item__icon">
+            <image src="/images/pack_up.png" class="navbar__item__i"></image>
+        </view>
+      </block>
+    </view>
+    <view class="navbar__item__border">
+      <view class="navbar__item__bi"></view>
+    </view>
+    <view class="nav-item" bindtap="RegionTap">
+      <block wx:if="{{classshow < 2}}">
+        <view class="weui-navbar__item__lable">{{RegionName}}</view>
+        <view class="weui-navbar__item__icon">
+          <image src="/images/open_up.png" class="navbar__item__i"></image>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="weui-navbar__item__lable_on">{{RegionName}}</view>
+        <view class="weui-navbar__item__icon">
+          <image src="/images/pack_up.png" class="navbar__item__i"></image>
+        </view>
+      </block>
+    </view>
+   </view>
+  </view>
+  <view class="geo-container" hidden="{{geoshow}}" catchtap="HideGeoTap">
             <block wx:if="{{classshow == 1}}">
                 <view class="server-container">
-                  <view  class="geo-item server-width {{classid == 0 ? 'checkon':''}}" bindtap="ClassTap" data-id="0">全部</view>
-                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon':''}}" catchtap="ClassTap" data-id="{{item.id}}" data-title="{{item.title}}">{{item.title}}</view>
+                  <view  class="geo-item server-width {{classid == 0 ? 'checkon1':''}}" bindtap="ClassTap" data-id="0">全部</view>
+                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon1':''}}" catchtap="ClassTap" data-id="{{item.id}}" data-title="{{item.title}}">{{item.title}}</view>
                 </view>
               </block>
               <block wx:if="{{classshow == 2}}">
               <view class="nav-dorpmenu">
                 <view class="province-container" style="height:{{wHeight}}px">
+                <scroll-view scroll-y style="height: {{wHeight}}px;" scroll-top="{{scrollTop}}">
                   <block wx:for="{{region}}">
                     <block wx:if="{{item.nop > 0}}">
-                      <view class="geo-item province-width {{item.id == provinceid ? 'checkon':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                      <view class="geo-item province-width {{item.id == provinceid ? 'checkon2':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
                     </block>
                   </block>
+                  </scroll-view>
                 </view>
                 <view class="city-container" style="height:{{wHeight}}px">
-                  <view  wx:for="{{citys}}" wx:for-item="item" class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                  <block wx:for="{{citys}}">
+                    <block wx:if="{{item.nop > 0}}">
+                      <view class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+                    </block>
+                  </block>
                 </view>
                 </view>
               </block>
             </view>
-          </view>
+<block wx:if="{{requests.total <= 0}}">
+  <view class="page-loading">
+    <text class="loading-text">暂无专家</text>
+  </view>
+</block>
+<block wx:else>
+  <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscrolltolower="scrolltolower">
+  <view class="blank80"></view>
+  <view class="blank20"></view>
+    <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
+      <view class="film-item" bindtap="bingInfo"  data-id="{{lecturer.id}}" data-obj="{{lecturer}}">
+        <view class="film-image">
+          <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}"></image>
         </view>
-     </view>
-    </view>
-    <view class="blank20"></view>
-    <view class="item-main">
-    <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscroll="scroll" bindscrolltolower="scrolltolower">
-        <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
-            <view class="main-list" bindtap="bingInfo" data-id="{{lecturer.id}}" data-obj="{{lecturer}}">
-                <view class="module__left module__item">
-                    <view class="module__left__img">
-                        <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}" class="module__left__icon"></image>
-                    </view>
-                </view>
-                <view class="module__right module__item">
-                    <view class="m_t">
-                        <view class="m_t_l">{{lecturer.name}}</view>
-                        <view class="m_t_r">
-                          <block wx:for="{{lecturer.service}}">
-                            {{item.title}}
-                          </block>
-                        </view>
-                    </view>
-                    <view class="m_b">
-                    {{lecturer.intro}}
-                    </view>
-                </view>
-            </view>
-        </block>
-    </scroll-view>
-    <block wx:if="{{requests.total <= 0}}">
-          <view class="box-load-none">
-            无数据
+        <view class="film-info">
+          <view class="directors">
+            <text class="label">{{lecturer.name}}</text>
+            <block wx:for-items="{{lecturer.service}}" wx:for-item="services">
+                <text class="person">{{services.title}}</text>
+            </block>
           </view>
-        </block>
+          <view class="film-rating">
+              <text class="label">{{lecturer.intro}}</text>
+          </view>
+        </view> 
+      </view>
+    </block>
+    <block wx:if="{{requests.total>10}}">
+    <view class="load-more-wrap">
+      <block wx:if="{{hasMore}}">
+        <view class="load-content">
+          <text class="weui-loading"/>
+          <text class="loading-text">正在加载中</text>
+        </view>
+      </block>
+      <block wx:else>
+          <view class="load-content">
+            <text>没有更多内容了</text>
+          </view>
+      </block>
     </view>
-</view>
-   
+    </block>
+    <block wx:else>
+      <view class="blank40"></view>
+    </block>
+  </scroll-view>
+  </block>
