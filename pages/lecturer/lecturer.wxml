@@ -2,14 +2,14 @@
   <view class="box">
    <view class="box-item">
     <view class="nav-item" bindtap="ClassdTap">
-      <block wx:if="{{classshow != 1}}">
-        <view class="nav-item-title weui-navbar__item__lable">{{ClassName}}</view>
+      <block wx:if="{{Req.showType != 1}}">
+        <view class="nav-item-title weui-navbar__item__lable">{{Class.name}}</view>
         <view class="weui-navbar__item__icon">
           <image src="/images/open_up.png" class="navbar__item__i"></image>
         </view>
       </block>
       <block wx:else>
-        <view class="weui-navbar__item__lable_on">{{ClassName}}</view>
+        <view class="weui-navbar__item__lable_on">{{Class.name}}</view>
           <view class="weui-navbar__item__icon">
             <image src="/images/pack_up.png" class="navbar__item__i"></image>
         </view>
@@ -19,14 +19,14 @@
       <view class="navbar__item__bi"></view>
     </view>
     <view class="nav-item" bindtap="RegionTap">
-      <block wx:if="{{classshow < 2}}">
-        <view class="weui-navbar__item__lable">{{RegionName}}</view>
+      <block wx:if="{{Req.showType < 2}}">
+        <view class="weui-navbar__item__lable">{{Region.showname}}</view>
         <view class="weui-navbar__item__icon">
           <image src="/images/open_up.png" class="navbar__item__i"></image>
         </view>
       </block>
       <block wx:else>
-        <view class="weui-navbar__item__lable_on">{{RegionName}}</view>
+        <view class="weui-navbar__item__lable_on">{{Region.showname}}</view>
         <view class="weui-navbar__item__icon">
           <image src="/images/pack_up.png" class="navbar__item__i"></image>
         </view>
@@ -34,34 +34,34 @@
     </view>
    </view>
   </view>
-  <view class="geo-container" hidden="{{geoshow}}" catchtap="HideGeoTap">
-            <block wx:if="{{classshow == 1}}">
-                <view class="server-container">
-                  <view  class="geo-item server-width {{classid == 0 ? 'checkon1':''}}" bindtap="ClassTap" data-id="0">全部</view>
-                  <view wx:for="{{classl}}" wx:for-item="item" class="geo-item server-width {{item.id == classid ? 'checkon1':''}}" catchtap="ClassTap" data-id="{{item.id}}" data-title="{{item.title}}">{{item.title}}</view>
-                </view>
+<block wx:if="{{Req.showType != 0}}">
+  <view class="geo-container" catchtap="HideGeoTap">
+    <block wx:if="{{Req.showType == 1}}">
+      <view class="server-container">
+        <view  class="geo-item server-width {{Class.id == 0 ? 'checkon1':''}}" bindtap="ClassTap" data-id="0">全部</view>
+        <view wx:for="{{Lists.classList}}" wx:for-item="item" class="geo-item server-width {{item.id == Class.id ? 'checkon1':''}}" catchtap="ClassTap" data-id="{{item.id}}" data-title="{{item.title}}">{{item.title}}</view>
+      </view>
+    </block>
+    <block wx:if="{{Req.showType == 2}}">
+      <view class="nav-dorpmenu">
+          <scroll-view class="province-container" scroll-y style="height: {{wHeight}}px;" scroll-top="{{scrollTop}}">
+            <block wx:for="{{Lists.regionList}}">
+              <block wx:if="{{item.nop > 0}}">
+                <view class="geo-item province-width {{item.id == Region.pid ? 'checkon2':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
               </block>
-              <block wx:if="{{classshow == 2}}">
-              <view class="nav-dorpmenu">
-                <view class="province-container" style="height:{{wHeight}}px">
-                <scroll-view scroll-y style="height: {{wHeight}}px;" scroll-top="{{scrollTop}}">
-                  <block wx:for="{{region}}">
-                    <block wx:if="{{item.nop > 0}}">
-                      <view class="geo-item province-width {{item.id == provinceid ? 'checkon2':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
-                    </block>
-                  </block>
-                  </scroll-view>
-                </view>
-                <view class="city-container" style="height:{{wHeight}}px">
-                  <block wx:for="{{citys}}">
-                    <block wx:if="{{item.nop > 0}}">
-                      <view class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
-                    </block>
-                  </block>
-                </view>
-                </view>
-              </block>
-            </view>
+            </block>
+          </scroll-view>
+        <view class="city-container" style="height:{{wHeight}}px">
+          <block wx:for="{{Lists.cityList}}">
+            <block wx:if="{{item.nop > 0}}">
+              <view class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
+            </block>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+</block>
 <block wx:if="{{requests.total <= 0}}">
   <view class="page-loading">
     <text class="loading-text">暂无专家</text>

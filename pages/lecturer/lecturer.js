@@ -31,19 +31,23 @@ Page({
       // 省名称
       pname:'',
       // 城市导航名
-      showname:''
+      showname:'选择城市'
     },
     // 集合
-    List:{
+    Lists:{
       // 分类集合
       classList:[],
-      // 城市集合
+      // 省集合
       regionList:[],
+      // 市集合
+      cityList:[],
       // 讲师集合
       lecturerList:[]
     },
     // 请求参数
     Req:{
+      // 导航显示，1为分类显示 2城市显示
+      showType:0,
       // 当前页码
       index:0,
       // 总记录数
@@ -99,56 +103,56 @@ Page({
         Region: Region
       });
     }
-
     // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
-    functions.getconfig(function(res){
-      // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
-      if (configs.is_default){
-        console.log('第二步，获取Geo1');
-        functions.getlocation(function(res2){
-          console.log('第二步，获取location Back.');
-          res2.status = res2.status || true;
-          // 默认返回True
-          if (res2.status){
-            functions.setdatas(res2,function(){
-              console.log('打印默认值');
-              console.log(configs);
-            });
-          }else{
-            // 使用默认值
-          }
-        });
+    functions.getconfig(function (res) {
+      console.log('config:');
+      console.log(res);
+      // 设置导航list集
+      SetPageDataNavList(that);
+      if (option.arg) {
+        // #########为参数进入
+        // 设置标题名称
+        SetPageDataNavName(that);
       }else{
-        console.log('第二步，获取Geo2');
-        if (!option.arg){
-          // 不是参数值，而是定位值
-          Region.pid = configs.province_id || 0;
-          Region.cid = configs.city_id || 0;
-          Class.id = 0;
-          // 设置保存值
-          that.setData({
-            Class: Class,
-            Region: Region
+        // #########非参数进入
+        // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
+        if (configs.is_default) {
+          console.log('第二步，获取Geo1');
+          functions.getlocation(function (res2) {
+            console.log('第二步，获取location Back.');
+            if (res2.status != false) {
+              res2.status = res2.status || true;
+            }
+            // 默认返回True
+            if (res2.status) {
+              functions.setdatas(res2, function () {
+                console.log('打印默认值');
+                console.log(configs);
+                // 由于上一步应该对 configs 赋值，所以使用 configs
+                // 使用配置的值
+                SetPageDataNavId(that);
+                // 设置标题名称
+                SetPageDataNavName(that);
+              });
+            } else {
+              // 使用配置的值
+              SetPageDataNavId(that);
+              // 设置标题名称
+              SetPageDataNavName(that);
+            }
           });
+        } else {
+          console.log('第二步，获取Geo2');
+          // 使用配置的值
+          SetPageDataNavId(that);
+          // 设置标题名称
+          SetPageDataNavName(that);
         }
       }
     });
     
     // 第三步 设置导航名称
     // 第四步 请求讲师API
-
-    // 获取选项信息
-    GetConfig(that);
-    // GetConfigHttp(app,that);
-    // 首页传过来的处理
-    // IndexSwitch(that);
-    var requests = that.data.requests;
-    console.log('4');
-    if (!requests.isLoad){
-      console.log('5');
-      // 讲师列表
-      GetLecturer(that);
-    }
   },
   scrolltolower: function () {
     var that = this
@@ -185,79 +189,61 @@ Page({
   //服务选项
   ClassdTap: function (e) {
     var that = this;
-    var classl = that.data.classl;
-    if (classl.length === 0) {
-      var Config = app.globalData.GeoMap.Config;
-      that.setData({
-        region: Config.provinces,
-        classl: Config.services
-      })
-    }
-
-    var classshow = 1;
-    var geoshow = false;
-    if (that.data.classshow == 1) {
-      classshow = 0;
-      geoshow = true;
+    var Req = that.data.Req;
+    // 导航显示，1为分类显示 2城市显示
+    if (Req.showType != 1){
+      Req.showType = 1
+    }else{
+      Req.showType = 0;
     }
     that.setData({
-      geoshow: geoshow,
-      classshow: classshow
+      Req: Req
     });
   },
   // 地区选择
   RegionTap: function (e) {
     var that = this;
-    var region = that.data.region;
-    console.log('城市数据加载');
-    console.log(that);
-    console.log(app);
-    console.log('城市项数据加载，count=>' + region.length);
-    if (region.length > 0) {
-      // 本地存储 - 城市
-      wx.getStorage({
-        key: 'config',
-        success: function (res) {
-          that.setData({
-            region: res.data.provinces,
-            classl: res.data.services
-          })
-        },
-      })
-    }
-    var classshow = 2;
-    var geoshow = false;
-    if (that.data.classshow == 2) {
-      classshow = 0;
-      geoshow = true;
+    var that = this;
+    var Req = that.data.Req;
+    // 导航显示，1为分类显示 2城市显示
+    if (Req.showType != 2) {
+      Req.showType = 2
+    } else {
+      Req.showType = 0;
     }
     that.setData({
-      geoshow: geoshow,
-      classshow: classshow
+      Req: Req
     });
   },
   // 选择省
   ProvinceTap: function (event) {
     var that = this;
-    var citys = [];
-    var pid = event.currentTarget.dataset.id;
-    var pName = event.currentTarget.dataset.name;
-    [].forEach.call(that.data.region, function (item, i, arr) {
-      if (item.id == pid) {
-        citys = item.citys;
-        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
-          citys.splice(0, 0, {
-            "id": 0,
-            "nop":1,
-            "name": "全省"
-          });
+    // 城市
+    var Region = that.data.Region;
+    // 集合
+    var Lists = that.data.Lists;
+    Region.pid = event.currentTarget.dataset.id;
+    Region.pname = event.currentTarget.dataset.name;
+    if (configs.store.provinces != undefined) {
+      // 遍历集
+      [].forEach.call(configs.store.provinces, function (item, i) {
+        if (item.id == Region.pid && item.nop > 0) {
+          if (item.citys != undefined) {
+            Lists.cityList = item.citys;
+            if (Lists.cityList[0].id != 0 && item.name.indexOf('市') < 0) {
+              Lists.cityList.splice(0, 0, {
+                "id": 0,
+                "nop": 1,
+                "name": "全省"
+              });
+            }
+          }
         }
-      }
-    });
+      });
+    }
     that.setData({
-      provinceid: pid,
-      citys: citys,
-      ProvinceName: pName
+      Region: Region,
+      Lists: Lists
     })
   },
   CityTap: function (event) {
@@ -293,38 +279,28 @@ Page({
   },
   // 选择类别
   ClassTap: function (event) {
+    var that = this;
     wx.showToast({
       title: '加载中',
       icon: 'loading',
       duration: 1500
-    })
-    console.log('分类事件');
-    console.log(event);
-    var that = this;
-    var cid = event.currentTarget.dataset.id;
-    var title = event.currentTarget.dataset.title;
-    if (cid <= 0) {
-      title = '全部';
+    });
+    // 分类
+    var Class = that.data.Class;
+    // 分类id
+    Class.id = event.currentTarget.dataset.id;
+    // 分类导航名称
+    Class.name = event.currentTarget.dataset.title;
+    if (Class.id <= 0) {
+      Class.name = '全部';
     } else {
-      if (title.length > 6) {
-        title = title.substr(0, 6);
+      if (Class.name.length > 6) {
+        Class.name = Class.name.substr(0, 6);
       }
     }
-    var requests = that.data.requests;
-    // 处理是否为下拉刷新
-    requests.isscrolltolower = false;
-    requests.page = 0;
-    requests.scrollTop = 0;
     that.setData({
-      classid: cid,
-      geoshow: true,
-      // 显示的操作 1分类 2城市
-      classshow: 0,
-      requests: requests,
-      ClassName: title
+      Class: Class
     });
-    // 讲师列表
-    GetLecturer(that);
   },
   HideGeoTap: function (event) {
     var that = this;
@@ -337,6 +313,85 @@ Page({
   }
   // :end 事件处理
 })
+// 设置导航List
+function SetPageDataNavList(that) {
+  // List Object
+  var Lists = that.data.Lists;
+  Lists.classList = configs.store.services || [];
+  Lists.regionList = configs.store.provinces || [];
+  // 设置保存值
+  that.setData({
+    Lists: Lists
+  });
+}
+
+// 设置导航的值
+function SetPageDataNavId(that){
+  // 分类 Object
+  var Class = that.data.Class;
+  // 城市 Object
+  var Region = that.data.Region;
+  // 不是参数值，而是定位值
+  Region.pid = configs.province_id || 0;
+  Region.cid = configs.city_id || 0;
+  Class.id = 0;
+  // 设置保存值
+  that.setData({
+    Class: Class,
+    Region: Region
+  });
+}
+// 设置导航的值
+function SetPageDataNavName(that) {
+  // 分类 Object
+  var Class = that.data.Class;
+  // 城市 Object
+  var Region = that.data.Region;
+  // 城市集
+  var Lists = that.data.Lists;
+  Class.name = '全部';
+  // 这里怪怪的############################
+  Region.pname = configs.province_name;
+  Region.showname = configs.city_name;
+  if (configs.store.provinces != undefined) {
+    // 遍历集
+    [].forEach.call(configs.store.provinces, function (item, i) {
+      if (item.id == Region.pid && item.nop > 0) {
+        // 省名称
+        Region.pname = item.name;
+        Region.showname = item.name;
+        if (item.citys != undefined) {
+          Lists.cityList = item.citys;
+          if (item.citys[0].id != 0 && item.name.indexOf('市') < 0) {
+            Lists.cityList.splice(0, 0, {
+              "id": 0,
+              "nop": 1,
+              "name": "全省"
+            });
+          }
+          [].forEach.call(item.citys, function (itemc, ic) {
+            if (itemc.id == Region.cid && itemc.nop > 0) {
+              Region.showname = itemc.name;
+            }
+          });
+        }
+      }
+    });
+  }
+  if (configs.store.services != undefined){
+    [].forEach.call(configs.store.services,function(item,i){
+      if (item.id == Class.id){
+        Class.name = item.title;
+      }
+    });
+  }
+  // 设置保存值
+  that.setData({
+    Class: Class,
+    Region: Region,
+    Lists: Lists
+  });
+}
 
 function SetConfigs(that,mapdata){
   var Lprovince = res.result.ad_info.province;
