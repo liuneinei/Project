@@ -53,7 +53,7 @@ Page({
       // 总记录数
       total:1,
       // 是否正在加载，解决多次向上拉加载请求
-      loading:true,
+      loading:false,
       // 是否为向上拉加载，解决是否需要追加集还是绑定集
       scroll:false
     }
@@ -420,11 +420,28 @@ function SetConfigs(that,mapdata){
 
 // 讲师列表
 function GetLecturer(that) {
-  var requests = that.data.requests;
-  requests.isLoad = true;
+  var Lists = that.data.Lists;
+  // // 讲师集合
+  // Lists.lecturerList
+  var Req = that.data.Req;
+  Req.loading = true;
   that.setData({
-    requests: requests
+    Req: Req
   })
+  // 请求参数
+  // Req: {
+  //   // 导航显示，1为分类显示 2城市显示
+  //   showType: 0,
+  //     // 当前页码
+  //     index:0,
+  //       // 总记录数
+  //       total:1,
+  //         // 是否正在加载，解决多次向上拉加载请求
+  //         loading:true,
+  //           // 是否为向上拉加载，解决是否需要追加集还是绑定集
+  //           scroll:false
+  
+
   var requests = that.data.requests;
   var page = (requests.page + 1);
   console.log('lec加载');
@@ -551,148 +568,4 @@ function IndexSwitch(that) {
 
   // 如果省ID 大于0 ，则初始化默认加载市
   GetCitys(that, that.data.provinceid)
-}
-
-// 获取选项信息
-function GetConfig(that) {
-  console.log('a1');
-   var config = wx.getStorageSync('config')||{};
-   if(config.Config == 'undefined' || config.Config == undefined){
-     console.log('a2');
-      // 地区拉取API
-    api.wxRequest({
-      success: (res) => { 
-        console.log('a3');
-        console.log(that);
-        console.log(res);
-        //同步存储
-        wx.setStorageSync('config', res.data.data);
-        that.setData({
-          region: res.data.data.provinces,
-          classl: res.data.data.services
-        });
-        console.log('a3-1');
-      console.log(that);
-        SetDataNav(that);
-      }
-    }, api.host + api.iconfig);
-   }else{
-     console.log('a4');
-      that.setData({
-          region: config.provinces,
-          classl: config.services
-        });
-        SetDataNav(that);
-   }
-}
-//设置标头
-function SetDataNav(that){
-  console.log('b1');
-  var dataObj= that.data;
-  console.log(that);
-  var ProvinceName='';
-  var regionName='';
-  var citys=[];
-  if(dataObj.region.length>0){
-    [].forEach.call(dataObj.region,function(item,i){
-      if(item.id== dataObj.provinceid){
-        regionName=item.name;
-        ProvinceName = item.name;
-        citys = item.citys;
-        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
-          citys.splice(0, 0, {
-            "id": 0,
-            "nop": 1,
-            "name": "全省"
-          });
-        }
-         if (item.name.indexOf('市') < 0) {
-           if(item.citys.length >0){
-             [].forEach.call(item.citys,function(itemc,i){
-               if (itemc.id > 0 && itemc.id == dataObj.cityid){
-                 regionName = itemc.name;
-               }
-             });
-           }
-         }
-      }
-    });
-    if (regionName != ''){
-      that.setData({
-        ProvinceName: ProvinceName,
-        RegionName:regionName,
-        citys:citys
-      });
-    }
-  }
-  if(dataObj.classl.length>0){
-    [].forEach.call(dataObj.classl,function(citem,i){
-      if(citem.id == dataObj.classid){
-        that.setData({
-          ClassName: citem.title
-        });
-      }
-    });
-  }
-}
-
-
-// 如果省ID 大于0 ，则初始化默认加载市
-function GetCitys(that, ProvinceId) {
-  if (ProvinceId > 0) {
-    [].forEach.call(app.globalData.GeoMap.Config.provinces, function (item, i) {
-      if (item.id == ProvinceId) {
-        var citys = item.citys;
-        if (citys[0].id != 0 && item.name.indexOf('市') < 0) {
-          citys.splice(0, 0, {
-            "id": 0,
-            "nop":1,
-            "name": "全省"
-          });
-        }
-        that.setData({
-          citys: citys
-        })
-      }
-    })
-  }
-}
-
-// 如果是参数进来，则获取名称
-function GetNavName(that){
-  console.log('参数进来了');
-  console.log(that);
-  var requests = that.data.requests;
-  if (requests.isarg){
-    requests.isarg=false;
-    if (that.classid > 0 && that.classl.length >0){
-      [].forEach.call(that.classl,function(item,i){
-        if (item.id == that.classid){
-          that.setData({
-            ClassName: item.title,
-            requests: requests
-          })
-        }
-      })
-    }
-    if ((that.provinceid > 0 || that.cityid > 0) && that.region.length>0){
-      var regionName ='';
-      [].forEach.call(that.region,function(item,i){
-        if (that.provinceid == item.id){
-          regionName=item.name;
-          if (item.citys.length > 0 && that.cityid>0){
-            [].forEach.call(item.citys,function(itemc,ic){
-              if(itemc.id == that.cityid){
-                regionName = itemc.name;
-              }
-            })
-          }
-          that.setData({
-            RegionName: regionName,
-            requests: requests
-          })
-        }
-      })
-    }
-  }
 }
