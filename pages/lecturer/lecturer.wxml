@@ -71,7 +71,7 @@
   <scroll-view style="height: 100%;" scroll-y="true" class="container film-list" bindscrolltolower="scrolltolower">
   <view class="blank80"></view>
   <view class="blank20"></view>
-    <block wx:for-items="{{lecturers}}" wx:for-item="lecturer">
+    <block wx:for-items="{{Lists.lecturerList}}" wx:for-item="lecturer">
       <view class="film-item" bindtap="bingInfo"  data-id="{{lecturer.id}}" data-obj="{{lecturer}}">
         <view class="film-image">
           <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}"></image>

@@ -115,6 +115,8 @@ Page({
         // #########为参数进入
         // 设置标题名称
         SetPageDataNavName(that);
+        // 讲师列表
+        GetLecturer(that);
       }else{
         // #########非参数进入
         // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
@@ -135,12 +137,16 @@ Page({
                 SetPageDataNavId(that);
                 // 设置标题名称
                 SetPageDataNavName(that);
+                // 讲师列表
+                GetLecturer(that);
               });
             } else {
               // 使用配置的值
               SetPageDataNavId(that);
               // 设置标题名称
               SetPageDataNavName(that);
+              // 讲师列表
+              GetLecturer(that);
             }
           });
         } else {
@@ -149,6 +155,8 @@ Page({
           SetPageDataNavId(that);
           // 设置标题名称
           SetPageDataNavName(that);
+          // 讲师列表
+          GetLecturer(that);
         }
       }
     });
@@ -468,46 +476,34 @@ function GetLecturer(that) {
 
         Req.total = pageObj.total;
         Req.loading = false;
-        
         // 是否加载
-        var hasMore =true;
+        Req.hasMore =true;
         if (result.length===0){
-          hasMore=false;
+          Req.hasMore=false;
         }
-        that.setData({
-          hasMore: hasMore,
-        })
-        // 
-        var lecturers = []
+
         // 是否为下拉显示，下拉为追元素
         if (Req.scroll) {
-          lecturers = that.data.lecturers.concat(result);
+          Lists.lecturerList = Lists.lecturerList.concat(result);
         } else {
-          lecturers = result;
+          Lists.lecturerList = result;
         }
         that.setData({
-          lecturers: lecturers,
-          requests: requests
+          Req: Req,
+          Lists: Lists
         })
       } else {
-        requests.page = 0;
-        requests.total = 1;
+        Req.index = 0;
+        Req.total = 1;
+        Lists.lecturerList = [];
         that.setData({
-          lecturers: [],
-          requests: requests
+          Lists: Lists,
+          Req: Req
         })
       }
-
       wx.hideToast();
     },
     fail: function (res) {
-      console.log('lecturer fail');
-      console.log(res);
-      requests.isfail = true
-      that.setData({
-        requests: requests
-      })
-
       wx.hideToast();
     }
   }, api.host + api.iLecturer)
