@@ -304,11 +304,11 @@ Page({
   },
   HideGeoTap: function (event) {
     var that = this;
+    var Req = that.data.Req;
+     // 导航显示，1为分类显示 2城市显示
+    Req.showType = 0;
     that.setData({
-      // 是否隐藏
-      geoshow: true,
-      // 显示的操作 1分类 2城市
-      classshow: 0,
+      Req:Req
     })
   }
   // :end 事件处理
