@@ -420,6 +420,11 @@ function SetConfigs(that,mapdata){
 
 // 讲师列表
 function GetLecturer(that) {
+  // 分类
+  var Class = that.data.Class;
+  // 城市
+  var Region = that.data.Region;
+  // 集合
   var Lists = that.data.Lists;
   // // 讲师集合
   // Lists.lecturerList
@@ -440,35 +445,28 @@ function GetLecturer(that) {
   //         loading:true,
   //           // 是否为向上拉加载，解决是否需要追加集还是绑定集
   //           scroll:false
-  
+  Req.index = (Req.index + 1);
 
-  var requests = that.data.requests;
-  var page = (requests.page + 1);
-  console.log('lec加载');
-  console.log(that);
   // 获取讲师列表
   api.wxRequest({
     data: {
-      provinceid: that.data.provinceid,
-      cityid: that.data.cityid,
-      serverid: that.data.classid,
-      page: page,
+      provinceid: Region.pid,
+      cityid: Region.cid,
+      serverid: Class.id,
+      page: Req.index,
     },
     success: function (res) {
-      console.log('lecturer success');
-      console.log(res);
       var dataObj = res.data;
       if (dataObj.status == 0) {
+        
         // 分页信息
         var pageObj = dataObj.data;
         // 结果信息
         var result = pageObj.data;
-        // 没有出错
-        requests.isfail = false;
-        requests.page = page;
-        requests.isLoad = false;
-        // 总页数
-        requests.total = pageObj.total;
+
+        Req.total = pageObj.total;
+        Req.loading = false;
+        
         // 是否加载
         var hasMore =true;
         if (result.length===0){
@@ -480,10 +478,7 @@ function GetLecturer(that) {
         // 
         var lecturers = []
         // 是否为下拉显示，下拉为追元素
-        if (requests.isscrolltolower) {
-          console.log('请求结果');
-          console.log(lecturers);
-          console.log(result);
+        if (Req.scroll) {
           lecturers = that.data.lecturers.concat(result);
         } else {
           lecturers = result;
