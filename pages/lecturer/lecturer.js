@@ -55,7 +55,9 @@ Page({
       // 是否正在加载，解决多次向上拉加载请求
       loading:false,
       // 是否为向上拉加载，解决是否需要追加集还是绑定集
-      scroll:false
+      scroll:false,
+      // 处理wxml显示问题
+      hasMore:true
     }
   },
   onShareAppMessage: function () {
