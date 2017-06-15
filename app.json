@@ -1,9 +1,9 @@
 {
   "pages":[
-    "pages/lecturer/lecturer",
+    
     "pages/index/index",
     "pages/lecturers/lecturers",
-   
+   "pages/lecturer/lecturer",
     "pages/lecturerinfo/lecturerinfo",
     "pages/join/join",
     "pages/joinclass/joinclass",
@@ -28,7 +28,7 @@
       "iconPath": "images/home.png",
       "selectedIconPath": "images/home_active.png"
     }, {
-      "pagePath": "pages/lecturers/lecturers",
+      "pagePath": "pages/lecturer/lecturer",
       "text": "找专家",
       "iconPath": "images/lecturer.png",
       "selectedIconPath": "images/lecturer_active.png"

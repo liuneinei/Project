@@ -32,7 +32,7 @@ App({
             var iv = res.iv;
 
             // 获取定位
-            GetGeo(that, that.globalData.GeoMap.Config.provinces)
+            //GetGeo(that, that.globalData.GeoMap.Config.provinces)
 
             //请求自己的服务器
             Login(that, code, encryptedData, iv);
@@ -65,7 +65,7 @@ App({
               var iv = res.iv;
 
               // 获取定位
-              GetGeo(that, that.globalData.GeoMap.Config.provinces)
+              //GetGeo(that, that.globalData.GeoMap.Config.provinces)
 
               //请求自己的服务器
               Login(that,code, encryptedData, iv,cb);

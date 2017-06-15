@@ -75,6 +75,69 @@ Page({
       icon: 'loading',
       duration: 1500
     });
+    var ilObj = wx.getStorageSync('ilclass');
+    if(ilObj.isShow == true){
+      var Req = that.data.Req;
+      Req.index = 0;
+      Req.showType = 0;
+      Req.scroll = false;
+      Req.hasMore = true;
+      that.setData({
+        Req: Req
+      })
+      // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+      functions.getconfig(function (res) {
+        // 设置导航list集
+        SetPageDataNavList(that);
+        // #########非参数进入
+        // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
+        if (configs.is_default == true) {
+          console.log('第一步，获取Geo2');
+          functions.getlocation(function (res2) {
+            if (res2.status != false) {
+              res2.status = res2.status || true;
+            }
+            // 设置默认为
+            configs.is_default = false;
+            // 默认返回True
+            if (res2.status) {
+              functions.setdatas(res2, function () {
+                console.log('打印默认值');
+                console.log(configs);
+                // 由于上一步应该对 configs 赋值，所以使用 configs
+                // 使用配置的值
+                SetPageDataNavId(that);
+                // 配置分类
+                SetPageDataNavClass(that, ilObj);
+                // 设置标题名称
+                SetPageDataNavName(that);
+                // 讲师列表
+                GetLecturer(that);
+              });
+            } else {
+              // 使用配置的值
+              SetPageDataNavId(that);
+              // 配置分类
+              SetPageDataNavClass(that, ilObj);
+              // 设置标题名称
+              SetPageDataNavName(that);
+              // 讲师列表
+              GetLecturer(that);
+            }
+          });
+        } else {
+          console.log('第二步，获取Geo2');
+          // 使用配置的值
+          SetPageDataNavId(that);
+          // 配置分类
+          SetPageDataNavClass(that, ilObj);
+          // 设置标题名称
+          SetPageDataNavName(that);
+          // 讲师列表
+          GetLecturer(that);
+        }
+      });
+    }
   },
   onLoad: function (option) {
     var that = this;
@@ -88,7 +151,11 @@ Page({
       host: api.iQiniu,
       iImgExt: api.iImgExt
     });
-
+    // 处理从首页的跳转
+    var ilObj = wx.getStorageSync('ilclass');
+    if (ilObj.isShow == true) {
+      return;
+    }
     // 分类 Object
     var Class = that.data.Class;
     // 城市 Object
@@ -120,13 +187,15 @@ Page({
       }else{
         // #########非参数进入
         // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
-        if (configs.is_default) {
+        if (configs.is_default == true) {
           console.log('第二步，获取Geo1');
           functions.getlocation(function (res2) {
             console.log('第二步，获取location Back.');
             if (res2.status != false) {
               res2.status = res2.status || true;
             }
+            // 设置默认为
+            configs.is_default = false;
             // 默认返回True
             if (res2.status) {
               functions.setdatas(res2, function () {
@@ -166,14 +235,13 @@ Page({
   },
   scrolltolower: function () {
     var that = this
-    console.log('scrolltolower => 刷新1');
-    console.log('scrolltolower => 刷新2');
-    var requests = that.data.requests;
-    if (!requests.isLoad){
+    var Req = that.data.Req;
+    if (!Req.loading){
       // 处理是否为下拉刷新
-      requests.isscrolltolower = true;
+      Req.loading = true;
+      Req.scroll = true;
       that.setData({
-        requests: requests
+        Req: Req
       })
       // 讲师列表
       GetLecturer(that)
@@ -265,24 +333,27 @@ Page({
     var that = this;
     var cid = event.currentTarget.dataset.id;
     var cName = event.currentTarget.dataset.name;
-    var ProvinceName = that.data.ProvinceName;
-    if (cid > 0) {
-      ProvinceName = cName;
+
+    var Req = that.data.Req;
+    var Region = that.data.Region;
+    Region.showname = Region.pname;
+    Region.cid = cid;
+    if(cid > 0){
+      Region.showname = cName;
     }
-    if (ProvinceName.length > 6) {
-      ProvinceName = ProvinceName.substr(0, 6);
+    if (Region.showname.length > 6) {
+      Region.showname = Region.showname.substr(0, 6);
     }
-    var requests = that.data.requests;
+
     // 处理是否为下拉刷新
-    requests.isscrolltolower = false;
-    requests.page = 0;
+    Req.loading = false;
+    Req.scroll = false;
+    Req.index = 0;
+    Req.showType = 0;
+    
     that.setData({
-      cityid: cid,
-      geoshow: true,
-      // 显示的操作 1分类 2城市
-      classshow: 0,
-      requests: requests,
-      RegionName: ProvinceName
+      Req: Req,
+      Region: Region
     });
     // 讲师列表
     GetLecturer(that);
@@ -295,12 +366,14 @@ Page({
       icon: 'loading',
       duration: 1500
     });
+    var Req = that.data.Req;
     // 分类
     var Class = that.data.Class;
     // 分类id
     Class.id = event.currentTarget.dataset.id;
     // 分类导航名称
     Class.name = event.currentTarget.dataset.title;
+
     if (Class.id <= 0) {
       Class.name = '全部';
     } else {
@@ -308,9 +381,18 @@ Page({
         Class.name = Class.name.substr(0, 6);
       }
     }
+
+    // 处理是否为下拉刷新
+    Req.loading = false;
+    Req.scroll = false;
+    Req.index = 0;
+    Req.showType = 0;
     that.setData({
+      Req: Req,
       Class: Class
     });
+    // 讲师列表
+    GetLecturer(that);
   },
   HideGeoTap: function (event) {
     var that = this;
@@ -350,6 +432,18 @@ function SetPageDataNavId(that){
     Class: Class,
     Region: Region
   });
+}
+// 设置分类Id
+function SetPageDataNavClass(that,ilObj){
+  // 分类 Object
+  var Class = that.data.Class;
+  Class.id = ilObj.classid;
+  Class.name = ilObj.className;
+  // 删除缓存
+  wx.removeStorageSync('ilclass');
+  that.setData({
+    Class: Class
+  })
 }
 // 设置导航的值
 function SetPageDataNavName(that) {
@@ -444,17 +538,6 @@ function GetLecturer(that) {
     Req: Req
   })
   // 请求参数
-  // Req: {
-  //   // 导航显示，1为分类显示 2城市显示
-  //   showType: 0,
-  //     // 当前页码
-  //     index:0,
-  //       // 总记录数
-  //       total:1,
-  //         // 是否正在加载，解决多次向上拉加载请求
-  //         loading:true,
-  //           // 是否为向上拉加载，解决是否需要追加集还是绑定集
-  //           scroll:false
   Req.index = (Req.index + 1);
 
   // 获取讲师列表
@@ -477,9 +560,9 @@ function GetLecturer(that) {
         Req.total = pageObj.total;
         Req.loading = false;
         // 是否加载
-        Req.hasMore =true;
+        Req.hasMore = true;
         if (result.length===0){
-          Req.hasMore=false;
+          Req.hasMore = false;
         }
 
         // 是否为下拉显示，下拉为追元素
@@ -488,6 +571,7 @@ function GetLecturer(that) {
         } else {
           Lists.lecturerList = result;
         }
+        Req.scroll = false;
         that.setData({
           Req: Req,
           Lists: Lists

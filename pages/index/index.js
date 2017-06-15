@@ -58,13 +58,14 @@ Page({
   LecturerTap: function (event) {
     var id = event.currentTarget.dataset.id;
     var title = event.currentTarget.dataset.title;
-    var goblaLec = app.globalData.lecturer
-    goblaLec.classid = id
-    goblaLec.isShow = true;
-    goblaLec.className = title;
-    app.globalData.lecturer = goblaLec
+    wx.setStorageSync('ilclass', { classid: id, className: title, isShow:true});
+    // var goblaLec = app.globalData.lecturer
+    // goblaLec.classid = id
+    // goblaLec.isShow = true;
+    // goblaLec.className = title;
+    // app.globalData.lecturer = goblaLec
     wx.switchTab({
-      url: '../lecturers/lecturers' ,
+      url: '../lecturer/lecturer' ,
       success:function(res){
         console.log('index success')
         console.log(res)
