@@ -1,4 +1,7 @@
-var api = require('../../api/api.js')
+var api = require('../../api/api.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
+
 //index.js
 //获取应用实例
 var app = getApp()
@@ -26,17 +29,14 @@ Page({
           wHeight: res.windowHeight - 40
         })
       }
-    })
+    });
 
-    // 本地存储 - 城市
-    wx.getStorage({
-      key: 'config',
-      success: function(res) {
-        that.setData({
-          region: res.data.provinces
-        })
-      },
-    })
+    // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+    functions.getconfig(function (res) {
+      that.setData({
+        region: res.provinces
+      })
+    });
   },
   // ##:beging 事件处理 
   // 选择省

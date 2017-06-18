@@ -1,5 +1,8 @@
-var api = require('../../api/api.js')
-var util = require('../../utils/util.js')
+var api = require('../../api/api.js');
+var util = require('../../utils/util.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
+
 //index.js
 //获取应用实例
 var app = getApp()
@@ -80,11 +83,13 @@ Page({
       that.setData({
         objoin:objoin
       });
-
       wx.hideToast();
     }else{
-      // 获取加入我们
-      Getislecturer(that, openid);
+      // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+      functions.getconfig(function (res) {
+        // 获取加入我们
+        Getislecturer(that, openid);
+      });
     }
 
     // 定时保存
@@ -363,7 +368,8 @@ function Getislecturer(that, openid){
         objoin.openid = resObj.wx_openid;
         objoin.province = resObj.province_id;
         objoin.city = resObj.city_id;
-        var provinces = app.globalData.GeoMap.Config.provinces
+
+        var provinces = configs.store.provinces
         if(provinces != 'undefined' && provinces.length >0){
           checkProvince='';
           [].forEach.call(provinces,function(item,i){

@@ -59,11 +59,6 @@ Page({
     var id = event.currentTarget.dataset.id;
     var title = event.currentTarget.dataset.title;
     wx.setStorageSync('ilclass', { classid: id, className: title, isShow:true});
-    // var goblaLec = app.globalData.lecturer
-    // goblaLec.classid = id
-    // goblaLec.isShow = true;
-    // goblaLec.className = title;
-    // app.globalData.lecturer = goblaLec
     wx.switchTab({
       url: '../lecturer/lecturer' ,
       success:function(res){
@@ -78,14 +73,7 @@ Page({
   },
   // 讲师详情
   LecturerInfoTap:function(event){
-    var that = this;
-    var id = event.target.dataset.id;
-    var obj = event.currentTarget.dataset.obj;
-    var requests = that.data.requests;
-    requests.Model = obj;
-    that.setData({
-      requests: requests
-    })
+    var id = event.currentTarget.dataset.id;
     wx.navigateTo({
       url: '../lecturerinfo/lecturerinfo?id='+id,
     })
@@ -102,21 +90,12 @@ function GetRecommend(that){
       that.setData({
         lecturers: result
       })
-      wx.setStorage({
-        key: 'recommend',
-        data: result,
-      })
+      wx.setStorageSync('recommend', result);
     },
     fail:function(res){
-      console.log('index lecturere fail');
-      console.log(res);
-      wx.getStorage({
-        key: 'recommend',
-        success: function(res) {
-          that.setData({
-            lecturers: res.data
-          })
-        },
+      var recommend = wx.getStorageSync('recommend');
+      that.setData({
+        lecturers: recommend
       })
     }
   }, api.host + api.iRecommend)

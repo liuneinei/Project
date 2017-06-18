@@ -62,11 +62,24 @@ Page({
   },
   onShareAppMessage: function () {
     var that = this;
-      return {
-        title: '亲密孕育专业人才库',
-        path: '/pages/lecturers/lecturers' + arg
-      }
-    },
+    var Class = that.data.Class;
+    var Region = that.data.Region;
+    var title = Region.showname;
+    var arg = '';
+    if (Class.id > 0) {
+      title += ' - ' + Class.name;
+      title += ' - ' + '专家列表';
+    } else {
+      title += ' - 孕育专家';
+    }
+    arg = '?provinceid=' + Region.pid;
+    arg += '&cityid=' + Region.cid;
+    arg += '&classid=' + Class.id;
+    return {
+      title: title,
+      path: '/pages/lecturers/lecturers' + arg
+    }  
+  },
   // 显示页
   onShow: function (options) {
     var that = this;
@@ -92,7 +105,6 @@ Page({
         // #########非参数进入
         // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
         if (configs.is_default == true) {
-          console.log('第一步，获取Geo2');
           functions.getlocation(function (res2) {
             if (res2.status != false) {
               res2.status = res2.status || true;
@@ -102,8 +114,6 @@ Page({
             // 默认返回True
             if (res2.status) {
               functions.setdatas(res2, function () {
-                console.log('打印默认值');
-                console.log(configs);
                 // 由于上一步应该对 configs 赋值，所以使用 configs
                 // 使用配置的值
                 SetPageDataNavId(that);
@@ -126,7 +136,6 @@ Page({
             }
           });
         } else {
-          console.log('第二步，获取Geo2');
           // 使用配置的值
           SetPageDataNavId(that);
           // 配置分类
@@ -174,8 +183,6 @@ Page({
     }
     // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
     functions.getconfig(function (res) {
-      console.log('config:');
-      console.log(res);
       // 设置导航list集
       SetPageDataNavList(that);
       if (option.arg) {
@@ -188,9 +195,7 @@ Page({
         // #########非参数进入
         // 第二步 获取定位信息；true,代表系统默认值，需要获取定位信息
         if (configs.is_default == true) {
-          console.log('第二步，获取Geo1');
           functions.getlocation(function (res2) {
-            console.log('第二步，获取location Back.');
             if (res2.status != false) {
               res2.status = res2.status || true;
             }
@@ -199,8 +204,6 @@ Page({
             // 默认返回True
             if (res2.status) {
               functions.setdatas(res2, function () {
-                console.log('打印默认值');
-                console.log(configs);
                 // 由于上一步应该对 configs 赋值，所以使用 configs
                 // 使用配置的值
                 SetPageDataNavId(that);
@@ -219,7 +222,6 @@ Page({
             }
           });
         } else {
-          console.log('第二步，获取Geo2');
           // 使用配置的值
           SetPageDataNavId(that);
           // 设置标题名称
@@ -253,12 +255,6 @@ Page({
   bingInfo: function (event) {
     var that = this;
     var id = event.currentTarget.dataset.id;
-    var obj = event.currentTarget.dataset.obj;
-    var requests = that.data.requests;
-    requests.Model = obj;
-    that.setData({
-      requests: requests
-    })
     wx.navigateTo({
       url: '../lecturerinfo/lecturerinfo?id=' + id
     })

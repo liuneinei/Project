@@ -40,11 +40,7 @@ Page({
       icon: 'loading',
       duration: 2500
     });
-    // functions.getconfig(function(res){
-    //   functions.setdatas()
-    //   console.log('config - res');
-    //   console.log(res);
-    // })
+
     var that = this;
     that.setData({
       // 七牛文件查看域名
@@ -52,44 +48,23 @@ Page({
       iImgExt: api.iImgExt
     });
 
-    //获取页面栈
-    var pages = getCurrentPages();
-    if (pages.length > 1) {
-      //上一个页面实例对象
-      var prePage = pages[pages.length - 2];
-      var Model = prePage.data.requests.Model;
-        that.setData({
-          Model: Model
-        });
-    }else{
-      var id= option.id;
-      if(id!=undefined && id!='undefined' && id>0){
-        var Model = that.data.Model;
-        Model.id = id;
-        that.setData({
-          Model:Model
-        });
-      }
+    var id = option.id;
+    if (id != undefined && id != 'undefined' && id > 0) {
+      var Model = that.data.Model;
+      Model.id = id;
+      that.setData({
+        Model: Model
+      });
     }
-   var config = wx.getStorageSync('config')||null;
-   if(!config){
-    // 地区拉取API
-    api.wxRequest({
-      success: (res) => { 
-        //同步存储
-        wx.setStorageSync('config', res.data.data);
-        that.setData({
-          Notice: res.data.data.Notice
-        });
-         GetAPi(that);
-      }
-    }, api.host + api.iconfig);
-   }else{
-     that.setData({
-        Notice: config.Notice
+
+    // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+    functions.getconfig(function (res) {
+      console.log(res);
+      that.setData({
+        Notice: res.Notice
       });
       GetAPi(that);
-   }
+    });
   },
   // :begin 事件处理
   // 拨打电话
@@ -116,10 +91,9 @@ function GetAPi(that){
             Model.city='';
             // 服务须知
             Model.notice='';
-            var config = wx.getStorageSync('config')||null;
-            if (config){
+            if (configs.store || null){
               // 本地存储 - 城市
-              var provinces = config.provinces;// app.globalData.GeoMap.Config.provinces;
+              var provinces = configs.store.provinces;
               [].forEach.call(provinces,function(item,i){
                 if (item.id == Model.province_id) {
                   Model.province = item.name;

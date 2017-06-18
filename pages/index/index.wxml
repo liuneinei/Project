@@ -53,7 +53,7 @@
     <view class="blank8 backfff"></view>
     <view class="item-main">
         <view class="main-nav">- 为你推荐 -</view>
-        <view wx:for="{{lecturers}}" wx:for-item="lecturer" class="main-list" data-id="{{lecturer.id}}" data-obj="{{lecturer}}" bindtap="LecturerInfoTap">
+        <view wx:for="{{lecturers}}" wx:for-item="lecturer" class="main-list" data-id="{{lecturer.id}}" bindtap="LecturerInfoTap">
           <view class="module__left module__item">
                 <view class="module__left__img">
                     <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}" class="module__left__icon"></image>

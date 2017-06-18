@@ -1,4 +1,7 @@
-var api = require('../../api/api.js')
+var api = require('../../api/api.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
+
 //index.js
 //获取应用实例
 var app = getApp()
@@ -28,24 +31,13 @@ Page({
           wHeight: res.windowHeight - 40
         })
       }
-    })
-    // 本地存储 - 城市
-    wx.getStorage({
-      key: 'config',
-      success: function (res) {
-        that.setData({
-          services: res.data.services
-        })
-      },
-    })
-
-    //获取页面栈
-    var pages = getCurrentPages();
-    if (pages.length > 1) {
-      //上一个页面实例对象
-      var prePage = pages[pages.length - 2];
-     console.log(prePage.data)
-    }
+    });
+    // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+    functions.getconfig(function (res) {
+      that.setData({
+        services: res.services
+      })
+    });
   },
   // ##:beging 事件处理 
   ClassTap:function(event){
