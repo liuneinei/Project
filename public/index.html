@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>WeUI</title>
+	<link rel="stylesheet" type="text/css" href="socket.css?v1.3">
+	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="../socket.io/socket.io.js"></script>
+</head>
+<body>
+	<h1>Scoket.IO Chat Demo</h1>
+	<div class="wrap chatroom">
+		<div class="nickname">
+			<form class="set-nickname">
+				<label for="nick">输入昵称后进入聊天室</label>
+				<input class="nick" name="nick" type="text" placeholder="昵称" />
+				<button type="submit">进入</button>
+				<p class="nickname-err">该昵称已经有人使用</p>
+			</form>
+		</div>
+		<div class="messages">
+			<div class="nicknames">
+				<span>当前在线：</span>
+				<!--<b>小明</b>
+				<b>小黄</b>-->
+			</div>
+			<div class="lines">
+				<!--<p><b>小明:</b>我好像长高了!</p>
+				<p><b>小黄:</b>我英语变好了!</p>
+				<p><b>我:</b>我变态了!</p>-->
+			</div>
+		</div>
+		<form class="send-message">
+			<span class="to">发送给<b>所有人</b></span>
+			<input class="message" type="text" placeholder="在这里输入消息发送" />
+			<button>发送</button>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			var $chatroom = $('.chatroom'),//$('.chat');
+				$lines = $('.lines'),
+				$nickname = $('.nickname'),
+				$setNickname = $('.set-nickname'),
+				$nicknames = $('.nicknames'),
+				$messages = $('.messages'),
+				$message = $('.message'),
+				$nick = $('.nick'),
+				$sendMessage = $('.send-message'),
+				$to = $('.to'),
+				$nicknameErr = $('.nickname-err'),
+				toUser =  null,
+				myself = null;
+
+			var socket = io.connect('http://localhost:8080');
+			// 连接提示操作
+			socket.on('announcement',function(msg){
+				$lines.append($('<p>').append($('<em>').text(msg)));
+			});
+
+			socket.on('nicknames',function(nicknames){
+				$nicknames.empty().append($('<span>当前在线：</span>'));
+				$.each(nicknames,function(key,val){
+					$nicknames.append($('<b>').text(val));
+				});
+			});
+
+			function message(from,msg,opt_to){
+				var label;
+				if(opt_to){
+					label = $('<b>').html(from+'对'+opt_to+'说:');
+				}else{
+					label = $('<b>').html(from+':');
+				}
+				$lines.append($('<p>').append(label,msg));
+			}
+
+			socket.on('user:pub',message);
+			socket.on('user:private',message);
+			socket.on('reconnect',function(){
+				$lines.remove();
+				message('<i>系统消息</i>','重连了');
+			});
+			socket.on('reconnecting',function(){
+				message('<i>系统消息</i>','尝试重连中');
+			});
+			socket.on('error',function(e){
+				message('<i>系统消息</i>',e?e:'未知错误');
+			});
+
+			function clear(){
+				$message.val('').focus();
+			}
+
+			$setNickname.submit(function(e){
+				if ($nick.val() != 'itchatshui' && $nick.val() != 'itchatneinei') {
+					$nick.addClass('nick-err');
+					return false;
+				}else{
+					$nick.removeClass('nick-err');
+				}
+				socket.emit('nickname',$nick.val(),function(set){
+					if(!set){
+						clear();
+						myself = $nick.val();
+						$nickname.hide();
+						$messages.show();
+						$sendMessage.show();
+						return;
+					}
+					$nicknameErr.css('visibility','visible');
+				});
+				return false;
+			});
+
+			$sendMessage.submit(function(){
+				if(toUser){
+					message('我对'+toUser+'说',$message.val());
+					socket.emit('user:private',$message.val(),toUser);
+				}else{
+					message('我',$message.val());
+					socket.emit('user:pub',$message.val());
+				}
+				clear();
+				$lines.scrollTop(100000000);
+				return false;
+			});
+
+			$nicknames.on('click','b',function(e){
+				toUser = $(e.target).text();
+				if(toUser === myself){
+					$to.find('b').text('所有人');
+					toUser = null;
+					return;
+				}
+
+				$to.find('b').text(toUser);
+			});
+		});
+	</script>
+</body>
+</html>

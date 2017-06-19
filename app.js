@@ -62,47 +62,17 @@
 
 // HTML 5 Socket.io 聊天室
 var http = require('http');
-var fs = require('fs');
+var express = require('express');
+var path = require('path')
+var app = express();
 
-var connect = require('connect');
-// var app = http.createServer(
-// 		connect.static(__dirname);
-// 	).listen(8080);
-var app = http.createServer(handler);
-app.listen(8080);
+app.use(express.static(path.join(__dirname,'public')));
+// app.listen(8080);
 
-function handler(req,res){
-	// index.html 包含我们的客户端代码
-	fs.readFile(__dirname+'/',function(err,data){
-		if(err){
-			res.writeHead(500);
-			return res.end('Error loading indexs.html');
-		}
-		res.writeHead(200);
-		res.end(data);
-	});
-}
-
-//函数Response，将HTML、css、js等文件响应给客户端
-var Response = function(res,filePath){
-    //读取文件，读取完成后给客户端响应
-    fs.readFile(filePath,function(err,data){
-        if(err){                        //如果失败，就返回错误文件
-            if(filePath != error)       //如果失败的不是错误文件，才返回错误文件
-                Response(res,error);
-        }else{
-            //获取后缀名
-            var i = filePath.lastIndexOf('.');
-            var suffix = filePath.substr( i+1, filePath.length);
-            res.writeHead(200,{                     //响应客户端，将文件内容发回去
-                'Content-type':"text/"+suffix});    //通过后缀名指定mime类型
-            res.end(data);
-        }
-    });
-};
-
+var server = http.createServer(app);
+server.listen(8080);
 var sio = require('socket.io');
-var io = sio.listen(app),
+var io = sio.listen(server),
 	nicknames={},
 	onlines={};
 
