@@ -94,7 +94,7 @@
 			}
 
 			$setNickname.submit(function(e){
-				if ($nick.val() != 'itchatshui' && $nick.val() != 'itchatneinei') {
+				if ($nick.val() == '') {
 					$nick.addClass('nick-err');
 					return false;
 				}else{
