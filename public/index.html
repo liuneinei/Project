@@ -57,6 +57,7 @@
 			// 连接提示操作
 			socket.on('announcement',function(msg){
 				$lines.append($('<p>').append($('<em>').text(msg)));
+				$lines.scrollTop(100000000);
 			});
 
 			socket.on('nicknames',function(nicknames){
@@ -74,6 +75,7 @@
 					label = $('<b>').html(from+':');
 				}
 				$lines.append($('<p>').append(label,msg));
+				$lines.scrollTop(100000000);
 			}
 
 			socket.on('user:pub',message);
