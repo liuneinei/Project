@@ -175,7 +175,8 @@ label{
 	}
 	.send-message button{
 		height: 40px;
-	    width: 57px;
+	    width: auto;
+	    padding: 0 15px;
 	    color: #ffffff;
 	}
 	.messages{
