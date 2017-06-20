@@ -67,10 +67,10 @@ var path = require('path')
 var app = express();
 
 app.use(express.static(path.join(__dirname,'public')));
-// app.listen(8080);
+// app.listen(8087);
 
 var server = http.createServer(app);
-server.listen(8080);
+server.listen(8087);
 var sio = require('socket.io');
 var io = sio.listen(server),
 	nicknames={},
