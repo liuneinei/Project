@@ -99,6 +99,7 @@
 				$messages.hide();
 				$sendMessage.hide();
 				$nicknameErr.html('突然间断线了,请重新进入');
+				$nicknameErr.css('visibility','visible');
 				$nickname.show();
 			});
 
@@ -120,6 +121,7 @@
 						$nickname.hide();
 						$messages.show();
 						$sendMessage.show();
+						$nicknameErr.css('visibility','hidden');
 						return;
 					}
 					$nicknameErr.html('该昵称已经有人使用');
