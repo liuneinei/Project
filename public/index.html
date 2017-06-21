@@ -96,7 +96,10 @@
 				console.log('连接失败');
 			});
 			socket.on('disconnect',function(e){
-				console.log('断开连接');
+				$nicknameErr.html('突然间断线了,请重新进入');
+				$nickname.show();
+				$messages.hide();
+				$sendMessage.hide();
 			});
 
 			function clear(){
@@ -119,6 +122,7 @@
 						$sendMessage.show();
 						return;
 					}
+					$nicknameErr.html('该昵称已经有人使用');
 					$nicknameErr.css('visibility','visible');
 				});
 				return false;
