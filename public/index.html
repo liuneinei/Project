@@ -96,10 +96,10 @@
 				console.log('连接失败');
 			});
 			socket.on('disconnect',function(e){
-				$nicknameErr.html('突然间断线了,请重新进入');
-				$nickname.show();
 				$messages.hide();
 				$sendMessage.hide();
+				$nicknameErr.html('突然间断线了,请重新进入');
+				$nickname.show();
 			});
 
 			function clear(){
