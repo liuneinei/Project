@@ -83,7 +83,7 @@
 			socket.on('user:pub',message);
 			socket.on('user:private',message);
 			socket.on('reconnect',function(){
-				$lines.remove();
+				//$lines.remove();
 				message('<i>系统消息</i>','重连了');
 			});
 			socket.on('reconnecting',function(){
