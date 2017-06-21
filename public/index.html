@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <title>WeUI</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <title>即时聊天 - Chat</title>
 	<link rel="stylesheet" type="text/css" href="socket.css?v1.3">
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="../socket.io/socket.io.js"></script>
@@ -89,6 +90,12 @@
 			});
 			socket.on('error',function(e){
 				message('<i>系统消息</i>',e?e:'未知错误');
+			});
+			socket.on('connect_failed',function(e){
+				console.log('连接失败');
+			});
+			socket.on('disconnect',function(e){
+				console.log('断开连接');
 			});
 
 			function clear(){
