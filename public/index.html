@@ -71,10 +71,11 @@
 
 			function message(from,msg,opt_to){
 				var label;
+				var times = new Date();
 				if(opt_to){
-					label = $('<b>').html(from+'对'+opt_to+'说:');
+					label = $('<b>').html(from+'对'+opt_to+'说('+times.getHours() + ":" + times.getMinutes()+')'+':');
 				}else{
-					label = $('<b>').html(from+':');
+					label = $('<b>').html(from+'('+times.getHours() + ":" + times.getMinutes()+')'+':');
 				}
 				$lines.append($('<p>').append(label,msg));
 				$lines.scrollTop(100000000);
