@@ -72,10 +72,15 @@
 			function message(from,msg,opt_to){
 				var label;
 				var times = new Date();
+				var hours = times.getHours();
+				hours = hours<10?'0'+hours:hours;
+				var minutes = times.getMinutes();
+				minutes = minutes<10?'0'+minutes:minutes;
+
 				if(opt_to){
-					label = $('<b>').html(from+'对'+opt_to+'说('+times.getHours() + ":" + times.getMinutes()+')'+':');
+					label = $('<b>').html('['+ hours + ":" + minutes+']'+from+'对'+opt_to+'说:');
 				}else{
-					label = $('<b>').html(from+'('+times.getHours() + ":" + times.getMinutes()+')'+':');
+					label = $('<b>').html('['+ hours + ":" + minutes+']'+from+':');
 				}
 				$lines.append($('<p>').append(label,msg));
 				$lines.scrollTop(100000000);
