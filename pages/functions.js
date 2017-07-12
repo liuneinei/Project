@@ -83,6 +83,58 @@ const setdatas = (map_data,fb)=>{
   }
   typeof fb === 'function' && fb();
 }
+
+// 获取用户信息
+const getuser = (fb) =>{
+  console.log('funs-1');
+  console.log(configs.userinfo);
+  if (configs.userinfo) {
+    typeof fb === 'function' && fb(configs.userinfo);
+  } else {
+      //调用登录接口
+      wx.login({
+        success: function (rel) {
+          console.log('funs0');
+          console.log(rel);
+          var code = rel.code;
+          wx.getUserInfo({
+            success: function (res) {
+              console.log('funs1');
+              console.log(res);
+              //一定要把加密串转成URI编码
+              var encryptedData = encodeURIComponent(res.encryptedData);
+              var iv = res.iv;
+
+              // 请求服务器
+              wx.request({
+                url: api.host + api.iwxlogin,
+                data: {
+                  code: code,
+                  encrypteddata: encryptedData,
+                  iv: iv
+                },
+                method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+                header: {
+                  'Content-Type': 'json'
+                }, // 设置请求的 header
+                success: function (res) {
+                  console.log('funs2');
+                  console.log(res);
+                  configs.userinfo = res.data.data;
+                  typeof fb == "function" && fb(res.data.data);
+                }
+              })
+            },
+            fail: function () {
+              console.log('funs0 - fail');
+              typeof fb == "function" && fb({ msg:'fail'});
+            }
+          })
+        }
+      })
+  }
+}
+
 module.exports = {
   // 获取config
   getconfig,
@@ -90,4 +142,6 @@ module.exports = {
   getlocation,
   // 设置data
   setdatas,
+  // 获取用户信息
+  getuser,
 }

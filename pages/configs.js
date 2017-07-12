@@ -10,5 +10,7 @@ module.exports = {
   // 默认广州市
   city_name: '广州市',
   // config 存储
-  store:null
+  store:null,
+  // 用户信息
+  userinfo:null
 }

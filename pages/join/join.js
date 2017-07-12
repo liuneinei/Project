@@ -57,6 +57,16 @@ Page({
       title: '加入我们'
     })
   },
+  onShow: function (options) {
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 1500
+    })
+    var that = this;
+    // 初始化值
+    init(that);
+  },
   onLoad: function () {
     wx.showToast({
       title: '加载中',
@@ -64,33 +74,8 @@ Page({
       duration:1500
     })
     var that = this;
-    that.setData({
-      // 七牛文件查看域名
-      host: api.iQiniu,
-      iImgExt: api.iImgExt
-    })
-
-    var userInfo = app.globalData.userInfo;
-    that.setData({
-      userInfo: userInfo
-    })
-    // OpenId
-    userInfo=userInfo||{};
-    var openid = userInfo.openId || '';
-    var objoin = that.data.objoin;
-    if(openid == ''){
-      objoin.status = 0;
-      that.setData({
-        objoin:objoin
-      });
-      wx.hideToast();
-    }else{
-      // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
-      functions.getconfig(function (res) {
-        // 获取加入我们
-        Getislecturer(that, openid);
-      });
-    }
+    //初始化值
+    init(that);
 
     // 定时保存
     timesave(that);
@@ -134,7 +119,7 @@ Page({
   // 上传头像
   uploadheadTap: function (event) {
     var that = this;
-    var openid = that.data.userInfo.openId;
+    var openid = configs.userinfo.openId;
     var url='face/'+openid+'.jpg'
     // 获取Key
     GetUpToken(that, url,'headimg')
@@ -219,7 +204,7 @@ Page({
   // 上传身份证正面
   IdCardZTap:function(event){
     var that = this;
-    var openid = that.data.userInfo.openId;
+    var openid = configs.userinfo.openId;
     var url = 'id/' + openid + '/0.jpg'
     // 获取Key
     GetUpToken(that, url,'idcardz')
@@ -227,7 +212,7 @@ Page({
   // 上传身份证反面
   IdCardFTap:function(event){
     var that = this;
-    var openid = that.data.userInfo.openId;
+    var openid = configs.userinfo.openId;
     var url = 'id/' + openid + '/1.jpg'
     // 获取Key
     GetUpToken(that, url, 'idcardf')
@@ -236,7 +221,7 @@ Page({
   CertTap:function(event){
     var that = this;
     // 用户OpenId
-    var openid = that.data.userInfo.openId;
+    var openid = configs.userinfo.openId;
     // 微信 API 选文件
     wx.chooseImage({
       count: 9,
@@ -247,8 +232,9 @@ Page({
           if (i < tempFilePaths.length){
           // 微信选择文件的名称
           var filePath = res.tempFilePaths[i];
+          var _times = Date.parse(new Date());
           // 自定义名称
-          var filename = 'cert/' + openid + '/' + i+'.jpg';
+          var filename = 'cert/' + openid + '/' + _times +'.jpg';
 
           // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
           api.wxRequest({
@@ -345,6 +331,48 @@ Page({
   }
   // ##:end from表单处理
 });
+
+// 初始化
+function init(that){
+  that.setData({
+    // 七牛文件查看域名
+    host: api.iQiniu,
+    iImgExt: api.iImgExt
+  })
+
+  // OpenId
+  var userInfo = configs.userinfo || {};
+  var openid = userInfo.openId || '';
+  var objoin = that.data.objoin;
+
+  console.log('openid:');
+  console.log(openid);
+  if (openid == '') {
+    functions.getuser(function (res) {
+      openid = res.openId || '';
+      if (openid == '') {
+        objoin.status = 99;
+        objoin.msg = '获取用户信息失败，请允许用户信息授权';
+        that.setData({
+          objoin: objoin
+        });
+        wx.hideToast();
+      } else {
+        // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+        functions.getconfig(function (res) {
+          // 获取加入我们
+          Getislecturer(that, openid);
+        });
+      }
+    });
+  } else {
+    // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
+    functions.getconfig(function (res) {
+      // 获取加入我们
+      Getislecturer(that, openid);
+    });
+  }
+}
 
 // 获取加入我们
 function Getislecturer(that, openid){
@@ -453,7 +481,7 @@ function timesave(that){
 // 保存信息提交
 function BtnSave(that,tp){
   // 用户OpenId
-  var openid = that.data.userInfo.openId;
+  var openid = configs.userinfo.openId;
   // 数据对象
   var objoin = that.data.objoin;
 

@@ -13,27 +13,27 @@ App({
     wx.setStorageSync('logs', logs)
 
     //调用登录接口
-    wx.login({
-      success: function (rel) {
-        var code = rel.code;
-        wx.getUserInfo({
-          success: function (res) {
-            var uinfo = res.userInfo;
-            uinfo.encryptedData = encodeURIComponent(res.encryptedData);
-            uinfo.iv = res.iv;
-            uinfo.code = code;
-            that.globalData.userInfo = uinfo
+    // wx.login({
+    //   success: function (rel) {
+    //     var code = rel.code;
+    //     wx.getUserInfo({
+    //       success: function (res) {
+    //         var uinfo = res.userInfo;
+    //         uinfo.encryptedData = encodeURIComponent(res.encryptedData);
+    //         uinfo.iv = res.iv;
+    //         uinfo.code = code;
+    //         that.globalData.userInfo = uinfo
 
-            //一定要把加密串转成URI编码
-            var encryptedData = encodeURIComponent(res.encryptedData);
-            var iv = res.iv;
+    //         //一定要把加密串转成URI编码
+    //         var encryptedData = encodeURIComponent(res.encryptedData);
+    //         var iv = res.iv;
 
-            //请求自己的服务器
-            Login(that, code, encryptedData, iv);
-          }
-        })
-      }
-    })
+    //         //请求自己的服务器
+    //         Login(that, code, encryptedData, iv);
+    //       }
+    //     })
+    //   }
+    // })
   },
   getUserInfo: function (cb) {
     typeof cb == "function" && cb(this.globalData.userInfo)

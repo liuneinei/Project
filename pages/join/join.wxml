@@ -58,7 +58,7 @@
     <view class="item-content">
       <view class="item-lable">简介</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" maxlength="20"  placeholder-style="item__input-holder" value="{{objoin.desc}}"/>
+        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" placeholder-style="item__input-holder" value="{{objoin.desc}}"/>
       </view>
     </view>
     <view class="item-content">
