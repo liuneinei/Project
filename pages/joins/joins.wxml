@@ -20,6 +20,7 @@
       <block wx:else>
         <image src="{{host}}/{{objoin.img}}?{{utctime}}" class="top__head"></image>
       </block>
+        <input type="hidden" name="img" value="{{objoin.img}}" />
     </view>
     <view class="top-btn">
       <view class="btn_upload" bindtap="uploadheadTap">上传头像</view>
@@ -31,54 +32,57 @@
       <view class="item-lable">您提供服务城市</view>
       <view class="item-input" bindtap="ProvinceEvent">
         <view class="item__input item_names">{{checkProvince}}</view>
+        <input type="hidden" name="province" value="{{province}}" />
+        <input type="hidden" name="city" value="{{city}}" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">认证行业</view>
       <view class="item-input" bindtap="ClassEvent">
         <view class="item__input item_names">{{checkClassName}}</view>
+        <input type="hidden" name="classid" value="{{classid}}" />        
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">姓名</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" maxlength="20" placeholder-style="item__input-holder" value="{{objoin.name}}" />
+        <input type="text" name="name" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleName" maxlength="20" placeholder-style="item__input-holder" value="{{objoin.name}}" />
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">手机</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone" maxlength="11"  placeholder-style="item__input-holder" value="{{objoin.phone}}"/>
+        <input type="text" name="phone" class="item__input" placeholder="留下可与您直接联系的手机号码" bindblur="HandlePhone" maxlength="11"  placeholder-style="item__input-holder" value="{{objoin.phone}}"/>
       </view>
     </view>
      <view class="item-content">
       <view class="item-lable">微信号</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.wxname}}"/>
+        <input type="text" name="wxname" class="item__input" placeholder="用于个人页展示，提供给用户添加" bindblur="HandleWxName" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.wxname}}"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">简介</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" placeholder-style="item__input-holder" value="{{objoin.desc}}"/>
+        <textarea name="desc" class="item__input item__textarea" placeholder="用于列表页展示，不超过20字" maxlength="20" bindblur="HandleDesc" placeholder-class="item__textarea_holder" placeholder-style="item__input-holder" value="{{objoin.desc}}"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">介绍</view>
       <view class="item-input">
-        <textarea class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" maxlength="400"  bindblur="HandleNotice"  placeholder-style="item__input-holder" value="{{objoin.notice}}"/>
+        <textarea name="notice" class="item__input item__textarea item__textareah" placeholder="说说您的经历和专业介绍，不超过400字" maxlength="400"  bindblur="HandleNotice"  placeholder-style="item__input-holder" value="{{objoin.notice}}"/>
       </view>
     </view>
      <view class="item-content">
       <view class="item-lable">培训机构</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.institutions}}"/>
+        <input type="text" name="institutions" class="item__input" placeholder="与您提交审核的证件一致" bindblur="HandleInstitutions" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.institutions}}"/>
       </view>
     </view>
     <view class="item-content">
       <view class="item-lable">推荐人</view>
       <view class="item-input">
-        <input type="text" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.referee}}"/>
+        <input type="text" name="referee" class="item__input" placeholder="用于对您资质的审核"  bindblur="HandleReferee" maxlength="50"  placeholder-style="item__input-holder" value="{{objoin.referee}}"/>
       </view>
     </view>
     <view class="item-content item-pic-list">
@@ -138,8 +142,9 @@
     请上传您申请的各行业认证专业证书
     </view>
     <view class="blank80 backfff"></view>
-    <view class="item-btn" bindtap="btnSubmit">
-      <view class="item-btn__lable" style="{{BtnColor}}">提交申请</view>
+    <view class="item-btn" ><!--bindtap="btnSubmit"-->
+      <!--<view class="item-btn__lable" style="{{BtnColor}}">提交申请</view>-->
+      <button class="item-btn__lable" style="{{BtnColor}}" formType="submit">提交申请</button>
     </view>
     <view class="blank70 backfff"></view>
   </view>

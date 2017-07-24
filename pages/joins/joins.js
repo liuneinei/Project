@@ -13,21 +13,21 @@ Page({
     // 屏幕高度
     wHeight: 300,
     // 主机域名 - 七牛文件
-    host:'',
+    host: '',
     // 选中的城市
     checkProvince: '点击选择',
     // 选中的分类集
-    checkClassName:'点击选择',
+    checkClassName: '点击选择',
     // 证书上传URL
-    CertUrls:[],
+    CertUrls: [],
     // 是否显示相册
-    CertAlbum:false,
+    CertAlbum: false,
     // 当前坐标
-    CertIndex:2,
+    CertIndex: 2,
     // 提交的对象
-    objoin:{
+    objoin: {
       status: 99,//0未填写 1已提交审核中 2提交审核失败 3已提交审核成功,
-      isedit:false,
+      isedit: false,
       province: 0,
       city: 0,
       classid: '',
@@ -43,17 +43,17 @@ Page({
       idcard_z: '',
       idcard_f: '',
       certificate: '',
-      msg:'正在加载中'
+      msg: '正在加载中'
     },//保存填写信息
     // 时间戳
     utctime: (new Date()).getTime(),
     // 按钮颜色
-    BtnColor: 'background-color:#714e9e;color: #ffffff;',   
-    tost:{
-      ishide:true,
-      tip:'',
-      time:1,
-      js:0
+    BtnColor: 'background-color:#714e9e;color: #ffffff;',
+    tost: {
+      ishide: true,
+      tip: '',
+      time: 1,
+      js: 0
     }
   },
   onReady: function () {
@@ -74,8 +74,8 @@ Page({
   onLoad: function () {
     wx.showToast({
       title: '加载中',
-      icon:'loading',
-      duration:1500
+      icon: 'loading',
+      duration: 1500
     })
     var that = this;
     //初始化值
@@ -86,13 +86,13 @@ Page({
   },
   // ##:beging 事件处理 
   // 选择城市
-  ProvinceEvent:function(event){
+  ProvinceEvent: function (event) {
     wx.navigateTo({
       url: '../joincity/joincity',
     })
   },
   // 选择类别
-  ClassEvent:function(event){
+  ClassEvent: function (event) {
     wx.navigateTo({
       url: '../joinclass/joinclass',
     })
@@ -125,17 +125,17 @@ Page({
     var that = this;
     var openid = configs.userinfo.openId;
     var _times = Date.parse(new Date());
-    var url = 'face/' + openid + '/' + _times+'.jpg'
+    var url = 'face/' + openid + '/' + _times + '.jpg'
     // 获取Key
-    GetUpToken(that, url,'headimg')
+    GetUpToken(that, url, 'headimg')
   },
   // 名字
-  HandleName:function(event){
+  HandleName: function (event) {
     var that = this;
     var name = event.detail.value
     var objoin = that.data.objoin;
     objoin.name = name;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -146,7 +146,7 @@ Page({
     var phone = event.detail.value
     var objoin = that.data.objoin;
     objoin.phone = phone;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -157,7 +157,7 @@ Page({
     var wxname = event.detail.value
     var objoin = that.data.objoin;
     objoin.wxname = wxname;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -168,7 +168,7 @@ Page({
     var desc = event.detail.value
     var objoin = that.data.objoin;
     objoin.desc = desc;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -179,7 +179,7 @@ Page({
     var notice = event.detail.value
     var objoin = that.data.objoin;
     objoin.notice = notice;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -190,7 +190,7 @@ Page({
     var institutions = event.detail.value
     var objoin = that.data.objoin;
     objoin.institutions = institutions;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
@@ -201,31 +201,31 @@ Page({
     var referee = event.detail.value
     var objoin = that.data.objoin;
     objoin.referee = referee;
-    objoin.isedit = true; 
+    objoin.isedit = true;
     that.setData({
       objoin: objoin
     })
   },
   // 上传身份证正面
-  IdCardZTap:function(event){
+  IdCardZTap: function (event) {
     var that = this;
     var openid = configs.userinfo.openId;
     var _times = Date.parse(new Date());
-    var url = 'id/' + openid + '/0_' + _times+'.jpg'
+    var url = 'id/' + openid + '/0_' + _times + '.jpg'
     // 获取Key
-    GetUpToken(that, url,'idcardz')
+    GetUpToken(that, url, 'idcardz')
   },
   // 上传身份证反面
-  IdCardFTap:function(event){
+  IdCardFTap: function (event) {
     var that = this;
     var openid = configs.userinfo.openId;
     var _times = Date.parse(new Date());
-    var url = 'id/' + openid + '/1_' + _times+'.jpg'
+    var url = 'id/' + openid + '/1_' + _times + '.jpg'
     // 获取Key
     GetUpToken(that, url, 'idcardf')
   },
   // 证书URL
-  CertTap:function(event){
+  CertTap: function (event) {
     var that = this;
     // 用户OpenId
     var openid = configs.userinfo.openId;
@@ -235,79 +235,79 @@ Page({
       success: function (res) {
         var tempFilePaths = res.tempFilePaths;
         // 递归函数
-        function UpFile(i){
-          if (i < tempFilePaths.length){
-          // 微信选择文件的名称
-          var filePath = res.tempFilePaths[i];
-          var _times = Date.parse(new Date());
-          // 自定义名称
-          var filename = 'cert/' + openid + '/' + _times +'.jpg';
+        function UpFile(i) {
+          if (i < tempFilePaths.length) {
+            // 微信选择文件的名称
+            var filePath = res.tempFilePaths[i];
+            var _times = Date.parse(new Date());
+            // 自定义名称
+            var filename = 'cert/' + openid + '/' + _times + '.jpg';
 
-          // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
-          api.wxRequest({
-            data: {
-              filename: filename
-            },
-            success: function (res) {
-              
-              // :begin 获取七牛 uptoken
-              api.wxRequest({
-                data: {
-                  filename: filename
-                },
-                success: function (res) {
-                  var data = res.data;
-                  if (data.status == 0) {
-                    // 七牛上传必须的 uptoken
-                    var uploadtoken = data.uploadtoken;
-                    // 七牛上传文件
-                    wx.uploadFile({
-                      url: api.iQiniuUp,
-                      filePath: filePath,
-                      name: 'file',
-                      formData: {
-                        'key': filename,
-                        'token': uploadtoken
-                      },
-                      success: function (res) {
-                        // Page data对象
-                        var tdata = that.data;
-                        // data - objoin对象
-                        var objoin = tdata.objoin;
-                        // 证书URL集
-                        var CertUrls = tdata.CertUrls
-                        // 证书URL
-                        var dataKey = JSON.parse(res.data).key;
+            // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
+            api.wxRequest({
+              data: {
+                filename: filename
+              },
+              success: function (res) {
 
-                        objoin.certificate += dataKey+',';
-                        // 编辑状态
-                        objoin.isedit = true
-                        var utctime = (new Date()).getTime();
-                        dataKey = dataKey + '?wxcert' + utctime;
-                        CertUrls.push(dataKey)
-                        that.setData({
-                          objoin: objoin,
-                          CertUrls: CertUrls
-                        })
-                        i=i+1;
-                        UpFile(i);
-                      }
-                    });
+                // :begin 获取七牛 uptoken
+                api.wxRequest({
+                  data: {
+                    filename: filename
+                  },
+                  success: function (res) {
+                    var data = res.data;
+                    if (data.status == 0) {
+                      // 七牛上传必须的 uptoken
+                      var uploadtoken = data.uploadtoken;
+                      // 七牛上传文件
+                      wx.uploadFile({
+                        url: api.iQiniuUp,
+                        filePath: filePath,
+                        name: 'file',
+                        formData: {
+                          'key': filename,
+                          'token': uploadtoken
+                        },
+                        success: function (res) {
+                          // Page data对象
+                          var tdata = that.data;
+                          // data - objoin对象
+                          var objoin = tdata.objoin;
+                          // 证书URL集
+                          var CertUrls = tdata.CertUrls
+                          // 证书URL
+                          var dataKey = JSON.parse(res.data).key;
+
+                          objoin.certificate += dataKey + ',';
+                          // 编辑状态
+                          objoin.isedit = true
+                          var utctime = (new Date()).getTime();
+                          dataKey = dataKey + '?wxcert' + utctime;
+                          CertUrls.push(dataKey)
+                          that.setData({
+                            objoin: objoin,
+                            CertUrls: CertUrls
+                          })
+                          i = i + 1;
+                          UpFile(i);
+                        }
+                      });
+                    }
                   }
-                }
-              }, api.host + api.iuploadtoken)
-              // :end 获取七牛 uptoken
-            }
-          }, api.host + api.iDeleteImg)
-          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
-        }
+                }, api.host + api.iuploadtoken)
+                // :end 获取七牛 uptoken
+              }
+            }, api.host + api.iDeleteImg)
+            // :end 执行删除文件Api,不知道删除成功与；都是再次上传
+          }
         }
         UpFile(0);
       }
     })
   },
   // 删除图片
-  CloseXTap:function(event){
+  CloseXTap: function (event) {
     var that = this;
     var filename = event.currentTarget.dataset.certImg;
     // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
@@ -318,26 +318,26 @@ Page({
       success: function (res) {
         var CertUrls = that.data.CertUrls;
         var index = CertUrls.indexOf(filename);
-        CertUrls.splice(index,1);
+        CertUrls.splice(index, 1);
         that.setData({
           CertUrls: CertUrls
         })
       }
     }, api.host + api.iDeleteImg)
-          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
+    // :end 执行删除文件Api,不知道删除成功与；都是再次上传
   },
   // 提交申请
-  btnSubmit:function(event){
+  btnSubmit: function (event) {
     var that = this;
-    BtnSave(that,true);
+    BtnSave(that, true);
   },
   // 修改信息
-  btnUpdateTap:function(event){
+  btnUpdateTap: function (event) {
     var that = this;
     BtnSave(that, false);
   },
-// 启用相册
-  AlbumTag:function(event){
+  // 启用相册
+  AlbumTag: function (event) {
     var that = this;
     var index = event.currentTarget.dataset.index;
 
@@ -348,7 +348,7 @@ Page({
     })
   },
   // 隐藏相册
-  AlbumHideTag:function(event){
+  AlbumHideTag: function (event) {
     var that = this;
     that.setData({
       CertAlbum: false,
@@ -357,7 +357,7 @@ Page({
     })
   },
   // 删除
-  AlbumDelTag:function(event){
+  AlbumDelTag: function (event) {
     var that = this;
     wx.showActionSheet({
       itemList: ['确认删除'],
@@ -397,23 +397,28 @@ Page({
               }
             }, api.host + api.iDeleteImg)
             // :end 执行删除文件Api,不知道删除成功与；都是再次上传
-          } 
+          }
         }
       }
     })
   },
   // 相册current
-  SwiperChange:function(event){
+  SwiperChange: function (event) {
     var that = this;
     that.setData({
       CertIndex: event.detail.current
     })
+  },
+  // form 提交
+  formSubmit:function(event){
+    var that = this;
+    console.log(event);
   }
   // ##:end from表单处理
 });
 
 // 初始化
-function init(that){
+function init(that) {
   that.setData({
     // 七牛文件查看域名
     host: api.iQiniu,
@@ -455,12 +460,12 @@ function init(that){
 }
 
 // 获取加入我们
-function Getislecturer(that, openid){
+function Getislecturer(that, openid) {
   api.wxRequest({
-    data:{
+    data: {
       openid: openid
     },
-    success:function(res){
+    success: function (res) {
       // 本地保存对象
       var objoin = that.data.objoin;
       var checkProvince = '点击选择';
@@ -469,25 +474,25 @@ function Getislecturer(that, openid){
       // --返回结果集
       var resObj = res.data.data;
       var dataObj = res.data;
-      if (dataObj.status != 0 || resObj.length <= 0){
+      if (dataObj.status != 0 || resObj.length <= 0) {
         objoin.status = 0
-      }else{
+      } else {
         // 提交的对象
         objoin.openid = resObj.wx_openid;
         objoin.province = resObj.province_id;
         objoin.city = resObj.city_id;
 
         var provinces = configs.store.provinces
-        if(provinces != 'undefined' && provinces.length >0){
-          checkProvince='';
-          [].forEach.call(provinces,function(item,i){
-            if (item.id == resObj.province_id){
-              checkProvince+=item.name;
+        if (provinces != 'undefined' && provinces.length > 0) {
+          checkProvince = '';
+          [].forEach.call(provinces, function (item, i) {
+            if (item.id == resObj.province_id) {
+              checkProvince += item.name;
               var checkProIndex = checkProvince.indexOf('市');
               var citys = item.citys;
-              if (citys.length > 0 && checkProIndex<0){
-                [].forEach.call(citys,function(itemc,ic){
-                  if (itemc.id == resObj.city_id){
+              if (citys.length > 0 && checkProIndex < 0) {
+                [].forEach.call(citys, function (itemc, ic) {
+                  if (itemc.id == resObj.city_id) {
                     checkProvince += itemc.name;
                   }
                 })
@@ -497,15 +502,15 @@ function Getislecturer(that, openid){
         }
         var service = resObj.service;
         objoin.classid = '';
-        if (service.length > 0){
+        if (service.length > 0) {
           checkClassName = '';
-          [].forEach.call(service,function(item,i){
-            objoin.classid += item.id+',';
-            checkClassName += item.title+',';
+          [].forEach.call(service, function (item, i) {
+            objoin.classid += item.id + ',';
+            checkClassName += item.title + ',';
           })
           objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
-          checkClassName = checkClassName.substr(0, checkClassName.length-1);
-        
+          checkClassName = checkClassName.substr(0, checkClassName.length - 1);
+
           var utctime = (new Date()).getTime();
 
           objoin.img = resObj.face_img + '?wximg' + utctime;
@@ -518,22 +523,22 @@ function Getislecturer(that, openid){
           objoin.referee = resObj.referees;
           objoin.idcard_z = resObj.idcard_up_img + '?wximg' + utctime;;
           objoin.idcard_f = resObj.idcard_down_img + '?wximg' + utctime;;
-          objoin.certificate = resObj.cert_imgs+',';
+          objoin.certificate = resObj.cert_imgs + ',';
           var CertUrlses = resObj.cert_imgs.split(',');
-          if(CertUrlses.length > 0){
-            [].forEach.call(CertUrlses,function(item,i){
+          if (CertUrlses.length > 0) {
+            [].forEach.call(CertUrlses, function (item, i) {
               CertUrls.push(item + '?wxcert' + utctime);
             });
           }
           objoin.status = resObj.status;
-          if (objoin.status==1){
-            objoin.msg='已提交，请等待审核';
-          }else if(objoin.status ==3){
+          if (objoin.status == 1) {
+            objoin.msg = '已提交，请等待审核';
+          } else if (objoin.status == 3) {
             objoin.msg = '您的信息审核已通过';
-          }else if(objoin.status == 2){
+          } else if (objoin.status == 2) {
             objoin.msg = '您的信息审核失败，请检查信息的正确性及相片的清晰度';
           }
-        }else{
+        } else {
           objoin.status = 0;
         }
       }
@@ -544,22 +549,22 @@ function Getislecturer(that, openid){
         CertUrls: CertUrls
       })
     },
-    complete:function(res){
+    complete: function (res) {
       wx.hideToast();
     }
   }, api.host + api.igGetIsLecturer);
 }
 
 // 定时保存
-function timesave(that){
+function timesave(that) {
   var _objoin = that.data.objoin;
-  if (_objoin.status == 0){
+  if (_objoin.status == 0) {
     //BtnSave(that, false);
   }
-  setTimeout(function () { timesave(that)},30000); 
+  setTimeout(function () { timesave(that) }, 30000);
 }
 // 保存信息提交
-function BtnSave(that,tp){
+function BtnSave(that, tp) {
   // 用户OpenId
   var openid = configs.userinfo.openId;
   // 数据对象
@@ -567,11 +572,11 @@ function BtnSave(that,tp){
 
   var tost = that.data.tost;
 
-  if ((openid == 'undefined' || openid == '') && tp){
+  if ((openid == 'undefined' || openid == '') && tp) {
     tost.ishide = false;
-    tost.tip ='未授权登录';
+    tost.tip = '未授权登录';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -579,9 +584,9 @@ function BtnSave(that,tp){
   }
   if (objoin.img == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请上传头像';
+    tost.tip = '请上传头像';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -589,9 +594,9 @@ function BtnSave(that,tp){
   }
   if ((objoin.province == '' || objoin.city == '') && tp) {
     tost.ishide = false;
-    tost.tip ='请选择城市';
+    tost.tip = '请选择城市';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -599,9 +604,9 @@ function BtnSave(that,tp){
   }
   if (objoin.classid == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请选择认证行业';
+    tost.tip = '请选择认证行业';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -609,9 +614,9 @@ function BtnSave(that,tp){
   }
   if (objoin.name == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写姓名';
+    tost.tip = '请填写姓名';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -619,9 +624,9 @@ function BtnSave(that,tp){
   }
   if (objoin.phone == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写手机';
+    tost.tip = '请填写手机';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -629,9 +634,9 @@ function BtnSave(that,tp){
   }
   if (objoin.wxname == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写微信号';
+    tost.tip = '请填写微信号';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -639,9 +644,9 @@ function BtnSave(that,tp){
   }
   if (objoin.desc == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写简介';
+    tost.tip = '请填写简介';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -649,9 +654,9 @@ function BtnSave(that,tp){
   }
   if (objoin.notice == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写介绍';
+    tost.tip = '请填写介绍';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -659,9 +664,9 @@ function BtnSave(that,tp){
   }
   if (objoin.institutions == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请填写培训机构';
+    tost.tip = '请填写培训机构';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -669,9 +674,9 @@ function BtnSave(that,tp){
   }
   if (objoin.idcard_z == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请上传身份正面';
+    tost.tip = '请上传身份正面';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -679,9 +684,9 @@ function BtnSave(that,tp){
   }
   if (objoin.idcard_f == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请上传身份反面';
+    tost.tip = '请上传身份反面';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -689,9 +694,9 @@ function BtnSave(that,tp){
   }
   if (objoin.certificate == '' && tp) {
     tost.ishide = false;
-    tost.tip ='请上传专业证书';
+    tost.tip = '请上传专业证书';
     that.setData({
-      tost:tost
+      tost: tost
     })
     // 隐藏
     hideToasts(that);
@@ -699,21 +704,21 @@ function BtnSave(that,tp){
   }
   var certificate_str = objoin.certificate;
   var cert_lastindex = certificate_str.lastIndexOf(',');
-  if (cert_lastindex == (certificate_str.length -1)){
+  if (cert_lastindex == (certificate_str.length - 1)) {
     certificate_str = certificate_str.substr(0, certificate_str.length - 1);
   }
-  var status=1;
-  if(!tp){
-    status=0
+  var status = 1;
+  if (!tp) {
+    status = 0
   }
   var face_img = objoin.img;
   var face_index = objoin.img.indexOf('?wximg');
-  if(face_index > 0){
+  if (face_index > 0) {
     face_img = face_img.substr(0, face_index);
   }
-  
+
   var idcard_up_img = objoin.idcard_z;
-  var idcard_up_index = idcard_up_img.indexOf('?wximg') 
+  var idcard_up_index = idcard_up_img.indexOf('?wximg')
   if (idcard_up_index > 0) {
     idcard_up_img = idcard_up_img.substr(0, idcard_up_index);
   }
@@ -723,12 +728,12 @@ function BtnSave(that,tp){
   if (idcard_down_index > 0) {
     idcard_down_img = idcard_down_img.substr(0, idcard_down_index);
   }
-  
+
   console.log(face_img);
   console.log(idcard_up_img);
   console.log(idcard_down_img);
   console.log(certificate_str);
-  
+
   api.wxRequest({
     method: 'POST',
     data: {
@@ -758,14 +763,14 @@ function BtnSave(that,tp){
         // 提交成功，想想接下来要怎么处理
         objoin.status = status;
         objoin.msg = '已提交，请等待审核';
-          that.setData({
-            objoin: objoin
-          })
+        that.setData({
+          objoin: objoin
+        })
       } else {
         // 提交失败，
         wx.showToast({
           title: '处理失败',
-          duration:1000
+          duration: 1000
         })
       }
     },
@@ -777,111 +782,111 @@ function BtnSave(that,tp){
 }
 
 // 获取uptoken
-function GetUpToken(that,filename,types){
+function GetUpToken(that, filename, types) {
   var NowTime = new Date();
   // 获取七牛相对应文件 upToken
-    api.wxRequest({
-      data:{
-       filename: filename
-      },
-      success:function(res){
-        var data = res.data;
-        if (data.status == 0){
-          // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
-          api.wxRequest({
-            data:{
-              filename: filename
-            },
-            success:function(res){
-              // 获取到Key后，执行选择上传文件
-              ChooesImage(that, filename, data.uploadtoken, types);
-            }
-          }, api.host + api.iDeleteImg)
-          // :end 执行删除文件Api,不知道删除成功与；都是再次上传
-        }
+  api.wxRequest({
+    data: {
+      filename: filename
+    },
+    success: function (res) {
+      var data = res.data;
+      if (data.status == 0) {
+        // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
+        api.wxRequest({
+          data: {
+            filename: filename
+          },
+          success: function (res) {
+            // 获取到Key后，执行选择上传文件
+            ChooesImage(that, filename, data.uploadtoken, types);
+          }
+        }, api.host + api.iDeleteImg)
+        // :end 执行删除文件Api,不知道删除成功与；都是再次上传
       }
-    }, api.host + api.iuploadtoken)
+    }
+  }, api.host + api.iuploadtoken)
 }
 
 // 上传
 // 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
 // 头像 ：  face/[openid].jpg
 // 证照 ：  cert/[openid]/[unixtime].jpg
-function ChooesImage(that, key,uptoken, types) {
+function ChooesImage(that, key, uptoken, types) {
   console.log(key);
   console.log(uptoken);
   // 微信 API 选文件
   wx.chooseImage({
-      count: 1,
-      success: function (res) {
-        var filePath = res.tempFilePaths[0];
-        wx.showToast({
-          title: '上传中',
-          icon: 'loading',
-          duration: 2000
-        })
-        //上传
-        wx.uploadFile({
-          url: api.iQiniuUp,
-            filePath: filePath,
-            name: 'file',
-            formData: {
-              'key': key,
-              'token': uptoken
-            },
-            success: function(res) {
-              var objoin = that.data.objoin;
-              var dataObject = JSON.parse(res.data);
-                //返回hash值、key值
-                console.log(res.data);
-                var utctime = (new Date()).getTime();
-                if (types == 'headimg'){
-                  objoin.img = dataObject.key + '?wximg' + utctime;
-                }else if(types == 'idcardz'){
-                  objoin.idcard_z = dataObject.key + '?wximg' + utctime;
-                }else if(types == 'idcardf'){
-                  objoin.idcard_f = dataObject.key + '?wximg' + utctime;
-                }
-                objoin.isedit=true
-                that.setData({
-                  objoin:objoin,
-                  //utctime: (new Date()).getTime(),
-                })
-            },
-            fail(error) {
-                console.log(error)
-            },
-            complete(res) {
-              // 隐藏弹窗
-              wx.hideLoading();
-            }
-       });
-     }
+    count: 1,
+    success: function (res) {
+      var filePath = res.tempFilePaths[0];
+      wx.showToast({
+        title: '上传中',
+        icon: 'loading',
+        duration: 2000
+      })
+      //上传
+      wx.uploadFile({
+        url: api.iQiniuUp,
+        filePath: filePath,
+        name: 'file',
+        formData: {
+          'key': key,
+          'token': uptoken
+        },
+        success: function (res) {
+          var objoin = that.data.objoin;
+          var dataObject = JSON.parse(res.data);
+          //返回hash值、key值
+          console.log(res.data);
+          var utctime = (new Date()).getTime();
+          if (types == 'headimg') {
+            objoin.img = dataObject.key + '?wximg' + utctime;
+          } else if (types == 'idcardz') {
+            objoin.idcard_z = dataObject.key + '?wximg' + utctime;
+          } else if (types == 'idcardf') {
+            objoin.idcard_f = dataObject.key + '?wximg' + utctime;
+          }
+          objoin.isedit = true
+          that.setData({
+            objoin: objoin,
+            //utctime: (new Date()).getTime(),
+          })
+        },
+        fail(error) {
+          console.log(error)
+        },
+        complete(res) {
+          // 隐藏弹窗
+          wx.hideLoading();
+        }
+      });
+    }
   })
 }
 
 // 按钮颜色改变
-function UpdateBtnColor(that,objoinid){
+function UpdateBtnColor(that, objoinid) {
 
 }
 // 隐藏
-function hideToasts(that){
+function hideToasts(that) {
   var tost = that.data.tost;
-  if(tost.js <= 0){
+  if (tost.js <= 0) {
     tost.js = tost.time;
-  }else{
+  } else {
     tost.js = tost.js - 1;
   }
-  if(tost.js<=0){
+  if (tost.js <= 0) {
     tost.ishide = true;
     tost.tip = '';
     tost.js = 0;
     that.setData({
-      tost:tost
+      tost: tost
     })
-  }else{
-    setTimeout(function(){
+  } else {
+    setTimeout(function () {
       hideToasts(that);
-    },1200);
+    }, 1200);
   }
 }

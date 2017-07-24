@@ -30,6 +30,11 @@
       </view>
       <view class="blank40 backfff"></view>
       <text class="item-content item-indent">{{Model.about}}</text>
+      <block wx:if="{{Model.wechat != ''}}">
+      <view class="item-content">
+        微信号：<text bindtap="WeChatTap">{{Model.wechat}}</text>
+      </view>
+      </block>
       <view class="blank50 backfff"></view>
     </view>
     <view class="blank10"></view>

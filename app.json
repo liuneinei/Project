@@ -9,7 +9,8 @@
     "pages/joinclass/joinclass",
     "pages/joincity/joincity",
     "pages/logs/logs",
-    "pages/joinalbum/joinalbum"
+    "pages/joinalbum/joinalbum",
+    "pages/joins/joins"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -28,7 +29,7 @@
       "iconPath": "images/home.png",
       "selectedIconPath": "images/home_active.png"
     }, {
-      "pagePath": "pages/lecturer/lecturer",
+      "pagePath": "pages/lecturers/lecturers",
       "text": "找专家",
       "iconPath": "images/lecturer.png",
       "selectedIconPath": "images/lecturer_active.png"

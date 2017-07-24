@@ -26,7 +26,11 @@ const getlocation = (fb)=>{
         },
         fail: function (res) {
           res.status = false;
-          typeof fb === 'function' && fb(res.result);
+          typeof fb === 'function' && fb(res);
+        },
+        complete: function (res) {
+          res.status = false;
+          typeof fb === 'function' && fb(res);
         }
       });
     },

@@ -149,6 +149,7 @@
   width: 710rpx;
   margin: 0 auto;
   border-radius: 3px;
+  font-size: 32rpx;
 }
 
 .item-pic-cert-CloseX{

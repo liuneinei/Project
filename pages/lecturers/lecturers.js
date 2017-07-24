@@ -6,6 +6,7 @@ var functions = require('../functions.js');
 var app = getApp()
 Page({
   data: {
+    str:'',
     // 配置信息
     Config: {
       // 主机域名 - 七牛文件
@@ -24,6 +25,8 @@ Page({
     },
     // 城市
     Region: {
+      // 是否为参数进入
+      arg:false,
       // 省id
       pid: 0,
       // 市id
@@ -75,6 +78,7 @@ Page({
     arg = '?provinceid=' + Region.pid;
     arg += '&cityid=' + Region.cid;
     arg += '&classid=' + Class.id;
+
     return {
       title: title,
       path: '/pages/lecturers/lecturers' + arg
@@ -88,6 +92,8 @@ Page({
       icon: 'loading',
       duration: 1500
     });
+    console.log('onShow');
+    console.log(options);
     var ilObj = wx.getStorageSync('ilclass');
     if (ilObj.isShow == true) {
       var Req = that.data.Req;
@@ -148,7 +154,14 @@ Page({
       });
     }
   },
-  onLoad: function (option) {
+  onReady: function (options){
+    console.log('onReady');
+    console.log(options);
+  },
+  onLoad: function (options) {
+    console.log('onLoad');
+    console.log(options);
+
     var that = this;
     wx.showToast({
       title: '加载中',
@@ -170,14 +183,24 @@ Page({
     // 城市 Object
     var Region = that.data.Region;
     // 是否为参数传入 ?arg=true
-    option.arg = option.arg || false;
-    Region.pid = option.provinceid || 0;
-    Region.cid = option.cityid || 0;
-    Class.id = option.classid || 0;
-    if (option.arg != false  || (Region.pid > 0 || Region.cid > 0 || Class.id > 0)) {
+    options.arg = options.arg || false;
+    Region.pid = options.provinceid || 0;
+    Region.cid = options.cityid || 0;
+    Class.id = options.classid || 0;
+
+    if (options.arg != false  || (Region.pid > 0 || Region.cid > 0 || Class.id > 0)) {
+      options.arg = true;
+      Region.arg = true;
       // 设置保存值
       that.setData({
         Class: Class,
+        Region: Region
+      });
+    }else{
+      options.arg = false;
+      Region.arg = false;
+      // 设置保存值
+      that.setData({
         Region: Region
       });
     }
@@ -185,7 +208,7 @@ Page({
     functions.getconfig(function (res) {
       // 设置导航list集
       SetPageDataNavList(that);
-      if (option.arg) {
+      if (options.arg) {
         // #########为参数进入
         // 设置标题名称
         SetPageDataNavName(that);
@@ -470,7 +493,7 @@ function SetPageDataNavName(that) {
             });
           }
           [].forEach.call(item.citys, function (itemc, ic) {
-            if (itemc.id == Region.cid && itemc.nop > 0) {
+            if (itemc.id == Region.cid && itemc.nop > 0 && !Region.arg) {
               Region.showname = itemc.name;
             }
           });
@@ -485,6 +508,8 @@ function SetPageDataNavName(that) {
       }
     });
   }
+  console.log('Region.showname');
+  console.log(Region.showname);
   // 设置保存值
   that.setData({
     Class: Class,

@@ -73,6 +73,20 @@ Page({
     wx.makePhoneCall({
       phoneNumber: phone //仅为示例，并非真实的电话号码
     })
+  },
+  // 复制微信号
+  WeChatTap:function(event){
+    var that = this;
+    wx.setClipboardData({
+      data: that.data.Model.wechat,
+      success: function (res) {
+        wx.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 1000
+        })
+      }
+    })
   }
   // :end 事件处理
 })

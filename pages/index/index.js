@@ -60,7 +60,7 @@ Page({
     var title = event.currentTarget.dataset.title;
     wx.setStorageSync('ilclass', { classid: id, className: title, isShow:true});
     wx.switchTab({
-      url: '../lecturer/lecturer' ,
+      url: '../lecturers/lecturers' ,
       success:function(res){
         console.log('index success')
         console.log(res)
