@@ -87,6 +87,12 @@ Page({
   // 显示页
   onShow: function (options) {
     var that = this;
+    // 记录
+  var showinfo =  wx.getStorageSync('showinfo');
+if(showinfo == 'true'){
+  wx.setStorageSync('showinfo',null);
+  return;
+}
     wx.showToast({
       title: '加载中',
       icon: 'loading',
@@ -168,6 +174,18 @@ Page({
       icon: 'loading',
       duration: 1500
     });
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log(res.screenHeight)
+        console.log(res.windowHeight)
+        var Config = that.data.Config;
+              // 屏幕高度，默认值
+        Config.wHeight = res.screenHeight-155;
+        that.setData({
+          Config: Config
+        })
+      }
+    })
     that.setData({
       // 七牛文件查看域名
       host: api.iQiniu,
@@ -278,6 +296,8 @@ Page({
   bingInfo: function (event) {
     var that = this;
     var id = event.currentTarget.dataset.id;
+    // 记录
+    wx.setStorageSync('showinfo', 'true');
     wx.navigateTo({
       url: '../lecturerinfo/lecturerinfo?id=' + id
     })

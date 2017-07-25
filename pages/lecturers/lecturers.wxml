@@ -46,14 +46,14 @@
     </block>
     <block wx:if="{{Req.showType == 2}}">
       <view class="nav-dorpmenu">
-          <scroll-view class="province-container" scroll-y style="height: {{wHeight}}px;" scroll-top="{{scrollTop}}">
+          <scroll-view class="province-container" scroll-y style="height: {{Config.wHeight}}px;" scroll-top="{{scrollTop}}">
             <block wx:for="{{Lists.regionList}}">
               <block wx:if="{{item.nop > 0}}">
                 <view class="geo-item province-width {{item.id == Region.pid ? 'checkon2':''}}" catchtap="ProvinceTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>
               </block>
             </block>
           </scroll-view>
-        <view class="city-container" style="height:{{wHeight}}px">
+        <view class="city-container" style="height:{{Config.wHeight}}px">
           <block wx:for="{{Lists.cityList}}">
             <block wx:if="{{item.nop > 0}}">
               <view class="geo-item city-width" catchtap="CityTap" data-id="{{item.id}}" data-name="{{item.name}}">{{item.name}}</view>

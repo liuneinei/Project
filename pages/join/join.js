@@ -456,6 +456,9 @@ function init(that){
 
 // 获取加入我们
 function Getislecturer(that, openid){
+  console.log('openid');
+  console.log(openid);
+
   api.wxRequest({
     data:{
       openid: openid
@@ -497,7 +500,8 @@ function Getislecturer(that, openid){
         }
         var service = resObj.service;
         objoin.classid = '';
-        if (service.length > 0){
+        // 忘记当初是怎么想的了
+        if (service.length >= 0){
           checkClassName = '';
           [].forEach.call(service,function(item,i){
             objoin.classid += item.id+',';
@@ -505,7 +509,9 @@ function Getislecturer(that, openid){
           })
           objoin.classid = objoin.classid.substr(0, objoin.classid.length - 1);
           checkClassName = checkClassName.substr(0, checkClassName.length-1);
-        
+          if (checkClassName== ''){
+            checkClassName = '请选择认证行业';
+          }
           var utctime = (new Date()).getTime();
 
           objoin.img = resObj.face_img + '?wximg' + utctime;
