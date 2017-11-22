@@ -1,0 +1,11 @@
+<view class="weui-tab__panel">
+    <view class="geo-container">
+      <view class="class-lable">需要认证的行业(多选)</view>
+        <view class="server-container" style="height:{{wHeight}}px">
+          <view wx:for="{{services}}" wx:for-index="idx" wx:for-item="item"  class="geo-item server-width {{idx == check[idx]?'checkon':''}}" bindtap="ClassTap" data-idx="{{idx}}" data-id="{{item.id}}" data-name="{{item.title}}">{{item.title}}</view>
+        </view>
+        <view class="tab-class-btn">
+        <view class="tab-class-btn-lable" bindtap="confirmTap" style="{{btnColor}}">确认</view>
+      </view>
+    </view>
+  </view>

@@ -1,0 +1,79 @@
+/*:begin 选项*/
+.weui-navbar__item{
+    line-height: 72rpx;
+    padding: 0px;
+}
+
+/*GEO 地区选择 :begin*/
+.geo-container{
+  height: 100%;
+  width:750rpx;
+  background: #ffffff;
+  z-index: 499;
+  top: 0px;
+}
+
+.geo-container .class-lable{
+  padding: 30rpx 0 0 30rpx;
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/*公共*/
+.geo-container .geo-item{
+  display: inline-flex;
+  flex-direction: row;
+  height:80rpx;
+  line-height:80rpx;
+  justify-content:center;
+  color: #333333;
+  font-size: 28rpx;
+}
+
+
+/*服务*/
+.geo-container .server-container{
+  overflow-y: auto;
+  background: #ffffff;
+}
+/*未选中样式*/
+.server-container .server-width{
+  width:206rpx;
+  border: 1rpx solid #dddddd;
+  border-radius: 3px;
+  margin: 30rpx 0 0 30rpx;
+}
+/*选中样式*/
+.geo-container .checkon{
+  border: 1rpx solid #ad83e4;
+  color: #714e9e;
+}
+
+.geo-container .geo-lable{
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  color: #333333;
+  margin-left: 30rpx;
+}
+
+/*GEO 地区选择 :end*/
+
+.geo-container .tab-class-btn{
+  width: 750rpx;
+  position: absolute;
+  bottom: 50rpx;
+}
+.geo-container .tab-class-btn-lable{
+  width: 690rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  margin: 0 auto;
+  text-align: center;
+  /*background: url(../../images/btn_submit.png) no-repeat;*/
+  background: #714E9E;
+  color: #999999;
+  font-size: 28rpx;
+  border-radius: 5rpx;
+}
+/*:end 选项*/

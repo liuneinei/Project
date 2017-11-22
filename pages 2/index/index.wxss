@@ -1,0 +1,39 @@
+@import '../../style/css/main.wxss';
+
+.container{
+    background: #F4F4F4;
+    height: 100%;
+}
+
+/*导航部分 :beging*/
+.item-nav{
+    background: #ffffff;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    padding-bottom: 44rpx;
+}
+.item-nav .nav-width{
+    width: 250rpx;
+    text-align: center;
+}
+.item-nav .nav-tabber{
+    padding-top: 44rpx;
+}
+.item-nav .nav-tabber .nav__label{
+    padding-top: 18rpx;
+    font-size: 32rpx;
+}
+.nav-tabber .nav__pic .nav-tabbar-icon .nav-tabbar__icon{
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+}
+/*导航部分 :end*/
+
+.main-left{
+  height: 2rpx;
+  widows: 20rpx;
+  color: #cccccc;
+  
+}

@@ -1,0 +1,68 @@
+<view class="container">
+  <view class="item-top">
+    <view class="top-img">
+      <image src="{{host}}/{{Model.face_img}}{{iImgExt}}" class="top__head"></image>
+    </view>
+    <view class="top-btn">
+      <view class="btn_upload">{{Model.name}}</view>
+    </view>
+    <view class="btn-city">
+    {{Model.province}} {{Model.city}}
+    </view>
+    <view class="top-desc">
+      <view class="top__desc">
+      <block wx:if="{{Model.service.length > 0}}">
+        <block wx:for="{{Model.service}}">
+            {{item.title}}
+        </block>
+      </block>
+      </view>
+    </view>
+  </view>
+  <view class="item-main">
+    <view class="item__frame">
+      <view class="item-title">
+      <view class="item-i">
+        <image src="/images/about.png" class="item-icon"></image>
+      </view>
+      <view class="item-i_d">·</view>
+      <view class="item-title_lable">关于专家</view>
+      </view>
+      <view class="blank40 backfff"></view>
+      <text class="item-content item-indent">{{Model.about}}</text>
+      <block wx:if="{{Model.wechat != ''}}">
+      <view class="item-content">
+        微信号：<text bindtap="WeChatTap">{{Model.wechat}}</text>
+      </view>
+      </block>
+      <view class="blank50 backfff"></view>
+    </view>
+    <view class="blank10"></view>
+    <view class="item__frame">
+      <view class="item-title">
+        <view class="item-i">
+          <image src="/images/btn_notice.png" class="item-icon"></image>
+        </view>
+        <view class="item-i_d">·</view>
+        <view class="item-title_lable">服务须知</view>
+      </view>
+      <view class="blank40 backfff"></view>
+      <text class="item-content">{{Notice}}</text>
+    </view>
+    <view class="blank50 backfff"></view>
+  </view>
+  <view class="item-tabber">
+    <view class="tabber-item" data-phone="{{Model.phone}}" bindtap="PhoneTap">
+      <view class="tabbar__i">
+        <image src="/images/btn_phone.png" class="tabbar__icon"></image>
+      </view>
+      <view class="tabbar__label">电话联系</view>
+    </view>
+    <view class="tabber-item" style="display:none">
+      <view class="tabbar__i">
+        <image src="/images/btn_qrcode.png" class="tabbar__icon"></image>
+      </view>
+      <view class="tabbar__label tabbar__label333">二维码</view>
+    </view>
+  </view>
+</view>
