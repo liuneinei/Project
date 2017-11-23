@@ -1,3 +1,29 @@
+<swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+<view class='nav-container'>
+  <view class='nav-item'>关键字1</view>
+  <view class='nav-item'>关键字1</view>
+  <view class='nav-item'>关键字1</view>
+  <view class='nav-item'>关键字1</view>
+  <view class='nav-item'>关键字1</view>
+  <view class='nav-item'>关键字1</view>
+</view>
+<view class=''>
+  <view>
+    <view>如果你无法简洁的表达你的想...</view>
+    <view>2017/11/23</view>
+  </view>
+</view>
+
+
+
+
 <view class="container">
     <view class="blank8 backfff"></view>
     <view class="item-nav">

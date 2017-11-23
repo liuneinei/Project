@@ -1,5 +1,30 @@
 @import '../../style/css/main.wxss';
 
+.nav-container{
+  display:inline-flex;
+  flex-wrap:wrap;
+  padding: 30rpx;
+  background-color: #ffffff;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.nav-container .nav-item{
+  width: 33%;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .container{
     background: #F4F4F4;
     height: 100%;
