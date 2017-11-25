@@ -1,29 +1,51 @@
 @import '../../style/css/main.wxss';
 
+/* Begin:导航  */
 .nav-container{
   display:inline-flex;
   flex-wrap:wrap;
   padding: 30rpx;
   background-color: #ffffff;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border-top: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
 }
 
 .nav-container .nav-item{
   width: 33%;
   text-align: center;
 }
+/* End:导航  */
 
+/* Begin:推荐标题  */
+.nav-tj{
+  background-color: #ffffff;
+  margin-top: 20rpx;
+  border-top: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
+  padding: 30rpx;
+}
+.nav-tj .tj-item{
+  position: relative;
+}
 
+.nav-tj .tj-item view{
+  display: inline-block;
+}
+.nav-tj .tj-item .tj-title{
+  margin-right: 1rpx;
+}
+.nav-tj .tj-item .tj-date{
+  float: right;
+}
+/* End:推荐标题  */
 
-
-
-
-
-
-
-
-
+/* Begin：推荐专家列表  */
+.item-main .main-nav{
+  border-top: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
+  line-height:75rpx;
+}
+/* End：推荐专家列表  */
 
 .container{
     background: #F4F4F4;

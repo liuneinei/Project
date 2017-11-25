@@ -14,10 +14,14 @@
   <view class='nav-item'>关键字1</view>
   <view class='nav-item'>关键字1</view>
 </view>
-<view class=''>
-  <view>
-    <view>如果你无法简洁的表达你的想...</view>
-    <view>2017/11/23</view>
+<view class='nav-tj'>
+  <view class='tj-item'>
+    <view class='tj-title'>如果你无法简洁的表达你的...</view>
+    <view class='tj-date'>2017/11/23</view>
+  </view>
+  <view class='tj-item'>
+    <view class='tj-title'>如果你无法简洁的表达你的...</view>
+    <view class='tj-date'>2017/11/23</view>
   </view>
 </view>
 
@@ -78,7 +82,7 @@
     </view>
     <view class="blank8 backfff"></view>
     <view class="item-main">
-        <view class="main-nav">- 为你推荐 -</view>
+        <view class="main-nav">推荐专家列表</view>
         <view wx:for="{{lecturers}}" wx:for-item="lecturer" class="main-list" data-id="{{lecturer.id}}" bindtap="LecturerInfoTap">
           <view class="module__left module__item">
                 <view class="module__left__img">
