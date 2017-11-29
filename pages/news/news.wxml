@@ -2,7 +2,7 @@
   <view class='list'>
     <view class='list-item'>
       <view class='img'>
-        <image src="/images/head_portrait.png" class='show'></image>
+        <image src="/images/join_active_old.png" class='show'></image>
       </view>
       <view class='txt'>
         <view class='title'>xxxxxxx</view>

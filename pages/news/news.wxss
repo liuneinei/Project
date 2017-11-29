@@ -21,6 +21,7 @@
 }
 .list .list-item .img .show{
     width: 120px;
+    height:65px;
     overflow: hidden;
 }
 .list .list-item .txt{
