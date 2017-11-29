@@ -1,0 +1,40 @@
+.app{
+    width: 100%;
+    /*position: relative;*/
+    margin: 0 auto;
+    height: 100%;
+    font-size: 14px;
+}
+
+.list .list-item{
+    height: 70px;
+    overflow: hidden;
+    flex-direction: column;
+    width: 92%;
+    margin: 0 auto;
+    margin-top: 12px;
+    display: flex;
+    flex-wrap:wrap;
+}
+.list .list-item .img {
+    width: 41%;
+}
+.list .list-item .img .show{
+    width: 120px;
+    overflow: hidden;
+}
+.list .list-item .txt{
+    width: 55%;
+    height: 70px;
+    font-size: 14px;
+    position: relative;
+}
+.list .list-item .txt .title {
+    min-height: 50px;
+    overflow: hidden;
+}
+.list .list-item .txt .label{
+    /*margin-top: 28px;*/
+    position: absolute;
+    bottom: 0px;
+}

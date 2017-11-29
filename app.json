@@ -1,6 +1,6 @@
 {
   "pages":[
-    
+    "pages/news/news",
     "pages/index/index",
     "pages/lecturers/lecturers",
    "pages/lecturer/lecturer",
