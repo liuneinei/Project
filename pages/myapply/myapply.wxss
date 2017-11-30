@@ -74,7 +74,7 @@
 .box-image .box{
     width: 46%;
 }
-.box-image .box span{
+.box-image .box .id_img{
     width: 100%;
     height: 90px;
     border:1px solid #dddddd;
@@ -87,8 +87,10 @@
 }
 .form-btn{
     margin-top: 20px;
+    margin-bottom: 20px;
     text-align: center
 }
 .form-btn .btn{
     height: 35px;
+    font-size: 16px;
 }

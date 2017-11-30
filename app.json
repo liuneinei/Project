@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/myservice/myservice",
     "pages/myapply/myapply",
     "pages/user/user",
     "pages/newsinfo/newsinfo",

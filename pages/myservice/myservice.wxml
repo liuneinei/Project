@@ -1,0 +1,22 @@
+<view class='app'>
+  <view class='step'>
+    <form>
+      <view class='step-title'>第二步：添加地区与服务项</view>
+      <view class='warp service-box'>
+        <view class='inpt-tarea'></view>
+        <view class='form-btn'>
+          <button class='btn'>添加服务地区</button>
+        </view>
+      </view>
+      <view class='warp service-box'>
+        <view class='inpt-tarea'></view>
+        <view class='form-btn'>
+          <button class='btn'>添加服务项</button>
+        </view>
+      </view>
+      <view class='form-btn'>
+        <button class='btn'>下一步</button>
+      </view>
+    </form>
+  </view>
+</view>

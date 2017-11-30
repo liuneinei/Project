@@ -29,12 +29,15 @@
       </view>
       <view class='warp box-image'>
         <view class='box mr10'>
-          <view>身份证正面</view>
+          <view class='id_img'>身份证正面</view>
         </view>
         <view class='box'>
-          <view>身份证反面</view>
+          <view class='id_img'>身份证反面</view>
         </view>
       </view>
+      <view class="form-btn">
+				<button class="btn">下一步</button>
+			</view>
     </form>
   </view>
 </view>
