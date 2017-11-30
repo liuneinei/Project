@@ -1,0 +1,40 @@
+<view class='app'>
+  <view class='step'>
+    <form>
+      <view class='step-title'>第一步：上传基础资料</view>
+      <view class='user-upload'>
+        <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
+        <view class='info'>
+          <view>注：请上传清晰正面大头照</view>
+          <view class='btn'>上传</view>
+        </view>
+      </view>
+      <view class='input-list'>
+        <view class='list-item'>
+          <view class='item-lab'>姓名：</view>
+          <input type='text' class='ipt' placeholder='填写姓名'></input>
+        </view>
+        <view class='list-item'>
+          <view class='item-lab'>手机号：</view>
+          <input type='text' class='ipt' placeholder='填写手机号'></input>
+        </view>
+        <view class='list-item'>
+          <view class='item-lab'>微信号：</view>
+          <input type='text' class='ipt' placeholder='填写微信号'></input>
+        </view>
+        <view class='list-item'>
+          <view class='item-lab'>推荐人：</view>
+          <input type='text' class='ipt' placeholder='填写推荐人'></input>
+        </view>
+      </view>
+      <view class='warp box-image'>
+        <view class='box mr10'>
+          <view>身份证正面</view>
+        </view>
+        <view class='box'>
+          <view>身份证反面</view>
+        </view>
+      </view>
+    </form>
+  </view>
+</view>

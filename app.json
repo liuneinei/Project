@@ -1,17 +1,11 @@
 {
   "pages":[
+    "pages/myapply/myapply",
+    "pages/user/user",
     "pages/newsinfo/newsinfo",
     "pages/news/news",
     "pages/index/index",
-    "pages/lecturers/lecturers",
-   "pages/lecturer/lecturer",
-    "pages/lecturerinfo/lecturerinfo",
-    "pages/join/join",
-    "pages/joinclass/joinclass",
-    "pages/joincity/joincity",
-    "pages/logs/logs",
-    "pages/joinalbum/joinalbum",
-    "pages/joins/joins"
+    "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",

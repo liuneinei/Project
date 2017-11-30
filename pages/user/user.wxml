@@ -1,0 +1,18 @@
+<view class='app'>
+  <view class='expert-index'>
+    <view class='expert-header user-header'>
+      <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
+      <view class='name'>昵称:Snake</view>
+    </view>
+    <view class='operate'>
+      <view class='operate-teim'>
+        <view class='my-operate'>我要入库</view>
+        <icon class='i'></icon>
+      </view>
+      <view class='operate-teim my-fk'>
+        <view class='my-operate'>我要反馈</view>
+        <icon class='i'></icon>
+      </view>
+    </view>
+  </view>
+</view>
