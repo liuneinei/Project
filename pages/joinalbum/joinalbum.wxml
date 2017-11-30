@@ -1,8 +1,0 @@
-<swiper class="swiper-container" autoplay="false" interval="5000" duration="500" >
-  <block wx:for="{{imgUrls}}">
-    <swiper-item>
-      <image src="{{item}}" class="slide-image" mode="aspectFit"/>
-    </swiper-item>
-  </block>
-  <view class="btn-del"></view>
-</swiper>
