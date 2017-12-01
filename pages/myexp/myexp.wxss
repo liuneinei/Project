@@ -1,0 +1,83 @@
+
+.app{
+    width: 100%;
+    /*position: relative;*/
+    margin: 0 auto;
+    height: 100%;
+    font-size: 14px;
+}
+.box-image .cert-img{
+    width: 100%;
+    height: 200rpx;
+}
+.types {
+    width: 80%;
+    margin:0 auto;
+    margin-top: 30px;
+    display: flex;
+    justify-content:space-between;
+}
+.types .types-item{
+    display: inline-block;
+    width: 32%;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    cursor: pointer;
+}
+.types .types-item.ative{
+    background: #dddddd;
+}
+.input-list{
+    width: 92%;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+.input-list .input-item{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.input-list .ipt{
+    border: 1px solid #dddddd;
+    width: 78%;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.input-list .w71{
+    width: 71px;
+}
+.input-list .w73{
+    width: 73%;
+}
+
+.p15{
+    padding:15px 15px 0 15px;
+}
+.box-image{  
+    margin-top: 20px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+}
+.box-image .box{
+    width: 46%;
+}
+.btn{
+    width: 83px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #dddddd;
+    background: none;
+}
+.form-btn{
+    margin-top: 20px;
+    text-align: center
+}
+.form-btn .btn{
+    height: 35px;
+    line-height:35px;
+    font-size: 16px;
+}

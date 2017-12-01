@@ -1,0 +1,29 @@
+<view class='app'>
+  <view class='step'>
+    <form>
+      <view class='types'>
+        <view class='types-item ative'>分娩导乐</view>
+        <view class='types-item'>分娩导乐</view>
+        <view class='types-item'>分娩导乐</view>
+      </view>
+      <view class='input-list'>
+        <view class='input-item'>
+          <view class='w71'>培训机构：</view>
+          <input type='text' class='ipt w73'></input>
+        </view>
+      </view>
+      <view class='p15'>对应证书：</view>
+      <view class='warp box-image'>
+        <view class='box'>
+          <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='cert-img'></image>
+        </view>
+        <view class='box'>
+          <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='cert-img'></image>
+        </view>
+      </view>
+      <view class='form-btn'>
+        <button class='btn'>确定</button>
+      </view>
+    </form>
+  </view>
+</view>
