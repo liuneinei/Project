@@ -1,0 +1,47 @@
+
+.app{
+    width: 100%;
+    /*position: relative;*/
+    margin: 0 auto;
+    height: 100%;
+    font-size: 14px;
+}
+
+.step-title{
+    padding: 10px;
+    text-align: center;
+    width: 92%;
+}
+.service-box{
+    margin-top:20px;
+}
+.warp{
+    width: 92%;
+    margin: 0 auto; 
+}
+.p15{
+    padding:15px 15px 0 15px;
+}
+.inpt-tarea{
+    width: 93%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.btn{
+    width: 120px;
+    height: 25px;
+    text-align: center;
+    border: 1px solid #dddddd;
+    background: none;
+}
+.form-btn{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center
+}
+.form-btn .btn{
+    height: 35px;
+    line-height: 35px;
+    font-size: 16px;
+}

@@ -1,6 +1,6 @@
 <view class='app'>
   <view class='step'>
-    <form>
+    <form bindsubmit='formSubmit'>
       <view class='types'>
         <view class='types-item ative'>分娩导乐</view>
         <view class='types-item'>分娩导乐</view>
@@ -22,7 +22,7 @@
         </view>
       </view>
       <view class='form-btn'>
-        <button class='btn'>确定</button>
+        <button class='btn' formType="submit">确定</button>
       </view>
     </form>
   </view>

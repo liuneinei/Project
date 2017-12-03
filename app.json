@@ -1,12 +1,20 @@
 {
   "pages":[
-    "pages/myexp/myexp",
-    "pages/myservice/myservice",
-    "pages/myapply/myapply",
-    "pages/user/user",
-    "pages/newsinfo/newsinfo",
-    "pages/news/news",
     "pages/index/index",
+    "pages/news/news",
+    "pages/lecturer/lecturer",
+    "pages/user/user",
+
+    "pages/newsinfo/newsinfo",
+
+    "pages/myapply/myapply",
+    "pages/myservice/myservice",
+    "pages/myexp/myexp",
+    "pages/mydesc/mydesc",
+
+    "pages/busapply/busapply",
+    "pages/busservice/busservice",
+    "pages/busdesc/busdesc",
     "pages/logs/logs"
   ],
   "window":{
@@ -26,13 +34,18 @@
       "iconPath": "images/home.png",
       "selectedIconPath": "images/home_active.png"
     }, {
-      "pagePath": "pages/lecturers/lecturers",
+      "pagePath": "pages/news/news",
+      "text": "图文列表",
+      "iconPath": "images/home.png",
+      "selectedIconPath": "images/home_active.png"
+    },{
+      "pagePath": "pages/lecturer/lecturer",
       "text": "找专家",
       "iconPath": "images/lecturer.png",
       "selectedIconPath": "images/lecturer_active.png"
     },{
-      "pagePath": "pages/join/join",
-      "text": "加入我们",
+      "pagePath": "pages/user/user",
+      "text": "我的",
       "iconPath": "images/join.png",
       "selectedIconPath": "images/join_active.png"
     }]

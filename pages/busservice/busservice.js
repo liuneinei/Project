@@ -17,7 +17,7 @@ Page({
     var $target = event.currentTarget;
     // 跳转入库页面
     wx.redirectTo({
-      url: '/pages/mydesc/mydesc'
+      url: '/pages/myexp/myexp'
     })
   },
   // End: 事件处理

@@ -4,9 +4,29 @@
       <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
       <view class='name'>昵称:Snake</view>
     </view>
+    <!-- 申请入库  -->
     <view class='operate'>
-      <view class='operate-teim'>
+      <view class='operate-teim' bindtap='btnmyapply'>
         <view class='my-operate'>我要入库</view>
+        <icon class='i'></icon>
+      </view>
+      <view class='operate-teim my-fk'>
+        <view class='my-operate'>我要反馈</view>
+        <icon class='i'></icon>
+      </view>
+    </view>
+    <!-- 入库成功  -->
+    <view class='operate'>
+      <view class='operate-teim' bindtap='btnbusapply'> 
+        <view class='my-operate'>专家基本资料修改</view>
+        <icon class='i'></icon>
+      </view>
+      <view class='operate-teim' bindtap='btnbusdesc'>
+        <view class='my-operate'>专家简介与介绍修改</view>
+        <icon class='i'></icon>
+      </view>
+      <view class='operate-teim' bindtap='btnbusservice'>
+        <view class='my-operate'>修改服务项</view>
         <icon class='i'></icon>
       </view>
       <view class='operate-teim my-fk'>
