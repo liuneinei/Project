@@ -1,11 +1,21 @@
 
-var util = require('../../utils/util.js')
+var util = require('../../utils/util.js');
+var api = require('../../api/api.js');
+var util = require('../../utils/util.js');
+var configs = require('../configs.js');
+var functions = require('../functions.js');
+
 Page({
   data: {
-
+    // 用户信息
+    userInfo: {},
   },
   onLoad: function () {
-
+    var that = this;
+    
+    that.setData({
+      userInfo: configs.userinfo || {}
+    });
   },
 
   // Begin: 事件处理
