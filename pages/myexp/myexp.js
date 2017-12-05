@@ -16,7 +16,7 @@ Page({
     var that = this;
     var $target = event.currentTarget;
     // 跳转入库页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/mydesc/mydesc'
     })
   },

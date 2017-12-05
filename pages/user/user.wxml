@@ -1,8 +1,8 @@
 <view class='app'>
   <view class='expert-index'>
     <view class='expert-header user-header'>
-      <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
-      <view class='name'>昵称:Snake</view>
+      <image src='{{userInfo.avatarUrl}}' class='avtor'></image>
+      <view class='name'>昵称:{{userInfo.nickName}}</view>
     </view>
     <!-- 申请入库  -->
     <view class='operate'>

@@ -9,35 +9,35 @@ App({
   onLaunch: function () {
     var that = this;
   },
-  getUserInfo: function (cb) {
-    var that = this
-    if (configs.userinfo){
-      typeof cb == "function" && cb(configs.userinfo)
-    }else{
-      //调用登录接口
-      wx.login({
-        success: function (rel) {
-          var code = rel.code;
-          wx.getUserInfo({
-            success: function (res) {
-              var uinfo = res.userInfo;
-              uinfo.encryptedData = encodeURIComponent(res.encryptedData);
-              uinfo.iv = res.iv;
-              uinfo.code = code;
-              configs.userinfo = uinfo
+  // getUserInfo: function (cb) {
+  //   var that = this
+  //   if (configs.userinfo){
+  //     typeof cb == "function" && cb(configs.userinfo)
+  //   }else{
+  //     //调用登录接口
+  //     wx.login({
+  //       success: function (rel) {
+  //         var code = rel.code;
+  //         wx.getUserInfo({
+  //           success: function (res) {
+  //             var uinfo = res.userInfo;
+  //             uinfo.encryptedData = encodeURIComponent(res.encryptedData);
+  //             uinfo.iv = res.iv;
+  //             uinfo.code = code;
+  //             configs.userinfo = uinfo
               
-              //一定要把加密串转成URI编码
-              var encryptedData = encodeURIComponent(res.encryptedData);
-              var iv = res.iv;
+  //             //一定要把加密串转成URI编码
+  //             var encryptedData = encodeURIComponent(res.encryptedData);
+  //             var iv = res.iv;
 
-              //请求自己的服务器
-              Login(that,code, encryptedData, iv,cb);
-            }
-          })
-        }
-      })
-    }
-  },
+  //             //请求自己的服务器
+  //             Login(that,code, encryptedData, iv,cb);
+  //           }
+  //         })
+  //       }
+  //     })
+  //   }
+  // },
 })
 // 小程序登录
 function Login(that, code, encryptedData, iv) {

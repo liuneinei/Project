@@ -6,7 +6,7 @@
         <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
         <view class='info'>
           <view>注：请上传清晰正面大头照</view>
-          <view class='btn'>上传</view>
+          <view class='btn' bindtap='btnupimg'>上传</view>
         </view>
       </view>
       <view class='input-list'>

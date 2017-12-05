@@ -12,10 +12,17 @@ Page({
   },
   onLoad: function () {
     var that = this;
-    
-    that.setData({
-      userInfo: configs.userinfo || {}
-    });
+
+    if (!configs.userinfo){
+      // 第一步，获取用户信息
+      functions.getuser(function (res) {
+console.log(res);
+
+        that.setData({
+          userInfo: res
+        });
+      });
+    }
   },
 
   // Begin: 事件处理
@@ -26,7 +33,7 @@ Page({
     var that = this;
     var $target = event.currentTarget;
     // 跳转入库页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/myapply/myapply'
     })
   },
@@ -38,15 +45,18 @@ Page({
     var that = this;
     var $target = event.currentTarget;
     // 跳转入库页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/busapply/busapply'
     })
   },
+  /*
+  * 内容修改
+  */
   btnbusdesc:function(){
     var that = this;
     var $target = event.currentTarget;
     // 跳转入库页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/busdesc/busdesc'
     })
   },
@@ -57,7 +67,7 @@ Page({
     var that = this;
     var $target = event.currentTarget;
     // 跳转入库页面
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/busservice/busservice'
     })
   },
