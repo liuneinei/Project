@@ -85,6 +85,12 @@
 .mr10{
     margin-right: 20px;
 }
+
+.idcard-img{
+  width: 100%;
+  height: 100%;
+}
+
 .form-btn{
     margin-top: 20px;
     margin-bottom: 20px;

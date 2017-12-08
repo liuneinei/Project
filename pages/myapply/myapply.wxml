@@ -3,7 +3,12 @@
     <form bindsubmit='formSubmit'>
       <view class='step-title'>第一步：上传基础资料</view>
       <view class='user-upload'>
-        <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
+        <block wx:if="{{userdata.img != ''}}">
+          <image src='{{exp.host}}/{{userdata.img}}?{{exp.rdnum}}' class='avtor'></image>
+        </block>
+        <block wx:else>
+          <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
+        </block>
         <view class='info'>
           <view>注：请上传清晰正面大头照</view>
           <view class='btn' bindtap='btnheadimg'>上传</view>
@@ -12,27 +17,43 @@
       <view class='input-list'>
         <view class='list-item'>
           <view class='item-lab'>姓名：</view>
-          <input type='text' class='ipt' placeholder='填写姓名'></input>
+          <input type='text' class='ipt' placeholder='填写姓名' value='{{userdata.name}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>手机号：</view>
-          <input type='text' class='ipt' placeholder='填写手机号'></input>
+          <input type='text' class='ipt' placeholder='填写手机号' value='{{userdata.phone}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>微信号：</view>
-          <input type='text' class='ipt' placeholder='填写微信号'></input>
+          <input type='text' class='ipt' placeholder='填写微信号' value='{{userdata.wechat}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>推荐人：</view>
-          <input type='text' class='ipt' placeholder='填写推荐人'></input>
+          <input type='text' class='ipt' placeholder='填写推荐人' value='{{userdata.referee}}'></input>
         </view>
       </view>
       <view class='warp box-image'>
         <view class='box mr10'>
-          <view class='id_img'>身份证正面</view>
+          <!-- 身份证正面 -->
+          <view class='id_img' bindtap='btnidcardupimg'>
+            <block wx:if="{{userdata.idcard_up_img != ''}}">
+              <image src='{{exp.host}}/{{userdata.idcard_up_img}}?{{exp.rdnum}}' class='idcard-img'></image>
+            </block>
+            <block wx:else>
+              身份证正面
+            </block>
+          </view>
         </view>
         <view class='box'>
-          <view class='id_img'>身份证反面</view>
+          <!-- 身份证反面 -->
+          <view class='id_img' bindtap='btnidcarddownimg'>
+            <block wx:if="{{userdata.idcard_down_img != ''}}">
+              <image src='{{exp.host}}/{{userdata.idcard_down_img}}?{{exp.rdnum}}' class='idcard-img'></image>
+            </block>
+            <block wx:else>
+              身份证反面
+            </block>
+          </view>
         </view>
       </view>
       <view class="form-btn">

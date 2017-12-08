@@ -1,7 +1,9 @@
 var api = require('../api/api.js');
 var configs = require('configs.js');
 
-// 获取uptoken
+/*
+* 获取uptoken
+*/
 const getuptoken = (filename,fb) =>  {
   // 获取七牛相对应文件 upToken
   api.wxRequest({
@@ -10,22 +12,7 @@ const getuptoken = (filename,fb) =>  {
     },
     success: function (res) {
       var data = res.data;
-      if (data.status == 0) {
-        // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
-        api.wxRequest({
-          data: {
-            filename: filename
-          },
-          success: function (res) {
-            // 获取到Key后，执行选择上传文件
-            //ChooesImage(filename, data.uploadtoken, types);
-            typeof fb === 'function' && fb(data);
-          }
-        }, api.host + api.iDeleteImg)
-        // :end 执行删除文件Api,不知道删除成功与；都是再次上传
-      }else{
-        typeof fb === 'function' && fb(data);
-      }
+      typeof fb === 'function' && fb(data);
     }
   }, api.host + api.iuploadtoken)
 }
@@ -34,7 +21,7 @@ const getuptoken = (filename,fb) =>  {
 // 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
 // 头像 ：  face/[openid].jpg
 // 证照 ：  cert/[openid]/[unixtime].jpg
-function chooesimage(key, uptoken, types, fb) {
+const chooesimage = (key, uptoken, fb) => {
   // 微信 API 选文件
   wx.chooseImage({
     count: 1,
@@ -43,7 +30,7 @@ function chooesimage(key, uptoken, types, fb) {
       wx.showToast({
         title: '上传中',
         icon: 'loading',
-        duration: 2000
+        duration: 5000
       })
       //上传
       wx.uploadFile({
@@ -70,9 +57,30 @@ function chooesimage(key, uptoken, types, fb) {
   })
 }
 
+/*
+* 删除图片文件
+*/
+const delimage = (filename) => {
+  if(filename == '' || filename.indexOf('http://') < 0){
+    return;
+  }
+  // :begin 执行删除文件Api,不知道删除成功与；都是再次上传
+  api.wxRequest({
+    data: {
+      filename: filename
+    },
+    success: function (res) {
+      // 获取到Key后，执行选择上传文件
+    }
+  }, api.host + api.iDeleteImg)
+  // :end 执行删除文件Api,不知道删除成功与；都是再次上传
+}
+
 module.exports = {
   // 获取uptoken
   getuptoken,
   // 上传头像
   chooesimage,
+  // 删除图片文件
+  delimage,
 }
