@@ -27,6 +27,17 @@
     margin-top:20px;
 }
 
+/* Begin: 服务框 */
+.tarea-item{
+  display: flex;
+  position: relative;
+}
+.tarea-item .tarea-del{
+  position: absolute;
+  right: 15rpx;
+}
+/* End: 服务框 */
+
 .form-btn{
     margin-top: 20px;
     text-align: center
@@ -37,7 +48,7 @@
 }
 
 .btn{
-    width: 83px;
+    width: 134px;
     height: 25px;
     text-align: center;
     border: 1px solid #dddddd;

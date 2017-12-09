@@ -16,6 +16,7 @@ Page({
       referee:'', //推荐人
       idcard_up_img:'',   //身份证正面
       idcard_down_img:'', //身份证反面
+      index:1,            //索引
     },
     // 扩展属性
     exp:{
@@ -127,9 +128,25 @@ Page({
   /*
   * 下一步操作
   */
-  formSubmit: function () {
+  formSubmit: function (event) {
     var that = this;
-    var $target = event.currentTarget;
+    var fromObj = event.detail.value;
+    // 数据 - 用户信息
+    var _userdata = that.data.userdata;
+    
+    _userdata.name = fromObj.name || '';    //姓名
+    _userdata.phone = fromObj.phone || '';   //手机号
+    _userdata.wechat = fromObj.wechat || '';  //微信号
+    _userdata.referee = fromObj.referee || ''; //推荐人
+
+    // 操作 - 重新赋值
+    that.setData({
+      userdata: _userdata
+    });
+
+    // 操作 - 同步缓存
+    wx.setStorageSync('$userdata', _userdata);
+
     // 跳转入库页面
     wx.navigateTo({
       url: '/pages/myservice/myservice'

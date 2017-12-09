@@ -176,7 +176,7 @@ Page({
   // 介绍
   HandleNotice: function (event) {
     var that = this;
-    var notice = event.detail.value
+    var notice = event.detail.value;
     var objoin = that.data.objoin;
     objoin.notice = notice;
     objoin.isedit = true;

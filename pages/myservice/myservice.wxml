@@ -3,15 +3,20 @@
     <form bindsubmit='formSubmit'>
       <view class='step-title'>第二步：添加地区与服务项</view>
       <view class='warp service-box'>
-        <view class='inpt-tarea'></view>
+        <view class='inpt-tarea'>
+          <view class='tarea-item' wx:for="{{showdata.area}}" wx:for-item="item">
+            <view>{{item.name}}</view>
+            <view class='tarea-del' data-id='{{item.city}}' bindtap='btnTareaDel'>删除</view>
+          </view>
+        </view>
         <view class='form-btn'>
-          <button class='btn'>添加服务地区</button>
+          <button class='btn' bindtap='btnChooseCity'>添加服务地区</button>
         </view>
       </view>
       <view class='warp service-box'>
         <view class='inpt-tarea'></view>
         <view class='form-btn'>
-          <button class='btn'>添加服务项</button>
+          <button class='btn' bindtap='btnChooseService'>添加服务项</button>
         </view>
       </view>
       <view class='form-btn'>

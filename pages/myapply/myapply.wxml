@@ -17,19 +17,19 @@
       <view class='input-list'>
         <view class='list-item'>
           <view class='item-lab'>姓名：</view>
-          <input type='text' class='ipt' placeholder='填写姓名' value='{{userdata.name}}'></input>
+          <input type='text' class='ipt' name='name' placeholder='填写姓名' value='{{userdata.name}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>手机号：</view>
-          <input type='text' class='ipt' placeholder='填写手机号' value='{{userdata.phone}}'></input>
+          <input type='text' class='ipt' name='phone' placeholder='填写手机号' value='{{userdata.phone}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>微信号：</view>
-          <input type='text' class='ipt' placeholder='填写微信号' value='{{userdata.wechat}}'></input>
+          <input type='text' class='ipt' name='wechat' placeholder='填写微信号' value='{{userdata.wechat}}'></input>
         </view>
         <view class='list-item'>
           <view class='item-lab'>推荐人：</view>
-          <input type='text' class='ipt' placeholder='填写推荐人' value='{{userdata.referee}}'></input>
+          <input type='text' class='ipt' name='referee' placeholder='填写推荐人' value='{{userdata.referee}}'></input>
         </view>
       </view>
       <view class='warp box-image'>

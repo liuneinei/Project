@@ -11,16 +11,15 @@
     height: 200rpx;
 }
 .types {
-    width: 80%;
+    width: 90%;
     margin:0 auto;
     margin-top: 30px;
     display: flex;
-    justify-content:space-between;
+    flex-wrap:wrap;
 }
 .types .types-item{
     display: inline-block;
     width: 32%;
-    height: 25px;
     line-height: 25px;
     text-align: center;
     cursor: pointer;

@@ -2,9 +2,10 @@
   <view class='step'>
     <form bindsubmit='formSubmit'>
       <view class='types'>
-        <view class='types-item ative'>分娩导乐</view>
-        <view class='types-item'>分娩导乐</view>
-        <view class='types-item'>分娩导乐</view>
+        <!-- ative -->
+        <view class='types-item' wx:for="{{showdata.services}}" wx:for-item="item" data-id='{{item.id}}'>
+          {{item.title}}
+        </view>
       </view>
       <view class='input-list'>
         <view class='input-item'>

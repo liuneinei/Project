@@ -41,7 +41,9 @@ const getlocation = (fb)=>{
   });
 }
 
-// 获取配置
+/*
+* 获取配置
+*/
 const getconfig = (fb) => {
   if (configs.store){
     typeof fb === 'function' && fb(configs.store);
@@ -63,6 +65,9 @@ const getconfig = (fb) => {
   }
 }
 
+/*
+* 地区处理
+*/
 const setdatas = (map_data,fb)=>{
   console.log('setdatas 处理地理信息');
   var province_name = map_data.ad_info.province;
@@ -88,7 +93,9 @@ const setdatas = (map_data,fb)=>{
   typeof fb === 'function' && fb();
 }
 
-// 获取用户信息
+/*
+* 获取用户信息
+*/
 const getuser = (fb) =>{
   console.log('funs-1');
   console.log(configs.userinfo);
