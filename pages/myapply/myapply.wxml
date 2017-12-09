@@ -4,7 +4,7 @@
       <view class='step-title'>第一步：上传基础资料</view>
       <view class='user-upload'>
         <block wx:if="{{userdata.img != ''}}">
-          <image src='{{exp.host}}/{{userdata.img}}?{{exp.rdnum}}' class='avtor'></image>
+          <image src='{{exp.host}}/{{userdata.img}}' class='avtor'></image>
         </block>
         <block wx:else>
           <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg' class='avtor'></image>
@@ -37,7 +37,7 @@
           <!-- 身份证正面 -->
           <view class='id_img' bindtap='btnidcardupimg'>
             <block wx:if="{{userdata.idcard_up_img != ''}}">
-              <image src='{{exp.host}}/{{userdata.idcard_up_img}}?{{exp.rdnum}}' class='idcard-img'></image>
+              <image src='{{exp.host}}/{{userdata.idcard_up_img}}' class='idcard-img'></image>
             </block>
             <block wx:else>
               身份证正面
@@ -48,7 +48,7 @@
           <!-- 身份证反面 -->
           <view class='id_img' bindtap='btnidcarddownimg'>
             <block wx:if="{{userdata.idcard_down_img != ''}}">
-              <image src='{{exp.host}}/{{userdata.idcard_down_img}}?{{exp.rdnum}}' class='idcard-img'></image>
+              <image src='{{exp.host}}/{{userdata.idcard_down_img}}' class='idcard-img'></image>
             </block>
             <block wx:else>
               身份证反面

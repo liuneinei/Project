@@ -1,7 +1,6 @@
 
 var util = require('../../utils/util.js');
 var api = require('../../api/api.js');
-var util = require('../../utils/util.js');
 var configs = require('../configs.js');
 var functions = require('../functions.js');
 var uploadfilefill = require('../uploadfile.fill.js');
@@ -21,7 +20,6 @@ Page({
     // 扩展属性
     exp:{
       host:'',//域名
-      rdnum:''//时间戳
     }
   },
   onLoad: function () {
@@ -163,8 +161,6 @@ function InitExp(that){
   if (_exp.host.indexOf('http://') < 0){
     _exp.host = api.iQiniu;
   }
-  // 当前时间戳
-  _exp.rdnum = Date.parse(new Date()) / 1000;
 
   // 重新赋值
   that.setData({

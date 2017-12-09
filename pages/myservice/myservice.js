@@ -1,5 +1,7 @@
 
 var util = require('../../utils/util.js')
+var ymtool = require('../ymtool.js');
+
 Page({
   data: {
     userdata:{
@@ -42,7 +44,7 @@ Page({
     $data.province = pid;
     $data.city = cid;
     $data.name = checkProvince;
-    if (AreaWith(_area, cid) < 0){
+    if (ymtool.AreaWith(_area, cid) < 0){
       // 赋值
       _area.push($data);
       _areadata += cid + ',';
@@ -71,7 +73,7 @@ Page({
     var _showdata = that.data.showdata;
     var _area = _showdata.area;
 
-    var $index = AreaWith(_area, $city);
+    var $index = ymtool.AreaWith(_area, $city);
     if ($index >= 0){
       _area.splice($index, 1); //删除下标为i的元素
       _areadata = _areadata.replace($city+',', '');
@@ -94,6 +96,24 @@ Page({
       url: '/pages/myexp/myexp'
     });
   },
+  /*
+  * 服务项 - 更新 ****** 回调函数
+  */
+  changeService: function (backuserdata, backserviceobj){
+    var that = this;
+    // data - 存储值
+    var _userdata = that.data.userdata;
+    // data - 展示值
+    var _showdata = that.data.showdata;
+
+    _userdata.service = backuserdata.service;
+    _showdata.service = backserviceobj;
+
+    that.setData({
+      userdata: _userdata,
+      showdata: _showdata,
+    });
+  },
 
   /*
   * 下一步操作
@@ -110,33 +130,5 @@ Page({
 })
 
 // Begin: 函数处理
-/*
-* 移除地区对象
-*/
-function AreaWith(_arr, _city){
-  var length = _arr.length;
-  for (var i = 0; i < length; i++){
-    var _obj = _arr[i];
-    if (_obj.city == _city){
-      // _arr.splice(i, 1); //删除下标为i的元素
-      return i;
-    }
-  }
-  return -1;
-}
 
-/*
-* 移除服务项对象
-*/
-function Servicewith(_arr, _id){
-  var length = _arr.length;
-  for (var i = 0; i < length; i++) {
-    var _obj = _arr[i];
-    if (_obj.id == _id) {
-      //_arr.splice(i, 1); //删除下标为i的元素
-      return i;
-    }
-  }
-  return -1;
-}
 // End: 函数处理

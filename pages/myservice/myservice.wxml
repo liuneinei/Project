@@ -14,7 +14,12 @@
         </view>
       </view>
       <view class='warp service-box'>
-        <view class='inpt-tarea'></view>
+        <view class='inpt-tarea'>
+          <view class='tarea-item' wx:for="{{showdata.service}}" wx:for-item="item">
+            <view>{{item.name}}</view>
+            <view class='tarea-del' data-id='{{item.id}}' bindtap='btnTareaDel'>删除</view>
+          </view>
+        </view>
         <view class='form-btn'>
           <button class='btn' bindtap='btnChooseService'>添加服务项</button>
         </view>

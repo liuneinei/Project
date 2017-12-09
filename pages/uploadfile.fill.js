@@ -17,7 +17,7 @@ const getuptoken = (filename,fb) =>  {
   }, api.host + api.iuploadtoken)
 }
 
-// 上传
+// 单图上传
 // 身份证命名规则 ：  id/[openid]/0.jpg  id/[openid]/1.jpg  
 // 头像 ：  face/[openid].jpg
 // 证照 ：  cert/[openid]/[unixtime].jpg
@@ -76,6 +76,47 @@ const delimage = (filename) => {
   // :end 执行删除文件Api,不知道删除成功与；都是再次上传
 }
 
+/*
+* 图片选择
+*/
+const chooseFile = (count, fb) => {
+  // 微信 API 选文件
+  wx.chooseImage({
+    count: count,
+    success: function (res) {
+      var filePath = res.tempFilePaths;
+      typeof fb === 'function' && fb(filePath);
+    },
+    fail:function(res){
+      typeof fb === 'function' && fb({error:'error'});
+    }
+  })
+}
+
+/*
+* 图片上传
+* @param filePath上传路径 | key图片Key | uptoken图片token
+*/
+const uploadFile = (filePath, key, uptoken, fb) =>{
+  //上传
+  wx.uploadFile({
+    url: api.iQiniuUp,
+    filePath: filePath,
+    name: 'file',
+    formData: {
+      'key': key,
+      'token': uptoken
+    },
+    success: function (res) {
+      var dataObject = JSON.parse(res.data);
+      typeof fb === 'function' && fb(dataObject);
+    },
+    fail(error) {
+      typeof fb === 'function' && fb({ error: error });
+    }
+  });
+}
+
 module.exports = {
   // 获取uptoken
   getuptoken,
@@ -83,4 +124,9 @@ module.exports = {
   chooesimage,
   // 删除图片文件
   delimage,
+
+  // 图片选择
+  chooseFile,
+  // 图片上传
+  uploadFile,
 }

@@ -18,6 +18,7 @@
     height: 80px;
     padding: 10px;
     border: 1px solid #ccc;
+    overflow:auto;
 }
 .warp{
     width: 92%;
