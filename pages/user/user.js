@@ -16,8 +16,6 @@ Page({
     if (!configs.userinfo){
       // 第一步，获取用户信息
       functions.getuser(function (res) {
-console.log(res);
-
         that.setData({
           userInfo: res
         });

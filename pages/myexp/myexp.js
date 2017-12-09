@@ -17,7 +17,7 @@ Page({
       servicelist:[], // 服务项集
       checks:[],   // 选中值
       service: [], // 服务项集 {id：0，name：''}
-      cert_imgs:[],// 证书图片集
+      cert_imgs:[],// 证书图片集 {url:''}
     },
     exp:{
       host: '',//域名
@@ -28,6 +28,11 @@ Page({
 
     // 初始化扩展属性
     InitExp(that);
+
+    if (!configs.userinfo) {
+      // 第一步，获取用户信息
+      functions.getuser(function (res) {});
+    }
 
     var _showdata = that.data.showdata;
     // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
@@ -115,8 +120,15 @@ Page({
   */
   btnCertImg:function(event){
     var that = this;
+
+    // data - 对象
+    var _userdata = that.data.userdata;
+    var _showdata = that.data.showdata;
+    // 可上传图片的数量
+    var $_count = 9 - _showdata.cert_imgs.length ;
+
     // 选择文件 ，最多为 9张
-    uploadfilefill.chooseFile(9, function(res){
+    uploadfilefill.chooseFile($_count, function(res){
       function up(i){
         if (i < res.length){
           var filePath = res[i];
@@ -130,7 +142,16 @@ Page({
 
             // 图片上传回调
             uploadfilefill.uploadFile(filePath, filename, uploadtoken,function(res){
-              var r = res;
+              // data - 赋值
+              _userdata.cert_imgs += res.key;
+              _showdata.cert_imgs.push({ url: res.key });
+
+              that.setData({
+                userdata: _userdata,
+                showdata: _showdata
+              });
+              i = i + 1;
+              up(i);
             });
           });
         }

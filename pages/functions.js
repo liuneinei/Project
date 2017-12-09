@@ -69,7 +69,6 @@ const getconfig = (fb) => {
 * 地区处理
 */
 const setdatas = (map_data,fb)=>{
-  console.log('setdatas 处理地理信息');
   var province_name = map_data.ad_info.province;
   var city_name = map_data.ad_info.city;
   if (configs.store.provinces != undefined){
@@ -97,21 +96,15 @@ const setdatas = (map_data,fb)=>{
 * 获取用户信息
 */
 const getuser = (fb) =>{
-  console.log('funs-1');
-  console.log(configs.userinfo);
   if (configs.userinfo) {
     typeof fb === 'function' && fb(configs.userinfo);
   } else {
       //调用登录接口
       wx.login({
         success: function (rel) {
-          console.log('funs0');
-          console.log(rel);
           var code = rel.code;
           wx.getUserInfo({
             success: function (res) {
-              console.log('funs1');
-              console.log(res);
               //一定要把加密串转成URI编码
               var encryptedData = encodeURIComponent(res.encryptedData);
               var iv = res.iv;
@@ -129,15 +122,12 @@ const getuser = (fb) =>{
                   'Content-Type': 'json'
                 }, // 设置请求的 header
                 success: function (res) {
-                  console.log('funs2');
-                  console.log(res);
                   configs.userinfo = res.data.data;
                   typeof fb == "function" && fb(res.data.data);
                 }
               })
             },
             fail: function () {
-              console.log('funs0 - fail');
               typeof fb == "function" && fb({ msg:'fail'});
             }
           })

@@ -1,9 +1,9 @@
 {
   "pages":[
-    "pages/index/index",
+    
     "pages/myservice/myservice",
     "pages/mycity/mycity",
-   
+   "pages/index/index",
     "pages/news/news",
     "pages/lecturer/lecturer",
     "pages/user/user",
