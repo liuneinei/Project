@@ -28,3 +28,16 @@
     </form>
   </view>
 </view>
+
+<!-- Begin: 相册 -->
+<block wx:if="{{albumdata.show == false}}">
+  <swiper class="swiper-container" autoplay="false" interval="50000" duration="500" current="{{albumdata.index}}" bindchange="SwiperChange">
+    <block wx:for="{{showdata.cert_imgs}}" wx:for-item="item">
+      <swiper-item>
+        <image src="{{exp.host}}/{{item.url}}" class="slide-image" mode="aspectFit" bindtap="AlbumHideTag" />
+      </swiper-item>
+    </block>
+    <view class="btn-del" bindtap="AlbumDelTag" data-index="{{index}}"></view>
+  </swiper>
+</block>
+<!-- End: 相册 -->

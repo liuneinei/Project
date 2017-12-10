@@ -17,7 +17,16 @@ Page({
       servicelist:[], // 服务项集
       checks:[],   // 选中值
       service: [], // 服务项集 {id：0，name：''}
-      cert_imgs:[],// 证书图片集 {url:''}
+      cert_imgs:[
+        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
+        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
+        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
+        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
+      ],// 证书图片集 {url:''}
+    },
+    albumdata:{
+      show:false,   // 是否显示
+      index:0,     // 显示索引
     },
     exp:{
       host: '',//域名
@@ -135,7 +144,7 @@ Page({
 
           var openid = configs.userinfo.openId;
           var _times = Date.parse(new Date()) / 1000;
-          var filename = 'cert/' + openid + '/' + _times + '.jpg';
+          var filename = 'cert/' + openid + '/' + _times + '.jpg';
           // 获取上传图片所需的token
           uploadfilefill.getuptoken(filename, function(res){
             var uploadtoken = res.uploadtoken;

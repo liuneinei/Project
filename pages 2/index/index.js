@@ -101,3 +101,12 @@ function GetRecommend(that){
   }, api.host + api.iRecommend)
 }
 
+wx.previewImage({
+    current: '', // 当前显示图片的http链接
+    urls: [
+        "http://oq53vzp2j.bkt.clouddn.com/cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512839420.jpg",
+        "http://oq53vzp2j.bkt.clouddn.com/cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512839450.jpg",
+        "http://oq53vzp2j.bkt.clouddn.com/cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512839450.jpg",
+        http://oq53vzp2j.bkt.clouddn.com/cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg
+    ] // 需要预览的图片http链接列表
+});

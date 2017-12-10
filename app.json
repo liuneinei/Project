@@ -1,6 +1,6 @@
 {
   "pages":[
-    
+    "pages/myexp/myexp",
     "pages/myservice/myservice",
     "pages/mycity/mycity",
    "pages/index/index",
@@ -12,7 +12,7 @@
 
     "pages/myapply/myapply",
    
-    "pages/myexp/myexp",
+   
     "pages/mydesc/mydesc",
 
     "pages/busapply/busapply",
