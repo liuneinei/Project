@@ -1,20 +1,15 @@
 {
   "pages":[
+    "pages/index/index",
     "pages/myexp/myexp",
     "pages/myservice/myservice",
     "pages/mycity/mycity",
-   "pages/index/index",
     "pages/news/news",
     "pages/lecturer/lecturer",
     "pages/user/user",
-
     "pages/newsinfo/newsinfo",
-
     "pages/myapply/myapply",
-   
-   
     "pages/mydesc/mydesc",
-
     "pages/busapply/busapply",
     "pages/busservice/busservice",
     "pages/busdesc/busdesc",

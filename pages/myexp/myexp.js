@@ -17,12 +17,7 @@ Page({
       servicelist:[], // 服务项集
       checks:[],   // 选中值
       service: [], // 服务项集 {id：0，name：''}
-      cert_imgs:[
-        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
-        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
-        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
-        { url: 'cert/o2Cvq0GggIuF6iMnmNr2QpIR-G3Q/1512875308.jpg' },
-      ],// 证书图片集 {url:''}
+      cert_imgs:[],// 证书图片集 {url:''}
     },
     albumdata:{
       show:false,   // 是否显示
@@ -143,7 +138,7 @@ Page({
           var filePath = res[i];
 
           var openid = configs.userinfo.openId;
-          var _times = Date.parse(new Date()) / 1000;
+          var _times = Math.random().toString().replace('.', '');
           var filename = 'cert/' + openid + '/' + _times + '.jpg';
           // 获取上传图片所需的token
           uploadfilefill.getuptoken(filename, function(res){
@@ -170,21 +165,115 @@ Page({
   },
 
   /*
+  * 查看相册
+  */
+  btnShowAlbum:function(event){
+    var that = this;
+    var $target = event.currentTarget;
+    // 当前索引
+    var $index = $target.dataset.index;
+
+    var _albumdata = that.data.albumdata;
+    _albumdata.show = true;
+    _albumdata.index = $index;
+
+    that.setData({
+      albumdata: _albumdata
+    });
+  },
+
+  /*
+  * 隐藏相册
+  */
+  btnHideAlbum: function (event){
+    var that = this;
+    var _albumdata = that.data.albumdata;
+    _albumdata.show = false;
+    _albumdata.index = 0;
+
+    that.setData({
+      albumdata: _albumdata,
+    });
+  },
+
+  /*
+  * 相册滑动事件
+  */
+  albumChange: function (event) {
+    var that = this;
+    var _albumdata = that.data.albumdata;
+    _albumdata.index = event.detail.current;
+    that.setData({
+      albumdata: _albumdata
+    });
+  },
+
+  /*
+  * 相册删除事件
+  */
+  btnAlbumDel:function(event){
+    var that = this;
+    wx.showActionSheet({
+      itemList: ['确认删除'],
+      itemColor: "#000000",
+      success: function (res) {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            var $index = that.data.albumdata.index;
+
+            // 存储值
+            var _userdata = that.data.userdata;
+            // 显示值
+            var _showdata = that.data.showdata;
+            // 相册值
+            var _albumdata = that.data.albumdata;
+
+            // 当前对象
+            var _showObj = _showdata.cert_imgs[$index];
+            // 移除证书串
+            _userdata.cert_imgs = _userdata.cert_imgs.replace(_showObj.url + ',','');
+            // 移动数组
+            _showdata.cert_imgs.splice($index, 1);// 移除下标
+
+            // 相册重置索引
+            if (_albumdata.index > 0){
+              _albumdata.index -= 1;
+            }
+
+            that.setData({
+              userdata: _userdata,
+              showdata: _showdata,
+              albumdata: _albumdata,
+            });
+          }
+        }
+      }
+    })
+  },
+
+  /*
   * 下一步操作
   */
-  formSubmit: function () {
+  formSubmit: function (event) {
     var that = this;
+    // 培训机构
+    var $train = event.detail.value.train;
+
     var pages = getCurrentPages();
     if (pages.length > 1) {
       // 回调存储值
-      var _backservice = that.data.userdata.service;
-      // 回调展示值
-      var _backserviceobj = that.data.showdata.service;
+      var _userdata = that.data.userdata;
+      var _showdata = that.data.showdata;
+      // 赋值 - 培训机构
+      _userdata.train = $train;
 
       //上一个页面实例对象
       var prePage = pages[pages.length - 2];
       //关键在这里
-      prePage.changeService(_backservice, _backserviceobj);
+      prePage.changExp(_userdata, _showdata);
+
+      // 操作 - 缓存当前显示对象
+      wx.setStorageSync('$expshowdata', _showdata);
     }
     wx.navigateBack({
       delta: 1

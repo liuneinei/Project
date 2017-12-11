@@ -16,7 +16,7 @@
       <view class='p15'>对应证书：</view>
       <view class='warp box-image'>
         <view class='box' wx:for="{{showdata.cert_imgs}}" wx:for-item="item" wx:for-index="idx">
-          <image src='{{exp.host}}/{{item.url}}' class='cert-img'></image>
+          <image src='{{exp.host}}/{{item.url}}' class='cert-img' bindtap='btnShowAlbum' data-index='{{idx}}'></image>
         </view>
         <view class='box' bindtap='btnCertImg'>
           <image src='/images/btn_add_img.png' class='cert-img'></image>
@@ -30,14 +30,14 @@
 </view>
 
 <!-- Begin: 相册 -->
-<block wx:if="{{albumdata.show == false}}">
-  <swiper class="swiper-container" autoplay="false" interval="50000" duration="500" current="{{albumdata.index}}" bindchange="SwiperChange">
+<block wx:if="{{albumdata.show}}">
+  <swiper class="swiper-container" autoplay="false" interval="50000" duration="500" current="{{albumdata.index}}" bindchange="albumChange">
     <block wx:for="{{showdata.cert_imgs}}" wx:for-item="item">
       <swiper-item>
-        <image src="{{exp.host}}/{{item.url}}" class="slide-image" mode="aspectFit" bindtap="AlbumHideTag" />
+        <image src="{{exp.host}}/{{item.url}}" class="slide-image" mode="aspectFit" bindtap="btnHideAlbum" />
       </swiper-item>
     </block>
-    <view class="btn-del" bindtap="AlbumDelTag" data-index="{{index}}"></view>
+    <view class="btn-del" bindtap="btnAlbumDel" data-index="{{albumdata.index}}"></view>
   </swiper>
 </block>
 <!-- End: 相册 -->
