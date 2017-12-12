@@ -9,7 +9,6 @@ Page({
       service:'', // 服务集 1,5,7
       train: '',  // 培训机构
       cert_imgs: '',// 证书Url
-      index:2,    // 索引
     },
     showdata:{
       area: [],     // 地区集合 {province:0,city:1,name:''}

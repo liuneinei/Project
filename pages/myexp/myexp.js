@@ -134,6 +134,15 @@ Page({
     // 可上传图片的数量
     var $_count = 9 - _showdata.cert_imgs.length ;
 
+    if ($_count <= 0){
+      wx.showModal({
+        title: '提示',
+        content: '证书只可上传9张',
+        showCancel:false
+      });
+      return;
+    }
+
     // 选择文件 ，最多为 9张
     uploadfilefill.chooseFile($_count, function(res){
       function up(i){

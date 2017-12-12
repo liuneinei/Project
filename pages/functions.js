@@ -96,8 +96,11 @@ const setdatas = (map_data,fb)=>{
 * 获取用户信息
 */
 const getuser = (fb) =>{
+  var _userinfo = wx.getStorageSync('$userinfo');
   if (configs.userinfo) {
     typeof fb === 'function' && fb(configs.userinfo);
+  }else if(){
+
   } else {
       //调用登录接口
       wx.login({
@@ -123,6 +126,7 @@ const getuser = (fb) =>{
                 }, // 设置请求的 header
                 success: function (res) {
                   configs.userinfo = res.data.data;
+                  wx.setStorageSync('$userinfo', configs.userinfo)
                   typeof fb == "function" && fb(res.data.data);
                 }
               })
