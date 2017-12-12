@@ -46,6 +46,9 @@ Page({
         showdata: _showdata
       })
     });
+
+    //数据绑定
+    InitData(that);
   },
 
   // Begin: 事件处理
@@ -240,6 +243,10 @@ Page({
               _albumdata.index -= 1;
             }
 
+            if (_showdata.cert_imgs.length <= 0){
+              _albumdata.show = false;
+            }
+
             that.setData({
               userdata: _userdata,
               showdata: _showdata,
@@ -273,7 +280,7 @@ Page({
       prePage.changExp(_userdata, _showdata);
 
       // 操作 - 缓存当前显示对象
-      wx.setStorageSync('$expshowdata', _showdata);
+      wx.setStorageSync('$myexpshowdata', _showdata);
     }
     wx.navigateBack({
       delta: 1
@@ -283,6 +290,9 @@ Page({
 })
 
 // Begin : 扩展方法
+/*
+* 扩展属性绑定
+*/
 function InitExp(that) {
   var _exp = that.data.exp;
 
@@ -294,6 +304,37 @@ function InitExp(that) {
   // 重新赋值
   that.setData({
     exp: _exp
+  });
+}
+
+/*
+* 数据绑定
+*/
+function InitData(that){
+  var _userdata = that.data.userdata;
+  var _showdata = that.data.showdata;
+
+  // 操作 - 同步缓存
+  var _myserviceuserdata = wx.getStorageSync('$myserviceuserdata') || null;
+  // 操作 - 缓存当前显示对象
+  var _myexpshowdata = wx.getStorageSync('$myexpshowdata') || null;
+
+  // 保存值
+  if (_myserviceuserdata != null){
+    _userdata.service = _myserviceuserdata.service;     // 服务项选中id串
+    _userdata.train = _myserviceuserdata.train;         // 培训机构
+    _userdata.cert_imgs = _myserviceuserdata.cert_imgs; //证书Url
+  }
+  
+  if (_myexpshowdata != null){
+    _showdata.checks = _myexpshowdata.checks;     // 选中值
+    _showdata.service = _myexpshowdata.service;    // 服务项集 {id：0，name：''}
+    _showdata.cert_imgs = _myexpshowdata.cert_imgs;  // 证书图片集 {url:''}
+  }
+
+  that.setData({
+    userdata: _userdata,
+    showdata: _showdata,
   });
 }
 // End : 扩展方法

@@ -1,17 +1,17 @@
 <view class='app'>
   <view class='step'>
-    <form>
+    <form bindsubmit='formSubmit'>
       <view class='step-title'>第三步：添加简介与介绍</view>
       <view class='warp service-box'>
         <view class='p15'>简介：</view>
-        <textarea class='inpt-tarea'></textarea>
+        <textarea class='inpt-tarea' name='intro'></textarea>
       </view>
       <view class='warp service-box'>
         <view class='p15'>介绍：</view>
-        <textarea class='inpt-tarea'></textarea>
+        <textarea class='inpt-tarea' name='about'></textarea>
       </view>
       <view class='form-btn'>
-        <button class="btn">提交审核</button>
+        <button class="btn" formType="submit">提交审核</button>
       </view>
     </form>
   </view>

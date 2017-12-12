@@ -10,7 +10,7 @@
       <view class='input-list'>
         <view class='input-item'>
           <view class='w71'>培训机构：</view>
-          <input type='text' name='train' class='ipt w73' placeholder='请填写培训机构'></input>
+          <input type='text' name='train' class='ipt w73' placeholder='请填写培训机构' value='{{userdata.train}}'></input>
         </view>
       </view>
       <view class='p15'>对应证书：</view>

@@ -27,6 +27,9 @@ Page({
 
     // 初始化扩展属性
     InitExp(that);
+
+    // 初始化缓存数据
+    InitData(that);
   },
 
   // Begin: 事件处理
@@ -123,6 +126,57 @@ Page({
     });
   },
 
+  // ## Begin ： 文本处理
+  /*
+  * 姓名：
+  */
+  btnBlurName:function(event){
+    var that = this;
+    var _userdata = that.data.userdata;
+    var $val = event.detail.value;
+    _userdata.name = $val;
+    that.setData({
+      userdata: _userdata,
+    });
+  },
+  /*
+  * 手机号：
+  */
+  btnBlurPhone: function (event) {
+    var that = this;
+    var _userdata = that.data.userdata;
+    var $val = event.detail.value;
+    _userdata.phone = $val;
+    that.setData({
+      userdata: _userdata,
+    });
+  },
+  /*
+  * 微信号：
+  */
+  btnBlurWechat: function (event) {
+    var that = this;
+    var _userdata = that.data.userdata;
+    var $val = event.detail.value;
+    _userdata.wechat = $val;
+    that.setData({
+      userdata: _userdata,
+    });
+  },
+  /*
+  * 推荐人：
+  */
+  btnBlurReferee: function (event) {
+    var that = this;
+    var _userdata = that.data.userdata;
+    var $val = event.detail.value;
+    _userdata.referee = $val;
+    that.setData({
+      userdata: _userdata,
+    });
+  },
+  // ## End : 文本处理
+
   /*
   * 下一步操作
   */
@@ -143,7 +197,7 @@ Page({
     });
 
     // 操作 - 同步缓存
-    wx.setStorageSync('$userdata', _userdata);
+    wx.setStorageSync('$myapplyuserdata', _userdata);
 
     // 跳转入库页面
     wx.navigateTo({
@@ -165,6 +219,22 @@ function InitExp(that){
   // 重新赋值
   that.setData({
     exp: _exp
+  });
+}
+
+/*
+* 初始化缓存数据
+*/
+function InitData(that){
+  var _userdata = that.data.userdata;
+  // 操作 - 同步缓存
+  var _myapplyuserdata = wx.getStorageSync('$myapplyuserdata') || null;
+  if (_myapplyuserdata != null){
+    _userdata = _myapplyuserdata;
+  }
+
+  that.setData({
+    userdata: _userdata,
   });
 }
 // End : 扩展方法

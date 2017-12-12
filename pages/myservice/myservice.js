@@ -17,8 +17,9 @@ Page({
     },
   },
   onLoad: function () {
-    // 操作 - 同步缓存
-    var _userdata = wx.getStorageSync('$userdata');
+    var that = this;
+    // 初始化当前数据
+    InitData(that);
   },
   
   // Begin 服务地区 ###################################################
@@ -102,6 +103,10 @@ Page({
   * 服务项 - 选择
   */
   btnChooseService:function(event){
+    var that = this;
+    // 当前页设置缓存
+    PageSetStorage(that);
+    
     wx.navigateTo({
       url: '/pages/myexp/myexp'
     });
@@ -149,6 +154,9 @@ Page({
       userdata: _userdata,
       showdata: _showdata,
     });
+
+    // 当前页设置缓存
+    PageSetStorage(that);
   },
 
   /*
@@ -190,6 +198,10 @@ Page({
   formSubmit: function () {
     var that = this;
     var $target = event.currentTarget;
+
+    // 当前页设置缓存
+    PageSetStorage(that);
+
     // 跳转入库页面
     wx.navigateTo({
       url: '/pages/mydesc/mydesc'
@@ -197,3 +209,40 @@ Page({
   },
   // End: 事件处理
 })
+
+// Begin : 扩展方法
+/*
+* 当前页设置缓存
+*/
+function PageSetStorage(that){
+  // 操作 - 同步缓存
+  wx.setStorageSync('$myserviceuserdata', that.data.userdata);
+  // 操作 - 同步缓存
+  wx.setStorageSync('$myserviceshowdata', that.data.showdata);
+}
+
+/*
+* 初始化当前数据
+*/
+function InitData(that){
+  var _userdata = that.data.userdata;
+  var _showdata = that.data.showdata;
+  // 操作 - 同步缓存
+  var _myserviceuserdata = wx.getStorageSync('$myserviceuserdata') || null;
+  // 操作 - 同步缓存
+  var _myserviceshowdata = wx.getStorageSync('$myserviceshowdata') || null;
+
+  if (_myserviceuserdata != null){
+    _userdata = _myserviceuserdata;
+  }
+
+  if (_myserviceshowdata != null){
+    _showdata = _myserviceshowdata;
+  }
+
+  that.setData({
+    userdata: _userdata,
+    showdata: _showdata,
+  });
+}
+// End : 扩展方法
