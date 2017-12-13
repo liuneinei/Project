@@ -79,7 +79,7 @@ function MergeUserData(that){
     train: _myserviceuserdata.train,
     cert_imgs: _myserviceuserdata.cert_imgs,
 
-    intro: _mydescuserdata.intro,
+    intro: _mydescuserdata.ModelModel,
     about: _mydescuserdata.about,
   }
 }

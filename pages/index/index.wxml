@@ -1,8 +1,8 @@
-<swiper indicator-dots="{{indicatorDots}}"
-  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-  <block wx:for="{{imgUrls}}">
+<swiper indicator-dots="{{bannerdata.indicatorDots}}"
+  autoplay="{{bannerdata.autoplay}}" interval="{{bannerdata.interval}}" duration="{{bannerdata.duration}}">
+  <block wx:for="{{bannerdata.List}}">
     <swiper-item>
-      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+      <image src="{{item.img}}" class="slide-image" width="355" height="150"/>
     </swiper-item>
   </block>
 </swiper>
@@ -24,69 +24,13 @@
     <view class='tj-date'>2017/11/23</view>
   </view>
 </view>
-
-
-
-
 <view class="container">
-    <view class="blank8 backfff"></view>
-    <view class="item-nav">
-        <view class="nav-width nav-tabber" data-id="1" data-title="分娩导乐" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav1.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">分娩导乐</view>
-        </view>
-        <view class="nav-width nav-tabber" data-id="2" data-title="生育教育讲师" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav2.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">生育教育讲师</view>
-        </view>
-        <view class="nav-width nav-tabber" data-id="3" data-title="催眠分娩讲师" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav3.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">催眠分娩讲师</view>
-        </view>
-        <view class="nav-width nav-tabber" data-id="4" data-title="生育舞蹈讲师" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav4.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">生育舞蹈讲师</view>
-        </view>
-        <view class="nav-width nav-tabber" data-id="5" data-title="母乳指导" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav5.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">母乳指导</view>
-        </view>
-        <view class="nav-width nav-tabber" data-id="0" data-title="全部" bindtap="LecturerTap">
-            <view class="nav__pic">
-                <view class="nav-tabbar-icon">
-                    <image src="/images/nav6.png" class="nav-tabbar__icon"></image>
-                </view>
-            </view>
-            <view class="nav__label">更多服务</view>
-        </view>
-    </view>
-    <view class="blank8 backfff"></view>
     <view class="item-main">
         <view class="main-nav">推荐专家列表</view>
         <view wx:for="{{lecturers}}" wx:for-item="lecturer" class="main-list" data-id="{{lecturer.id}}" bindtap="LecturerInfoTap">
           <view class="module__left module__item">
                 <view class="module__left__img">
-                    <image src="{{host}}/{{lecturer.face_img}}{{iImgExt}}" class="module__left__icon"></image>
+                    <image src="{{exp.host}}/{{lecturer.face_img}}" class="module__left__icon"></image>
                 </view>
             </view>
             <view class="module__right module__item">

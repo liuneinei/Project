@@ -6,25 +6,34 @@ var app = getApp()
 Page({
   data: {
     userInfo: {},
-    // 主机域名 - 七牛文件
-    host: '',
-    iImgExt: '',
+    // Banner集
+    bannerdata:{
+      List: [
+        {
+          img: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
+          url:''
+        },
+        {
+          img: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
+          url: ''
+        },
+        {
+          img: 'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg',
+          url: ''
+        }
+      ],
+      indicatorDots: true,
+      autoplay: true,
+      interval: 3000,
+      duration: 1000
+    },
     // 讲师列表
     lecturers: [],
-    // 分页指数
-    requests: {
-      // 查看的详情实体
-      Model: {},
-    },
-    imgUrls: [
-      'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175866434296.jpg',
-      'http://img06.tooopen.com/images/20160818/tooopen_sy_175833047715.jpg'
-    ],
-    indicatorDots: true,
-    autoplay: true,
-    interval: 3000,
-    duration: 1000
+    // 扩展属性
+    exp:{
+      // 主机域名 - 七牛文件
+      host: '',
+    }
   },
   onShareAppMessage: function () {
       return {
@@ -40,66 +49,53 @@ Page({
     },
   onLoad: function () {
     var that = this;
-    that.setData({
-      // 七牛文件查看域名
-      host: api.iQiniu,
-      iImgExt: api.iImgExt
-    })
-    
-    console.log('app.js');
-    console.log(app.globalData);
+    // 初始化扩展属性
+    InitExp(that);
+
     // 讲师推荐
-    GetRecommend(that)
-  },
-  // :begin 事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
-  // 导航栏
-  LecturerTap: function (event) {
-    var id = event.currentTarget.dataset.id;
-    var title = event.currentTarget.dataset.title;
-    wx.setStorageSync('ilclass', { classid: id, className: title, isShow:true});
-    wx.switchTab({
-      url: '../lecturers/lecturers' ,
-      success:function(res){
-        console.log('index success')
-        console.log(res)
-      },
-      fail:function(res){
-        console.log('index fail')
-        console.log(res)
-      }
-    })
+    InitLecturers (that)
   },
   // 讲师详情
   LecturerInfoTap:function(event){
     var id = event.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../lecturerinfo/lecturerinfo?id='+id,
+      url: '/pages/lecturerinfo/lecturerinfo?id='+id,
     })
   }
   // :end 事件
 })
 
-// 讲师推荐
-function GetRecommend(that){
+
+// Begin : 扩展方法
+/*
+* 初始化扩展属性
+*/
+function InitExp(that){
+  var _exp = that.data.exp;
+  _exp.host = api.iQiniu;
+  that.setData({
+    exp: _exp,
+  })
+}
+
+/*
+* 讲师推荐
+*/
+function InitLecturers(that) {
   api.wxRequest({
-    success:function(res){
-      var dataObj = res.data
-      var result = dataObj.data;
+    success: function (res) {
+      var result = res.data.data;
       that.setData({
         lecturers: result
       })
-      wx.setStorageSync('recommend', result);
+      wx.setStorageSync('$recommend', result);
     },
-    fail:function(res){
-      var recommend = wx.getStorageSync('recommend');
+    fail: function (res) {
+      var $recommend = wx.getStorageSync('$recommend');
       that.setData({
-        lecturers: recommend
+        lecturers: $recommend
       })
     }
   }, api.host + api.iRecommend)
 }
+// End : 扩展方法

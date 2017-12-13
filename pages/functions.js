@@ -96,11 +96,12 @@ const setdatas = (map_data,fb)=>{
 * 获取用户信息
 */
 const getuser = (fb) =>{
-  var _userinfo = wx.getStorageSync('$userinfo');
+  var _userinfo = wx.getStorageSync('$userinfo') || null;
   if (configs.userinfo) {
+    wx.setStorageSync('$userinfo', configs.userinfo);
     typeof fb === 'function' && fb(configs.userinfo);
-  }else if(){
-
+  } else if (_userinfo != null){
+    typeof fb === 'function' && fb(configs.userinfo);
   } else {
       //调用登录接口
       wx.login({
