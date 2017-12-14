@@ -28,10 +28,6 @@ const getlocation = (fb)=>{
           res.status = false;
           typeof fb === 'function' && fb(res);
         },
-        complete: function (res) {
-          res.status = false;
-          typeof fb === 'function' && fb(res);
-        }
       });
     },
     fail:function(res){
@@ -45,23 +41,21 @@ const getlocation = (fb)=>{
 * 获取配置
 */
 const getconfig = (fb) => {
+  var config = wx.getStorageSync('config') || null;
   if (configs.store){
     typeof fb === 'function' && fb(configs.store);
-  }else{
-    var config = wx.getStorageSync('config') || null;
-    if(config){
-      configs.store = config;
-      typeof fb === 'function' && fb(config);
-    }else{
-      api.wxRequest({
-        success: (res) => {
-          //同步存储
-          wx.setStorageSync('config', res.data.data);
-          configs.store = res.data.data;
-          typeof fb === 'function' && fb(res.data.data);
-        }
-      }, api.host + api.iconfig);
-    }
+  } else if (config != null){
+    configs.store = config;
+    typeof fb === 'function' && fb(config);
+  } else {
+    api.wxRequest({
+      success: (res) => {
+        //同步存储
+        wx.setStorageSync('config', res.data.data);
+        configs.store = res.data.data;
+        typeof fb === 'function' && fb(res.data.data);
+      }
+    }, api.host + api.iconfig);
   }
 }
 
@@ -98,9 +92,9 @@ const setdatas = (map_data,fb)=>{
 const getuser = (fb) =>{
   var _userinfo = wx.getStorageSync('$userinfo') || null;
   if (configs.userinfo) {
-    wx.setStorageSync('$userinfo', configs.userinfo);
     typeof fb === 'function' && fb(configs.userinfo);
   } else if (_userinfo != null){
+    configs.userinfo = _userinfo;
     typeof fb === 'function' && fb(configs.userinfo);
   } else {
       //调用登录接口

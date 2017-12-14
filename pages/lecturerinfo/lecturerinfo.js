@@ -47,22 +47,13 @@ Page({
     //初始化扩展对象
     InitExp(that);
 
-    var id = option.id;
-    if (id != undefined && id != 'undefined' && id > 0) {
-      var Model = that.data.Model;
-      Model.id = id;
-      that.setData({
-        Model: Model
-      });
-    }
-
     // 第一步 获取ApiConfig/StoreConfig信息，为后续遍历加载
     functions.getconfig(function (res) {
-      console.log(res);
       that.setData({
         Notice: res.Notice
       });
-      GetAPi(that);
+      // 初始化内容
+      GetLecture(that, (option.id || 0));
     });
   },
   // :begin 事件处理
@@ -90,34 +81,39 @@ Page({
   // :end 事件处理
 })
 
-function GetAPi(that) {
-  var Model = that.data.Model;
+// Begin : 扩展函数
+
+/*
+* 初始化内容
+*/
+function GetLecture(that, id) {
+  var _Model = that.data.Model;
   api.wxRequest({
     data: {
-      id: Model.id
+      id: id
     },
     success: function (res) {
-      Model = res.data.data;
+      _Model = res.data.data;
       // 省名
-      Model.province = '';
+      _Model.province = '';
       // 市名
-      Model.city = '';
+      _Model.city = '';
       // 服务须知
-      Model.notice = '';
+      _Model.notice = '';
       if (configs.store || null) {
         // 本地存储 - 城市
         var provinces = configs.store.provinces;
         [].forEach.call(provinces, function (item, i) {
-          if (item.id == Model.province_id) {
-            Model.province = item.name;
+          if (item.id == _Model.province_id) {
+            _Model.province = item.name;
             var pIndex = item.name.indexOf('市');
             if (pIndex < 0) {
               var citys = item.citys;
               // :begin 遍历市
               [].forEach.call(citys, function (citem, ci, carr) {
-                if (citem.id == Model.city_id) {
+                if (citem.id == _Model.city_id) {
                   // 市名
-                  Model.city = citem.name;
+                  _Model.city = citem.name;
                 }
               });
             }
@@ -125,7 +121,7 @@ function GetAPi(that) {
         });
       }
       that.setData({
-        Model: Model
+        Model: _Model
       });
       wx.hideToast();
     },
@@ -134,8 +130,6 @@ function GetAPi(that) {
     }
   }, api.host + api.iUpdatePV);
 }
-
-// Begin : 扩展函数
 
 /*
 * 初始化扩展对象

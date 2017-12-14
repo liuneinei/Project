@@ -98,8 +98,6 @@ Page({
       icon: 'loading',
       duration: 1500
     });
-    console.log('onShow');
-    console.log(options);
     var ilObj = wx.getStorageSync('ilclass');
     if (ilObj.isShow == true) {
       var Req = that.data.Req;
