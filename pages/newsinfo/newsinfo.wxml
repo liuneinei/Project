@@ -1,7 +1,7 @@
 <view class='app'>
   <view class='list-view'>
-    <view class='title'>图文标题</view>
-    <view class='time'>2017/11/16</view>
+    <view class='title'>{{coursesdata.title}}</view>
+    <view class='time'>{{coursesdata.date}}</view>
     <view class="list-conent">
       <image src='http://img.guju.com.cn/simages/1576940_0_9-.jpg'></image>
       <view class="text" style="padding: 0px;">如果你无法简洁的表达你的想法，那只说明你还不够了解它。-- 阿尔伯特·爱因斯坦</view>

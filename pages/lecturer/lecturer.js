@@ -81,7 +81,7 @@ Page({
 
     return {
       title: title,
-      path: '/pages/lecturers/lecturers' + arg
+      path: '/pages/lecturer/lecturer' + arg
     }
   },
   // 显示页
@@ -161,13 +161,9 @@ Page({
     }
   },
   onReady: function (options) {
-    console.log('onReady');
-    console.log(options);
+
   },
   onLoad: function (options) {
-    console.log('onLoad');
-    console.log(options);
-
     var that = this;
     wx.showToast({
       title: '加载中',
@@ -176,8 +172,6 @@ Page({
     });
     wx.getSystemInfo({
       success: function (res) {
-        console.log(res.screenHeight)
-        console.log(res.windowHeight)
         var Config = that.data.Config;
         // 屏幕高度，默认值
         Config.wHeight = res.screenHeight - 155;
@@ -299,7 +293,7 @@ Page({
     // 记录
     wx.setStorageSync('showinfo', 'true');
     wx.navigateTo({
-      url: '../lecturerinfo/lecturerinfo?id=' + id
+      url: '/pages/lecturerinfo/lecturerinfo?id=' + id
     })
   },
   // :beging 事件处理

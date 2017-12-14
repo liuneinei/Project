@@ -39,10 +39,15 @@ Page({
   },
 
   // Begin: 事件处理
-  btnNewsInfo:function(event){
+  btnCoursesInfo:function(event){
     var that = this;
     var $target = event.currentTarget;
     var $id = $target.dataset.id;
+
+    // 跳转入库页面
+    wx.navigateTo({
+      url: '/pages/newsinfo/newsinfo?id=' + $id
+    });
   },
   // End: 事件处理
 })

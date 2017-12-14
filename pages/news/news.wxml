@@ -1,6 +1,6 @@
 <view class='app'>
   <view class='list'>
-    <view wx:for="{{coursesdata.list}}" wx:for-item="item" class='list-item' data-id='{{item.id}}' bindtap='btnNewsInfo' >
+    <view wx:for="{{coursesdata.list}}" wx:for-item="item" class='list-item' data-id='{{item.id}}' bindtap='btnCoursesInfo' >
       <view class='img'>
         <image src="{{item.img}}" class='show'></image>
       </view>
