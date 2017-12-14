@@ -31,6 +31,7 @@
     position: relative;
 }
 .list .list-item .txt .title {
+    height:50px;
     min-height: 50px;
     overflow: hidden;
 }
