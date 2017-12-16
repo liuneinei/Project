@@ -135,6 +135,23 @@ const getuser = (fb) =>{
   }
 }
 
+/*
+* 分页 - 返回是否已加载完
+*/
+const pageover = (page, maxlen, total) => {
+  var $page = 0;
+  if (total % maxlen == 0) {
+    $page = total / maxlen;
+  } else {
+    $page = parseInt((total / maxlen)) + 1;
+  }
+  if (page >= $page) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 module.exports = {
   // 获取config
   getconfig,
@@ -144,4 +161,6 @@ module.exports = {
   setdatas,
   // 获取用户信息
   getuser,
+  // 分页 - 返回是否已加载完
+  pageover,
 }
