@@ -42,24 +42,26 @@
     background: none;
 }
 .input-list{
-    width: 92%;
+    width: 650rpx;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 50rpx;
 }
 .input-list .item-lab{
-    width: 56px;
+    width: 150rpx;
 }
 .input-list .list-item{
-    margin-top: 20px;
+    margin-top: 35rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .input-list .ipt{
     border: 1px solid #dddddd;
-    width: 78%;
-    height: 30px;
-    margin-left: 10px;
+    width: 480rpx;
+    height: 65rpx;
+    line-height: 65rpx;
+    margin-left: 15rpx;
+    padding-left: 15rpx;
 }
 .warp{
     width: 92%;
@@ -97,6 +99,14 @@
     text-align: center
 }
 .form-btn .btn{
-    height: 35px;
     font-size: 16px;
+}
+
+.btn-next{
+  height: 70rpx;
+  line-height: 70rpx;
+  width: 500rpx;
+  background: #71509e;
+  border: 1px solid #71509e;
+  color: #fff;
 }

@@ -11,7 +11,7 @@
     </view>
   </view>
   <!--分享-->
-	<view class="share">
+	<button class="share" open-type="share">
 		<view class='i'></view>分享
-	</view>
+	</button>
 </view>

@@ -46,6 +46,7 @@
     bottom: 0;
     font-size: 14px;
     background: #ffffff;
+    border-radius:0px;
 }
 .share .i{
     display: block;

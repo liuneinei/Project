@@ -7,7 +7,7 @@
 }
 
 .list .list-item{
-    height: 70px;
+    height: 150rpx;
     overflow: hidden;
     flex-direction: column;
     width: 92%;
@@ -21,22 +21,23 @@
 }
 .list .list-item .img .show{
     width: 120px;
-    height:65px;
+    height:150rpx;
     overflow: hidden;
 }
 .list .list-item .txt{
     width: 55%;
-    height: 70px;
+    height: 150rpx;
     font-size: 14px;
     position: relative;
 }
 .list .list-item .txt .title {
-    height:50px;
-    min-height: 50px;
+    height:110rpx;
     overflow: hidden;
 }
 .list .list-item .txt .label{
     /*margin-top: 28px;*/
     position: absolute;
     bottom: 0px;
+    height:40rpx;
+    overflow:hidden;
 }

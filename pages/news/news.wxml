@@ -3,14 +3,14 @@
     <view class='list'>
       <view wx:for="{{coursesdata.list}}" wx:for-item="item" class='list-item' data-id='{{item.id}}' bindtap='btnCoursesInfo' >
         <view class='img'>
-          <image src="{{item.img}}" class='show'></image>
+          <image src="{{exp.host}}/{{item.img}}" class='show'></image>
         </view>
         <view class='txt'>
           <view class='title'>{{item.title}}</view>
           <view class='label'>
             标签：
             <block wx:for="{{item.tags}}" wx:for-item="tag">
-              {{tag.name}}
+              {{tag.title}}
             </block>
           </view>
         </view>
