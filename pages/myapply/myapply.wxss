@@ -4,7 +4,7 @@
     /*position: relative;*/
     margin: 0 auto;
     height: 100%;
-    font-size: 14px;
+    font-size: 35rpx;
 }
 
 /*步骤*/
@@ -98,9 +98,6 @@
     margin-bottom: 20px;
     text-align: center
 }
-.form-btn .btn{
-    font-size: 16px;
-}
 
 .btn-next{
   height: 70rpx;
@@ -109,4 +106,5 @@
   background: #71509e;
   border: 1px solid #71509e;
   color: #fff;
+  font-size: 28rpx;
 }

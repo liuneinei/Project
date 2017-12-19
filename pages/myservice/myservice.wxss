@@ -19,6 +19,8 @@
     padding: 10px;
     border: 1px solid #ccc;
     overflow:auto;
+    box-shadow:0px 2rpx 8rpx #B0B0B0;
+    border-radius: 5rpx;
 }
 .warp{
     width: 92%;
@@ -43,15 +45,21 @@
     margin-top: 20px;
     text-align: center
 }
-.form-btn .btn{
-    height: 35px;
-    font-size: 16px;
-}
 
 .btn{
     width: 134px;
-    height: 25px;
+    height: 70rpx;
     text-align: center;
     border: 1px solid #dddddd;
     background: none;
+    font-size: 28rpx;
+}
+
+.form-btn .btn-next{
+  height:70rpx;
+  line-height:70rpx;
+  width:500rpx;
+  background:#71509e;
+  border:1px solid #71509e;
+  color:#fff;
 }
