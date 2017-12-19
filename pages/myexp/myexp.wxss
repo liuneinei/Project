@@ -20,12 +20,17 @@
 .types .types-item{
     display: inline-block;
     width: 32%;
-    line-height: 25px;
+    line-height: 60rpx;
     text-align: center;
     cursor: pointer;
+    font-size: 30rpx;
+    margin-bottom: 8rpx;
+    border-radius: 5rpx;
+    margin-right: 5rpx;
 }
 .types .types-item.ative{
-    background: #dddddd;
+    background: #71509e;
+    color: #ffffff;
 }
 .input-list{
     width: 92%;
@@ -40,31 +45,33 @@
 }
 .input-list .ipt{
     border: 1px solid #dddddd;
-    width: 78%;
+    width: 500rpx; 
     height: 30px;
-    margin-left: 10px;
+    font-size: 30rpx;
+    padding-left: 10rpx;
+    /* margin-left: 10px; */
 }
 
 .input-list .w71{
-    width: 71px;
-}
-.input-list .w73{
-    width: 73%;
+    width: 170rpx;
 }
 
 .p15{
-    padding:15px 15px 0 15px;
+    padding:30rpx 30rpx 0 30rpx;
+}
+.warp{
+  width: 92%;
+  margin: 40rpx auto;
 }
 .box-image{  
-    margin-top: 20px;
     overflow: hidden;
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
 }
 .box-image .box{
-    width: 46%;
-    margin-right:5px;
+    width: 335rpx;
+    margin-right:10rpx;
 }
 .btn{
     width: 83px;
@@ -80,7 +87,16 @@
 .form-btn .btn{
     height: 35px;
     line-height:35px;
-    font-size: 16px;
+    font-size: 32rpx;
+}
+.btn-next{
+  height: 70rpx;
+  line-height: 70rpx;
+  width: 500rpx;
+  background: #71509e;
+  border: 1px solid #71509e;
+  color: #fff;
+  font-size: 28rpx;
 }
 
 /*相册；Begin*/

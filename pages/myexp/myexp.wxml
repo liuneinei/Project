@@ -23,7 +23,7 @@
         </view>
       </view>
       <view class='form-btn'>
-        <button class='btn' formType="submit">确定</button>
+        <button class='btn btn-next' formType="submit">确定</button>
       </view>
     </form>
   </view>
