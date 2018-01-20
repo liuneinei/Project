@@ -331,10 +331,8 @@ io.sockets.on('connection',function(socket){
 				// 有客服在线时才处理
 				if((userline.id || 0) > 0) {
 					// 绑定客服
-					mysqlexecute.mysqlExecute({
-						sqltext: 'update kefu_member set userId = ? and userSessionId = ? where id = ?',
-						param: [userline.id, userline.sessionId, res.id]
-					});
+					mysqlexecute.mysqlMemberBindUser({userid :userline.id, sessionid :userline.sessionId, roomid : res.roomId });
+
 					// 更新客服接待人数
 					kefuusertool.UpdateAdmitNum(kefuuseronlines, userline.id);
 					// 得到当前客服接待的信息
@@ -359,7 +357,7 @@ io.sockets.on('connection',function(socket){
 					kefu_rooms[userline.sessionId] = rooms;
 
 					// 呼叫在线客服加入房间
-					io.sockets.emit(userline.sessionId, {roomId:res.roomId, rooms:kefu_rooms[userline.sessionId]});
+					io.sockets.emit(userline.sessionId, {roomId: res.roomId, rooms: kefu_rooms[userline.sessionId]});
 				}
 
 				// 客服呼叫 - 请求返回
@@ -391,11 +389,35 @@ io.sockets.on('connection',function(socket){
 
 				//......在这里做更多的事
 				/*********************    客服断线，将用户转接给你在线的客服    ***************************/
+				// 得到当前该客服接待的用户
 				var rooms = kefu_rooms[socket.sessionid] || [];
 				if(rooms.length > 0){
-					[].forEach.call(rooms, function (item, index) {
-						
-					});
+					// 返回人数最少的客服
+					var userline = kefuusertool.GetLessAdmitNum(kefuuseronlines, 'admitNum');
+
+					// 有客服在线时才处理
+					if((userline.id || 0) > 0) {
+						// 得到转移后客服所接待的用户
+						var migrate_room = kefu_rooms[userline.sessionId] || [];
+
+						[].forEach.call(rooms, function (item, index) {
+							migrate_room.push(item);
+
+							// 转用户移到新的客服上
+							kefu_rooms[userline.sessionId] = migrate_room;
+
+							// 呼叫在线客服加入房间
+							io.sockets.emit(userline.sessionId, {roomId: item.room, rooms: kefu_rooms[userline.sessionId]});
+
+							/*console.log('返回用户实例：');
+							console.log(item);
+							console.log(userline);*/
+							// 绑定客服
+							mysqlexecute.mysqlMemberBindUser({userid :userline.id, sessionid :userline.sessionId, roomid : item.room });
+						});
+						// 原客服清空接待用户
+						kefu_rooms[socket.sessionid] = [];
+					}
 				}
 			}
 		}

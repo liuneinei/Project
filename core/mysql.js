@@ -50,6 +50,9 @@ function mysqlQueryList(opts) {
 *   param：sqltext Sql语句 | param Sql语句参数 | success 执行返回函数
 */
 function mysqlExecute(opts) {
+    console.log('mysqlExecute：');
+    console.log(opts.sqltext);
+    console.log(opts.param);
     client.query(opts.sqltext, opts.param, function(err, rows, fields) {
         typeof opts.success === "function" && opts.success({err:err,rows:rows});
     });
@@ -155,6 +158,27 @@ function mysqlMessageStorage(opts) {
     }
 }
 
+/*
+* 用户绑定客服
+* param：userid 客服Id | sessionid 客服标识 | roomid 用户标识
+ */
+function mysqlMemberBindUser(opts) {
+    /*opts.userid = opts.userid || 0;
+    opts.sessionid = opts.sessionid || '';
+    opts.roomid = opts.roomid || '';*/
+    if(opts.userid <= 0 || opts.sessionid == '' || opts.roomid == ''){
+        return;
+    }
+    mysqlExecute({
+        sqltext: 'update kefu_member set userId = ? , userSessionId = ? where roomId = ?',
+        param: [opts.userid, opts.sessionid, opts.roomid],
+        success:function (res) {
+            console.log('update mysqlMemberBindUser：');
+            console.log(res);
+        }
+    });
+}
+
 module.exports = {
     // 获取单条记录
     mysqlQueryOne: mysqlQueryOne,
@@ -164,6 +188,8 @@ module.exports = {
     mysqlExecute: mysqlExecute,
     // 消息记录
     mysqlMessageStorage: mysqlMessageStorage,
+    // 用户绑定客服
+    mysqlMemberBindUser: mysqlMemberBindUser,
     // 自增Id
     mysqlTabKey1: mysqlTabKey1
 };
