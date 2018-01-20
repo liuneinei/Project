@@ -9,20 +9,14 @@
 	<link rel="stylesheet" type="text/css" href="css/socket.css?v1.3">
 	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-	<script src="http://m.dumanyi.com/Content/js/vue.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 	<h1>Scoket.IO Chat Demo</h1>
 	<div class="wrap chatroom">
 		<div class="messages">
-			<div class="nicknames kefu-users">
-				<span>客服在线：</span>
-				<!--<b>小明</b>
-				<b>小黄</b>-->
-			</div>
-			<div class="nicknames kefu-rooms">
-				<span>Room：</span>
+			<div class="nicknames kefu-memeber">
+				<span>用户在线：</span>
 				<!--<b>小明</b>
 				<b>小黄</b>-->
 			</div>
@@ -40,18 +34,19 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
-			var kefu_user_mark = $.cookie('kefu_user_mark') || '';
-			if(kefu_user_mark == ''){
-				window.location = '/login.html';
-			}
+			var kefu_member_mark = $.cookie('kefu_member_mark') || '';
 
-			var $lines = $('.lines'),
-				$nickname = $('.nickname'),
-				$messages = $('.messages'),
-				$message = $('.message'),
-				$sendMessage = $('.send-message'),
-				toUser =  null;
-			var $roomid = '';
+			var $chatroom = $('.chatroom'),//$('.chat');
+					$lines = $('.lines'),
+					$nickname = $('.nickname'),
+					$setNickname = $('.set-nickname'),
+					$nicknames = $('.nicknames'),
+					$messages = $('.messages'),
+					$message = $('.message'),
+					$sendMessage = $('.send-message'),
+					$to = $('.to'),
+					toUser =  null,
+					myself = null;
 
 			var socket = io.connect('http://localhost:8087');
 
@@ -60,40 +55,24 @@
 			*/
 			socket.on('init:push',function (push) {
 				// 客服登录验证
-				socket.emit('kefu_user_login:verification', kefu_user_mark, function (resver) {
+				socket.emit('kefu_member_login:init', kefu_member_mark, function (resver) {
+					console.log('客服登录验证:');
 					console.log(resver);
 					if(!resver.result){
 						alert('登录失效');
-						window.location = '/login.html';
-						return;
+					}else{
+						$.cookie('kefu_member_mark',resver.roomid)
 					}
 				});
 			});
 
 			/*
-			*	客服在线信息
-			*/
-			socket.on('kefu_user:onlines',function (res) {
-				$('.kefu-users').empty().append($('<span>当前在线：</span>'));
+			 *	用户在线信息
+			 */
+			socket.on('kefu_member:onlines',function (res) {
+				$('.kefu-memeber').empty().append($('<span>当前在线：</span>'));
 				$.each(res,function(key,val){
-					$('.kefu-users').append($('<b>').text(val.name));
-				});
-			});
-
-			/*
-			*	用户发起会话，进入对应的Room中
-			*/
-			socket.on(kefu_user_mark,function (res) {
-				console.log(res);
-				socket.emit('online:join',res.roomId,function () {
-					$('.kefu-rooms').empty().append($('<span>Room：</span>'));
-					$.each(res.rooms,function(key,val){
-						if(val.room == $roomid){
-							$('.kefu-rooms').append($('<b style="background: #ff0000;">').text(val.member.name).data('room', val.room));
-						}else {
-							$('.kefu-rooms').append($('<b>').text(val.member.name).data('room', val.room));
-						}
-					});
+					$('.kefu-memeber').append($('<b>').text(val.name));
 				});
 			});
 
@@ -101,6 +80,13 @@
 			socket.on('announcement',function(msg){
 				$lines.append($('<p>').append($('<em>').text(msg)));
 				$lines.scrollTop(100000000);
+			});
+
+			socket.on('nicknames',function(nicknames){
+				$nicknames.empty().append($('<span>当前在线：</span>'));
+				$.each(nicknames,function(key,val){
+					$nicknames.append($('<b>').text(val));
+				});
 			});
 
 			function message(from,msg,opt_to){
@@ -120,12 +106,9 @@
 				$lines.scrollTop(100000000);
 			}
 
-			socket.on('user:pub', function (backobj) {
-				if($roomid == '' || backobj.roomid == $roomid){
-					message(backobj.name, backobj.message);
-				}
+			socket.on('user:pub',function (backobj) {
+				message(backobj.name, backobj.message);
 			});
-
 			socket.on('user:private',message);
 			socket.on('reconnect',function(){
 				//$lines.remove();
@@ -153,39 +136,30 @@
 			}
 
 			$sendMessage.submit(function(){
-				message('我',$message.val());
-				socket.emit('user:pub', $message.val(), $roomid);
+				if(toUser){
+					message('我对'+toUser+'说',$message.val());
+					socket.emit('user:private',$message.val(),toUser);
+				}else{
+					message('我',$message.val());
+					socket.emit('user:pub',$message.val());
+				}
 				clear();
 				$lines.scrollTop(100000000);
 				return false;
 			});
 
-			$('.kefu-rooms').on('click','b',function(e){
-				var $bitem = $(e.target);
-				$bitem.siblings('b').css('background','#4FA72C');
-				$bitem.css('background','#ff0000');
-				$roomid = $bitem.data('room');
-				if($roomid != ''){
-					// 呼叫Room的消息
-					socket.emit('kefu_user_message:to_roomid', $roomid, messagetoroomidBackFun);
-					// 呼叫Room的消息 回调
-					function messagetoroomidBackFun(resmessage) {
-						console.log('kefu_user_message:to_roomid:');
-						console.log(resmessage);
-						if(resmessage.result){
-							var $messagerows = resmessage.rows;
-							if($messagerows.length > 0){
-								$lines.empty();
-								[].forEach.call($messagerows, function (item, index) {
-									//console.log(item.name);
-									message(item.name, item.content);
-								});
-							}
-						}
-					}
+			$nicknames.on('click','b',function(e){
+				toUser = $(e.target).text();
+				if(toUser === myself){
+					$to.find('b').text('所有人');
+					toUser = null;
+					return;
 				}
+
+				$to.find('b').text(toUser);
 			});
 		});
+
 	</script>
 </body>
 </html>

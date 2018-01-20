@@ -8,5 +8,21 @@
   },
   "author": "",
   "license": "ISC",
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "connect": "^3.6.2",
+    "express": "^4.15.3",
+    "path": "^0.12.7",
+    "serve-static": "^1.12.3",
+    "socket.io": "^2.0.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liuneinei/Project.git"
+  },
+  "bugs": {
+    "url": "https://github.com/liuneinei/Project/issues"
+  },
+  "homepage": "https://github.com/liuneinei/Project#readme"
 }

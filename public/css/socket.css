@@ -21,7 +21,7 @@ h1{
 }
 
 /*按钮和表单样式*/
-input[type="text"]{
+input.nick{
 	border: 1px solid #ccc;
 	padding:  12px;
 	width: 250px;
@@ -35,6 +35,10 @@ input[type="text"]{
 input[type="text"]:focus{
 	border-color: #999;
 	outline: 0;
+}
+
+.chat-tab{
+	display: block;
 }
 
 button{
@@ -62,7 +66,7 @@ button:hover,button:active,button:focus{
 /*布局样式*/
 .nickname{
 	text-align: center;
-	font: 15px;
+	font-size: 15px;
 	color: rgba(0,0,0,.5);
 	display: block;
 }
@@ -87,10 +91,10 @@ label{
 .messages{
 	border-radius: 10px;
 	overflow: hidden;
-	display: none;
+	/*display: none;*/
 }
 .send-message{
-	display: none;
+	/*display: none;*/
 }
 .messages em{
 	text-shadow:0 1px 0 #fff;
