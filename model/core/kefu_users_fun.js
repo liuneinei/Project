@@ -2,6 +2,9 @@
  * Created by 3241214616 on 2018-1-23.
  */
 
+/*
+*   客服登录
+ */
 function userLogin(client, opts) {
     opts.sqltext = 'select * from kefu_users where username = ? and `password`= ?';
     client.query(opts.sqltext, [opts.username, opts.password], function (err, rows, fields) {
@@ -39,6 +42,9 @@ function editCookieId(client, opts) {
     });
 }
 
+/*
+*   CookieId 读取信息
+ */
 function byCookieId(client, opts) {
     opts.sqltext = 'select * from kefu_users where cookieid = ?';
     client.query(opts.sqltext, [opts.cookieid], function (err, rows, fields) {
@@ -55,7 +61,31 @@ function byCookieId(client, opts) {
     });
 }
 
+/*
+*   Id 读取用户信息
+ */
+function byId(client, opts) {
+    opts.sqltext = 'select * from kefu_users where id = ?';
+    client.query(opts.sqltext, [opts.id], function (err, rows, fields) {
+        if (err || rows.length <= 0) {
+            typeof opts.success === "function" && opts.success({ result: false, message: err || '找不到数据' });
+            return;
+        }
+        var row = rows[0] || {};
+        if ((row.id || 0) <= 0) {
+            typeof opts.success === "function" && opts.success({ result: false, message: err || '找不到数据' });
+            return;
+        }
+        typeof opts.success === "function" && opts.success({ result: true, row: row });
+    });
+}
+
+
 module.exports = {
+    // 客服登录
     userLogin: userLogin,
+    // CookieId 读取信息
     byCookieId: byCookieId,
+    // Id 读取用户信息
+    byId: byId,
 };

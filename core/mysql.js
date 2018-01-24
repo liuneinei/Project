@@ -248,12 +248,18 @@ var kefu_Room_fun = {
  *   客服表
  */
 var kefu_User_fun = {
+    // 客服登录
     userLogin: function (opts) {
         return usersfun.userLogin(client, opts);
     },
+    // CookieId 读取信息
     byCookieId: function (opts) {
         return usersfun.byCookieId(client, opts);
-    }
+    },
+    // Id 读取用户信息
+    byId: function (opts) {
+        return usersfun.byId(client, opts);
+    },
 };
 
 module.exports = {
@@ -284,6 +290,8 @@ module.exports = {
         userLogin: kefu_User_fun.userLogin,
         // CookieId 获取信息
         byCookieId: kefu_User_fun.byCookieId,
+        // Id 读取用户信息
+        byId: kefu_User_fun.byId,
     },
 
     // 获取单条记录

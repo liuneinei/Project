@@ -48,9 +48,18 @@ function fireUserOnLine(opts) {
     }
 }
 
+/*
+*   Id 读取用户信息   
+ */
+function fireById(opts) {
+    mysql.dataUsers.byCookieId(opts);
+}
+
 module.exports = {
     // 客服登录
     fireUserLogin: fireUserLogin,
     // 客服在线显示   
     fireUserOnLine: fireUserOnLine,
+    // Id 读取用户信息   
+    fireById: fireById,
 };

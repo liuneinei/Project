@@ -365,10 +365,10 @@ io.sockets.on('connection',function(socket){
 	    if (socket.userid) {
             // 客服离线后一分钟处理
 	        setTimeout(function () {
-
+	            handle(socket.userid);
 	        }, 60000);
 
-	        function handle(socket.userid) {
+	        function handle(userid) {
 
 	        }
 

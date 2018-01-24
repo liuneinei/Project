@@ -59,12 +59,12 @@ function fireMemberLogin(opts) {
 }
 
 // CookieId 读取用户信息
-function byCookieId(opts) {
+function fireByCookieId(opts) {
     mysql.dataMember.byCookieId(opts);
 }
 
 // Id 读取用户信息
-function byId(opts) {
+function fireById(opts) {
     mysql.dataMember.byCookieId(opts);
 }
     
@@ -73,7 +73,7 @@ module.exports = {
     // 用户初始化登录 
     fireMemberLogin: fireMemberLogin,
     // CookieId 读取用户信息
-    byCookieId: byCookieId,
+    fireByCookieId: fireByCookieId,
     // Id 读取用户信息
-    byId: byId,
+    fireById: fireById,
 };

@@ -9,7 +9,7 @@ var kefuarrtool = require('../../comm/KefuArrTool.js');
 var mysql = require('../../core/mysql.js');
 
 /*
-*
+* 读取自增Id
 * opts.arr = [];        // Tabkey 集合
 * opts.tabname = '';    // 列名KeyName
 * opts.tabvalue = '';   // 列名KeyName 值
@@ -50,5 +50,6 @@ function fireTabKey(opts) {
 }
 
 module.exports = {
+    // 读取自增Id
     fireTabKey: fireTabKey,
 };

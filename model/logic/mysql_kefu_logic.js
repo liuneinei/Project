@@ -11,6 +11,7 @@ var kefuserslogic = require('./kefu_users_logic.js');
 
 module.exports = {
     back_tabkey: {
+        // 读取自增Id
         fireTabKey: kefutabkeylogic.fireTabKey,
     },
     back_users: {
@@ -18,9 +19,16 @@ module.exports = {
         fireUserLogin: kefuserslogic.fireUserLogin,
         // 客服在线显示   
         fireUserOnLine: kefuserslogic.fireUserOnLine,
+        // Id 读取用户信息   
+        fireById: kefuserslogic.fireById,
     },
     back_member: {
+        // 用户初始化登录 
         fireMemberLogin: kefumemberlogic.fireMemberLogin,
+        // CookieId 读取用户信息
+        fireByCookieId: kefumemberlogic.fireByCookieId,
+        // Id 读取用户信息
+        fireById: kefumemberlogic.fireById,
     },
     back_room: {},
     back_message: {}
