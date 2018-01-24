@@ -40,7 +40,7 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
-			var kefu_user_mark = $.cookie('kefu_user_mark') || '';
+			var kefu_user_mark = $.cookie('kefu_user_cookieid') || '';
 			if(kefu_user_mark == ''){
 				window.location = '/login.html';
 			}
@@ -89,9 +89,9 @@
 					$('.kefu-rooms').empty().append($('<span>Room：</span>'));
 					$.each(res.rooms,function(key,val){
 						if(val.room == $roomid){
-							$('.kefu-rooms').append($('<b style="background: #ff0000;">').text(val.member.name).data('room', val.room));
+							$('.kefu-rooms').append($('<b style="background: #ff0000;" room="'+val.room+'">').text(val.member.name).data('room', val.room).append($('<span>').html('0')));
 						}else {
-							$('.kefu-rooms').append($('<b>').text(val.member.name).data('room', val.room));
+							$('.kefu-rooms').append($('<b room="'+val.room+'">').text(val.member.name).data('room', val.room).append($('<span>').html('0')));
 						}
 					});
 				});
@@ -121,8 +121,13 @@
 			}
 
 			socket.on('user:pub', function (backobj) {
-				if($roomid == '' || backobj.roomid == $roomid){
+				if($roomid == ''){
+					return;
+				}else if(backobj.roomid == $roomid){
 					message(backobj.name, backobj.message);
+				}else if(backobj.roomid != $roomid){
+					var $roomtext = $('[room="'+backobj.roomid+'"] span');
+					$roomtext.html(parseInt($roomtext.html()) + 1);
 				}
 			});
 

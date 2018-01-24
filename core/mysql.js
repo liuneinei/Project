@@ -5,17 +5,24 @@
 var mysql = require('mysql');
 var config = require('../config/database.js');
 
+// 自增表
+var tabkeyfun = require('../model/core/kefu_tabkey_fun.js');
+// 用户表
+var memberfun = require('../model/core/kefu_member_fun.js');
+// 房间表
+var roomfun = require('../model/core/kefu_room_fun.js');
+// 客服表
+var usersfun = require('../model/core/kefu_users_fun.js');
+
 //创建连接
 var client = mysql.createConnection({
-    host:config.mysql.host,
+    host: config.mysql.host,
     user: config.mysql.user,
     password: config.mysql.password,
     database :config.mysql.database
 });
-
 // 开启连接
 client.connect();
-
 //关闭连接
 //client.end();
 
@@ -179,7 +186,90 @@ function mysqlMemberBindUser(opts) {
     });
 }
 
+/*
+*   自增表
+ */
+var kefu_Tabkey_fun = {
+    /*
+     *   通过KeyName 获取对象
+     *   param client 数据库连接对象 | opts.param ['KeyName'] | opts.success 回调函数
+     *   return 对象
+     */
+    byKeyName:function (opts) {
+        return tabkeyfun.byKeyName(client, opts);
+    },
+    /*
+     *   修改Value值
+     *   param client 数据库连接对象 | opts.param [5,'KeyName']
+     *   不回调
+     */
+    editValue:function (opts) {
+        return tabkeyfun.editValue(client, opts);
+    }
+};
+
+/*
+*   用户表
+ */
+var kefu_Member_fun = {
+    byCookieId:function (opts) {
+      return  memberfun.byCookieId(client, opts);
+    },
+    initAdd: function (opts) {
+        return memberfun.initAdd(client, opts);
+    },
+};
+
+/*
+*   房间表
+ */
+var kefu_Room_fun = {
+    // 根据用户Id
+    byMemberid: function (opts) {
+        return roomfun.byMemberid(client, opts);
+    },
+    // 初始化房间
+    initAdd: function (opts) {
+        return roomfun.initAdd(client, opts);
+    },
+};
+
+/*
+ *   客服表
+ */
+var kefu_User_fun = {
+    userLogin: function (opts) {
+        return usersfun.userLogin(client, opts);
+    },
+    byCookieId: function (opts) {
+        return usersfun.byCookieId(client, opts);
+    }
+};
+
 module.exports = {
+    dataTabkey:{
+        //通过KeyName 获取对象
+        byKeyName: kefu_Tabkey_fun.byKeyName,
+        // 修改Value值
+        editValue: kefu_Tabkey_fun.editValue,
+    },
+    dataMember:{
+        byCookieId: kefu_Member_fun.byCookieId,
+        initAdd: kefu_Member_fun.initAdd,
+    },
+    dataRoom: {
+        // 根据用户Id
+        byMemberid: kefu_Room_fun.byMemberid,
+        // 初始化房间
+        initAdd: kefu_Room_fun.initAdd,
+    },
+    dataUsers: {
+        // 客服登录
+        userLogin: kefu_User_fun.userLogin,
+        // CookieId 获取信息
+        byCookieId: kefu_User_fun.byCookieId,
+    },
+
     // 获取单条记录
     mysqlQueryOne: mysqlQueryOne,
     // 获取多条记录

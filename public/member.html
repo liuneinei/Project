@@ -34,7 +34,7 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
-			var kefu_member_mark = $.cookie('kefu_member_mark') || '';
+			var kefu_member_cookieid = $.cookie('kefu_member_cookieid') || '';
 
 			var $chatroom = $('.chatroom'),//$('.chat');
 					$lines = $('.lines'),
@@ -50,12 +50,19 @@
 
 			var socket = io.connect('http://localhost:8087');
 
+			var opts = {};
+			if(opts.username ){
+				console.log('true');
+			}else{
+				console.log('false');
+			}
+
 			/*
 			*	初始化
 			*/
 			socket.on('init:push',function (push) {
 				// 客服登录验证
-				socket.emit('kefu_member_login:init', kefu_member_mark, function (resver) {
+				socket.emit('kefu_member_login:init', push.socketid, kefu_member_cookieid, function (resver) {
 					console.log('客服登录验证:');
 					console.log(resver);
 					if(!resver.result){

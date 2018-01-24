@@ -36,7 +36,15 @@
 					$nickuser = $('.nick-user'),
 					$nickpwd = $('.nick-pwd'),
 					$nicknameErr = $('.nickname-err');
+			var $socketid = '';
 			var socket = io.connect('http://localhost:8087');
+
+			/*
+			 *	初始化
+			 */
+			socket.on('init:push',function (push) {
+				$socketid = push.socketid;
+			});
 
 			$setNickname.submit(function(e){
 				if ($nickuser.val() == '' && $nickpwd.val() == '') {
@@ -55,9 +63,9 @@
 					$nickuser.removeClass('nick-err');
 					$nickpwd.removeClass('nick-err');
 				}
-				socket.emit('kefu_user:login', $nickuser.val(), $nickpwd.val(), function(res){
+				socket.emit('kefu_user:login', $socketid, $nickuser.val(), $nickpwd.val(), function(res){
 					if(res.result){
-						$.cookie('kefu_user_mark',res.sessionId)
+						$.cookie('kefu_user_cookieid',res.cookieid)
 						window.location = '/index.html';
 						return false;
 					}

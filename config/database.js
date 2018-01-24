@@ -4,10 +4,10 @@
 
 var database = {
     mysql:{
-        host:'',
-        user: '',
-        password: '',
-        database : '',
+        host:'drds5c08708617e9public.drds.aliyuncs.com',
+        user: 'dmykf',
+        password: 'AA12_sdghDSgsd4f',
+        database : 'dmykf',
         port:3306
     }
 };
