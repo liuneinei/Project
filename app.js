@@ -287,10 +287,6 @@ io.sockets.on('connection',function(socket){
 
         // 自增Id 回调
         function fireTabKeyBack(res) {
-
-            console.log('fireMemberLoginBack 0000:');
-            console.log(res);
-
             if (!res.result) {
                 // Error back
                 fn({ result: res.result, message: res.message }); return;
@@ -322,12 +318,9 @@ io.sockets.on('connection',function(socket){
                 success: fireMemberLoginBack
             });
         }
+
         // 初始化用户 或 登录用户 回调
         function fireMemberLoginBack(res) {
-
-            console.log('fireMemberLoginBack 11111:');
-            console.log(res);
-
             if (!res.result) {
                 // Error back
                 fn({ result: res.result, message: res.message }); return;
@@ -337,7 +330,13 @@ io.sockets.on('connection',function(socket){
             if (index >= 0) {
                 fn({ result: false, message: '账号已在其他端登录!' });
             } else {
-                kefumemberonlines.push(res);
+                // 追加在线用户
+                kefumemberonlines.push({
+                    id: res.row.id,
+                    name: res.row.name,
+                    img: res.row.img,
+                    socketid: res.row.member_socketid,
+                });
             }
             // 记录Id
             socket.memberid = res.row.id;
@@ -348,8 +347,9 @@ io.sockets.on('connection',function(socket){
             // 订阅
             socket.join(socketid);
 
+
             // 用户连接客服
-            //memberroom(res);
+            memberroom(res);
         }
 
         // 用户连接客服
@@ -357,7 +357,7 @@ io.sockets.on('connection',function(socket){
             // 返回人数最少的客服
             var userline = kefuusertool.GetLessAdmitNum(kefuuseronlines, 'admitNum');
             // 有客服在线时才处理
-            if ((userline.id || 0) > 0) {
+            if ((userline.id || 0) > 0 && false) {
                 // 绑定客服
                 mysqlexecute.mysqlMemberBindUser({ userid: userline.id, sessionid: userline.sessionId, roomid: res.roomId });
 
@@ -391,70 +391,6 @@ io.sockets.on('connection',function(socket){
             fn({ result: res.result, roomid: socketid }); return;
         }
 
-
-	                
-	        
-	    // 查找用户信息
-	    function getby_sessionId(roomId) {
-	        mysqlexecute.mysqlQueryOne({
-	            sqltext: 'select * from kefu_member where roomId = ?',
-	            param: [roomId],
-	            success: getby_backfun
-	        });
-	        // 查找用户信息 回调函数
-	        function getby_backfun(res) {
-	            var index = kefuarrtool.getWith(kefumemberonlines, 'id', res.id);
-	            if (index >= 0) {
-	                fn({ result: false, message: '账号已在其他端登录!' });
-	            } else {
-	                kefumemberonlines.push(res);
-	            }
-	            kefumember_roomids[roomId] = socket.roomid = res.roomId;
-	            // 记录名称
-	            socket.name = res.name;
-	            // 用户登录集
-	            io.sockets.emit('kefu_member:onlines', kefumemberonlines);
-	            // 订阅
-	            socket.join(res.roomId);
-
-	            // 返回人数最少的客服
-	            var userline = kefuusertool.GetLessAdmitNum(kefuuseronlines, 'admitNum');
-	            // 有客服在线时才处理
-	            if ((userline.id || 0) > 0) {
-	                // 绑定客服
-	                mysqlexecute.mysqlMemberBindUser({ userid: userline.id, sessionid: userline.sessionId, roomid: res.roomId });
-
-	                // 更新客服接待人数
-	                kefuusertool.UpdateAdmitNum(kefuuseronlines, userline.id);
-	                // 得到当前客服接待的信息
-	                var rooms = kefu_rooms[userline.sessionId] || [];
-	                // 检查是否已经包含
-	                var roomsindex = kefuarrtool.getWith(rooms, 'room', res.roomId);
-	                if (roomsindex < 0) {
-	                    // 客服接待更新
-	                    rooms.push({
-	                        room: res.roomId,
-	                        member: {
-	                            name: res.name,
-	                            status: res.status
-	                        },
-	                        user: {
-	                            name: userline.name,
-	                            status: userline.status
-	                        },
-	                        message: []
-	                    });
-	                }
-	                kefu_rooms[userline.sessionId] = rooms;
-
-	                // 呼叫在线客服加入房间
-	                io.sockets.emit(userline.sessionId, { roomId: res.roomId, rooms: kefu_rooms[userline.sessionId] });
-	            }
-
-	            // 客服呼叫 - 请求返回
-	            fn({ result: true, roomid: res.roomId });
-	        }
-	    }
 	});
 
     /*
