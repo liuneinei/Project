@@ -14,7 +14,10 @@ module.exports = {
         fireTabKey: kefutabkeylogic.fireTabKey,
     },
     back_users: {
-        fireUserLogin : kefuserslogic.fireUserLogin,
+        // 客服登录
+        fireUserLogin: kefuserslogic.fireUserLogin,
+        // 客服在线显示   
+        fireUserOnLine: kefuserslogic.fireUserOnLine,
     },
     back_member: {
         fireMemberLogin: kefumemberlogic.fireMemberLogin,

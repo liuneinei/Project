@@ -4,7 +4,3 @@
 
 // 数据库
 var mysql = require('../../core/mysql.js');
-
-function fireInitRoom(opts) {
-    mysql.dataRoom.initAdd();
-}

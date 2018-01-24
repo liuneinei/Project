@@ -58,6 +58,22 @@ function fireMemberLogin(opts) {
     }
 }
 
+// CookieId 读取用户信息
+function byCookieId(opts) {
+    mysql.dataMember.byCookieId(opts);
+}
+
+// Id 读取用户信息
+function byId(opts) {
+    mysql.dataMember.byCookieId(opts);
+}
+    
+
 module.exports = {
-    fireMemberLogin:fireMemberLogin,
+    // 用户初始化登录 
+    fireMemberLogin: fireMemberLogin,
+    // CookieId 读取用户信息
+    byCookieId: byCookieId,
+    // Id 读取用户信息
+    byId: byId,
 };

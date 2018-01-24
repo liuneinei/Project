@@ -1,64 +1,3 @@
-// **********与节点的http服务器使用
-// var app = require('http').createServer(handler),
-// 	io = require('socket.io').listen(app),
-// 	fs = require('fs');
-
-// app.listen(3000);
-
-// function handler(req,res){
-// 	// index.html 包含我们的客户端代码
-// 	fs.readFile(__dirname+'/index.html',function(err,data){
-// 		if(err){
-// 			res.writeHead(500);
-// 			return res.end('Error loading index.html');
-// 		}
-// 		res.writeHead(200);
-// 		res.end(data);
-// 	});
-// }
-
-// // 利用http模块创建一个服务器实例app,并监听80端口
-// // var app = http.createServer(handler);
-// // app.listen(80);
-// io.sockets.on('connection',function(socket){
-// 	socket.emit('news',{hello:'world'});
-// 	socket.on('my other event',function(data){
-// 		console.log(data);
-// 	});
-// });
-
-// ***************与快递3/4使用
-// var app = require('express')();
-// var server = require('http').createServer(app);
-// var io = require('socket.io')(server);
-
-// server.listen(3000);
-// app.get('/',function(req,res){
-// 	res.sendfile(__dirname+'/index.html');
-// });
-
-// io.on('connection',function(socket){
-// 	socket.emit('news',{hello:'world'});
-// 	socket.on('my other event',function(data){
-// 		console.log(data);
-// 	});
-// });
-
-// ****************与快递2.X使用.  这里使用是express版本是4.15.3 ；由于express 4 与 2 的区别有大幅度变化；这里不能使用
-// var app = require('express').createServer();
-// var io = require('socket.io')(app);
-
-// app.listen(3000);
-
-// app.get('/',function(req,res){
-// 	res.sendfile(__dirname+'/index.html');
-// });
-// io.on('connection',function(socket){
-// 	socket.emit('news',{hello:'world'});
-// 	socket.on('my other event',function(data){
-// 		console.log(data);
-// 	});
-// });
 
 // HTML 5 Socket.io 聊天室
 var http = require('http');
@@ -234,7 +173,7 @@ io.sockets.on('connection',function(socket){
     socket.on('kefu_user:login', function(socketid, username, password, fn){
         var index = kefuarrtool.getWith(kefuuseronlines, 'username', username);
         if(index >= 0){
-            fn({result:false, message:'账号已在其他端登录!'}); return;
+            typeof fn === 'function' && fn({ result: false, message: '账号已在其他端登录!' }); return;
         }
 
         // 客服登录
@@ -243,37 +182,55 @@ io.sockets.on('connection',function(socket){
         // 客服登录 回调
         function fireUserLoginBack(res) {
             if(!res.result){
-                fn({result: res.result, message: res.message}); return;
+                typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
-            fn({result:res.result, cookieid: res.row.cookieid});
+
+            typeof fn === 'function' && fn({ result: res.result, cookieid: res.row.cookieid });
         }
     });
 
     /*
 	*	客服登录验证
 	*/
-    socket.on('kefu_user_login:verification', function (sessionId, fn) {
-        if (sessionId == '') {
-            fn({ result: false, message: '未登录' });
+    socket.on('kefu_user_login:verification', function (cookieid, fn) {
+        if (cookieid == '') {
+            typeof fn === 'function' && fn({ result: false, message: '未验证登录' });
         } else {
-            mysqlexecute.mysqlQueryOne({
-                sqltext: 'select * from kefu_users where sessionId= ?',
-                param: [sessionId],
-                success: function (res) {
-                    var index = kefuarrtool.getWith(kefuuseronlines, 'id', res.id);
-                    if (index < 0) {
-                        // 追加至数组中
-                        kefuuseronlines.push(res);
-                    }
-                    kefuuser_sessionids[sessionId] = socket.sessionid = res.sessionId;
-                    // 记录名称
-                    socket.name = res.name;
-                    // 客服登录集
-                    io.sockets.emit('kefu_user:onlines', kefuuseronlines);
+            // 客服在线 初始数据
+            mysqlkefulogic.back_users.fireUserOnLine({ cookieid: cookieid, success: fireUserOnLineBack });
+
+            // 客服在线 初始数据  回调
+            function fireUserOnLineBack(res) {
+                
+                console.log('fireUserOnLineBack 22');
+                console.log(res);
+
+                if (!res.result) {
+                    typeof fn === 'function' && fn({ result: false, message: '未验证登录' });
                 }
+                // 验证是否已经登录
+                var index = kefuarrtool.getWith(kefuuseronlines, 'username', res.row.username);
+                if (index >= 0) {
+                    typeof fn === 'function' && fn({ result: false, message: '账号已在其他端登录!' }); return;
+                }
+
+                // 添加在线客服
+                kefuuseronlines.push({ id: res.row.id, username: res.row.username, name: res.row.name, img: res.row.img, cookieid: res.row.cookieid, admitnum: res.row.admitnum });
+
+                // 绑定接待用户
+                kefu_rooms[cookieid] = res.rooms;
+
+                // 记录userid
+                socket.userid = res.row.id;
+                // 记录名称
+                socket.name = res.row.name;
+                // 客服登录集
+                io.sockets.emit('kefu_user:onlines', kefuuseronlines);
+                // 接待用户集
+                io.sockets.emit(res.row.cookieid, { rooms: res.rooms });
+
+                typeof fn === 'function' && fn({ result: true });
             }
-			);
-            fn({ result: true, message: '' });
         }
     });
 
@@ -289,7 +246,7 @@ io.sockets.on('connection',function(socket){
         function fireTabKeyBack(res) {
             if (!res.result) {
                 // Error back
-                fn({ result: res.result, message: res.message }); return;
+                typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
 
             if (res.index >= 0) {
@@ -323,12 +280,12 @@ io.sockets.on('connection',function(socket){
         function fireMemberLoginBack(res) {
             if (!res.result) {
                 // Error back
-                fn({ result: res.result, message: res.message }); return;
+                typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
 
             var index = kefuarrtool.getWith(kefumemberonlines, 'id', res.row.id);
             if (index >= 0) {
-                fn({ result: false, message: '账号已在其他端登录!' });
+                typeof fn === 'function' && fn({ result: res.result, message: '账号已在其他端登录!' });
             } else {
                 // 追加在线用户
                 kefumemberonlines.push({
@@ -346,7 +303,6 @@ io.sockets.on('connection',function(socket){
             io.sockets.emit('kefu_member:onlines', kefumemberonlines);
             // 订阅
             socket.join(socketid);
-
 
             // 用户连接客服
             memberroom(res);
@@ -388,7 +344,7 @@ io.sockets.on('connection',function(socket){
                 io.sockets.emit(userline.sessionId, { roomId: res.roomId, rooms: kefu_rooms[userline.sessionId] });
             }
 
-            fn({ result: res.result, roomid: socketid }); return;
+            typeof fn === 'function' && fn({ result: res.result, cookieid: res.row.cookieid }); return;
         }
 
 	});
@@ -406,7 +362,17 @@ io.sockets.on('connection',function(socket){
 	*/
 	socket.on('disconnect', function () {
 	    // 客服离线处理
-	    if (socket.sessionid) {
+	    if (socket.userid) {
+            // 客服离线后一分钟处理
+	        setTimeout(function () {
+
+	        }, 60000);
+
+	        function handle(socket.userid) {
+
+	        }
+
+
 	        var sessionIndex = kefuarrtool.getWith(kefuuseronlines, 'sessionId', socket.sessionid);
 	        if (sessionIndex >= 0) {
 	            // 通过下标移除目标

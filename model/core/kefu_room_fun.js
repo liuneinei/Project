@@ -44,16 +44,20 @@ function byUserid(client, opts) {
 *   客服所接待的用户
  */
 function byUserIdList(client, opts) {
-    //opts.sqltext = '';
+    opts.sqltext = 'select kefu_room.member_socketid,kefu_member.`name`,kefu_member.img,kefu_member.messagenum,kefu_member.messagetime,kefu_member.`status` from kefu_room LEFT JOIN kefu_member ON kefu_room.member_id = kefu_member.id  where kefu_room.user_id = ?';
+
+    client.query(opts.sqltext, [opts.userid], function (err, rows, fields) {
+        if (err || rows.length <= 0) {
+            rows = [];
+        }
+        typeof opts.success === "function" && opts.success({ result: true, rows: rows });
+    });
 }
 
 /*
 * 初始化房间
  */
 function initAdd(client, opts) {
-
-    console.log('Room initAdd :');
-
     opts.sqltext = 'INSERT INTO kefu_room VALUES (?,?,?,?,?,?,?)';
     console.log(opts);
     client.query(opts.sqltext, opts.param, function (err, rows, fields) {
@@ -66,4 +70,6 @@ module.exports = {
     byMemberid: byMemberid,
     // 初始化房间
     initAdd: initAdd,
+    // 客服所接待的用户
+    byUserIdList: byUserIdList,
 };

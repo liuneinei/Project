@@ -212,9 +212,15 @@ var kefu_Tabkey_fun = {
 *   用户表
  */
 var kefu_Member_fun = {
-    byCookieId:function (opts) {
-      return  memberfun.byCookieId(client, opts);
+    // CookieId 读取用户信息
+    byCookieId: function (opts) {
+        return memberfun.byCookieId(client, opts);
     },
+    // Id 读取用户信息
+    byId: function (opts) {
+        return memberfun.byId(client, opts);
+    },
+    // 初始化用户
     initAdd: function (opts) {
         return memberfun.initAdd(client, opts);
     },
@@ -231,6 +237,10 @@ var kefu_Room_fun = {
     // 初始化房间
     initAdd: function (opts) {
         return roomfun.initAdd(client, opts);
+    },
+    // 客服所接待的用户
+    byUserIdList: function (opts) {
+        return roomfun.byUserIdList(client, opts);
     },
 };
 
@@ -253,8 +263,12 @@ module.exports = {
         // 修改Value值
         editValue: kefu_Tabkey_fun.editValue,
     },
-    dataMember:{
+    dataMember: {
+        // CookieId 读取用户信息
         byCookieId: kefu_Member_fun.byCookieId,
+        // Id 读取用户信息
+        byId: kefu_Member_fun.byId,
+        // 初始化用户
         initAdd: kefu_Member_fun.initAdd,
     },
     dataRoom: {
@@ -262,6 +276,8 @@ module.exports = {
         byMemberid: kefu_Room_fun.byMemberid,
         // 初始化房间
         initAdd: kefu_Room_fun.initAdd,
+        // 客服所接待的用户
+        byUserIdList: kefu_Room_fun.byUserIdList,
     },
     dataUsers: {
         // 客服登录

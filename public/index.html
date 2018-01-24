@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -40,8 +40,8 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
-			var kefu_user_mark = $.cookie('kefu_user_cookieid') || '';
-			if(kefu_user_mark == ''){
+		    var kefu_user_cookieid = $.cookie('kefu_user_cookieid') || '';
+		    if (kefu_user_cookieid == '') {
 				window.location = '/login.html';
 			}
 
@@ -60,7 +60,7 @@
 			*/
 			socket.on('init:push',function (push) {
 				// 客服登录验证
-				socket.emit('kefu_user_login:verification', kefu_user_mark, function (resver) {
+			    socket.emit('kefu_user_login:verification', kefu_user_cookieid, function (resver) {
 					console.log(resver);
 					if(!resver.result){
 						alert('登录失效');
@@ -83,15 +83,15 @@
 			/*
 			*	用户发起会话，进入对应的Room中
 			*/
-			socket.on(kefu_user_mark,function (res) {
+			socket.on(kefu_user_cookieid, function (res) {
 				console.log(res);
 				socket.emit('online:join',res.roomId,function () {
 					$('.kefu-rooms').empty().append($('<span>Room：</span>'));
 					$.each(res.rooms,function(key,val){
 						if(val.room == $roomid){
-							$('.kefu-rooms').append($('<b style="background: #ff0000;" room="'+val.room+'">').text(val.member.name).data('room', val.room).append($('<span>').html('0')));
+						    $('.kefu-rooms').append($('<b style="background: #ff0000;" room="' + val.member_socketid + '">').text(val.name).data('room', val.member_socketid).append($('<span>').html('0')));
 						}else {
-							$('.kefu-rooms').append($('<b room="'+val.room+'">').text(val.member.name).data('room', val.room).append($('<span>').html('0')));
+						    $('.kefu-rooms').append($('<b room="' + val.member_socketid + '">').text(val.name).data('room', val.member_socketid).append($('<span>').html('0')));
 						}
 					});
 				});
