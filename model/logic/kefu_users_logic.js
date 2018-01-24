@@ -52,7 +52,7 @@ function fireUserOnLine(opts) {
 *   Id 读取用户信息   
  */
 function fireById(opts) {
-    mysql.dataUsers.byCookieId(opts);
+    mysql.dataUsers.byId(opts);
 }
 
 module.exports = {

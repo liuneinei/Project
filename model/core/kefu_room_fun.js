@@ -58,7 +58,7 @@ function byUserIdList(client, opts) {
 * 初始化房间
  */
 function initAdd(client, opts) {
-    opts.sqltext = 'INSERT INTO kefu_room VALUES (?,?,?,?,?,?,?)';
+    opts.sqltext = 'INSERT INTO kefu_room VALUES (?,?,?,?,?)';
     console.log(opts);
     client.query(opts.sqltext, opts.param, function (err, rows, fields) {
         typeof opts.success === "function" && opts.success({err:err, row:rows});

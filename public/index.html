@@ -60,7 +60,7 @@
 			*/
 			socket.on('init:push',function (push) {
 				// 客服登录验证
-			    socket.emit('kefu_user_login:verification', kefu_user_cookieid, function (resver) {
+			    socket.emit('kefu_user_login:verification', push.socketid, kefu_user_cookieid, function (resver) {
 					console.log(resver);
 					if(!resver.result){
 						alert('登录失效');

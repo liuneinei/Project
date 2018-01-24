@@ -33,7 +33,7 @@ function fireMemberLogin(opts) {
 
             // 初始化房间
             mysql.dataRoom.initAdd({
-                param: [opts.member.id, opts.member.companyrltid, opts.member.id, opts.socketid, 0, '', ''],
+                param: [opts.member.id, opts.member.companyrltid, opts.member.id, opts.socketid, 0],
                 success: initAddRoomBack
             });
         }

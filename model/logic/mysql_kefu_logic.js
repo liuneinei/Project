@@ -8,6 +8,8 @@ var kefutabkeylogic = require('./kefu_tabkey_logic.js');
 var kefumemberlogic = require('./kefu_member_logic.js');
 // 客服逻辑处理
 var kefuserslogic = require('./kefu_users_logic.js');
+// 房间逻辑处理
+var kefroomlogic = require('./kefu_room_logic.js');
 
 module.exports = {
     back_tabkey: {
