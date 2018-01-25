@@ -47,11 +47,12 @@ function fireMemberLogin(opts) {
             fireMemberLogin(opts);
         }
     } else {
-        console.log('fireMemberLogin 3:');
-        console.log(opts.cookieid);
-
         mysql.dataMember.byCookieId({
             cookieid: opts.cookieid, success: function (rowdata) {
+
+                // 修改用户连接SocketId
+                mysql.dataRoom.editMemberSocketId({ socketid: opts.socketid, memberid: rowdata.row.id })
+
                 typeof opts.success === "function" && opts.success(rowdata);
             }
         });
@@ -65,7 +66,12 @@ function fireByCookieId(opts) {
 
 // Id 读取用户信息
 function fireById(opts) {
-    mysql.dataMember.byCookieId(opts);
+    mysql.dataMember.byId(opts);
+}
+
+// 状态修改处理
+function fireEditStatus(opts) {
+    mysql.dataMember.editStatus(opts);
 }
     
 
@@ -76,4 +82,6 @@ module.exports = {
     fireByCookieId: fireByCookieId,
     // Id 读取用户信息
     fireById: fireById,
+    // 状态修改处理
+    fireEditStatus: fireEditStatus,
 };

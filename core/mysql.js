@@ -13,6 +13,8 @@ var memberfun = require('../model/core/kefu_member_fun.js');
 var roomfun = require('../model/core/kefu_room_fun.js');
 // 客服表
 var usersfun = require('../model/core/kefu_users_fun.js');
+// 消息表
+var messagefun = require('../model/core/kefu_message_fun.js');
 
 //创建连接
 var client = mysql.createConnection({
@@ -57,9 +59,6 @@ function mysqlQueryList(opts) {
 *   param：sqltext Sql语句 | param Sql语句参数 | success 执行返回函数
 */
 function mysqlExecute(opts) {
-    console.log('mysqlExecute：');
-    console.log(opts.sqltext);
-    console.log(opts.param);
     client.query(opts.sqltext, opts.param, function(err, rows, fields) {
         typeof opts.success === "function" && opts.success({err:err,rows:rows});
     });
@@ -180,8 +179,6 @@ function mysqlMemberBindUser(opts) {
         sqltext: 'update kefu_member set userId = ? , userSessionId = ? where roomId = ?',
         param: [opts.userid, opts.sessionid, opts.roomid],
         success:function (res) {
-            console.log('update mysqlMemberBindUser：');
-            console.log(res);
         }
     });
 }
@@ -224,6 +221,10 @@ var kefu_Member_fun = {
     initAdd: function (opts) {
         return memberfun.initAdd(client, opts);
     },
+    // 状态修改处理
+    editStatus: function (opts) {
+        return memberfun.editStatus(client, opts);
+    },
 };
 
 /*
@@ -241,6 +242,14 @@ var kefu_Room_fun = {
     // 客服所接待的用户
     byUserIdList: function (opts) {
         return roomfun.byUserIdList(client, opts);
+    },
+    // 修改用户对应的客服
+    editUserId: function (opts) {
+        return roomfun.editUserId(client, opts);
+    },
+    // 修改用户对应的SocketId
+    editMemberSocketId: function (opts) {
+        return roomfun.editMemberSocketId(client, opts);
     },
 };
 
@@ -262,13 +271,25 @@ var kefu_User_fun = {
     },
 };
 
+/*
+ *   消息表
+ */
+var kefu_Message_fun = {
+    // 保存发送的消息
+    saveMessage:function (opts) {
+        return messagefun.saveMessage(client, opts);
+    },
+};
+
 module.exports = {
+    /************* TabKey 自增表  *********************/
     dataTabkey:{
         //通过KeyName 获取对象
         byKeyName: kefu_Tabkey_fun.byKeyName,
         // 修改Value值
         editValue: kefu_Tabkey_fun.editValue,
     },
+    /************** Member 用户表  ********************/
     dataMember: {
         // CookieId 读取用户信息
         byCookieId: kefu_Member_fun.byCookieId,
@@ -276,7 +297,10 @@ module.exports = {
         byId: kefu_Member_fun.byId,
         // 初始化用户
         initAdd: kefu_Member_fun.initAdd,
+        // 状态修改处理
+        editStatus: kefu_Member_fun.editStatus,
     },
+    /************** Room 房间表  ********************/
     dataRoom: {
         // 根据用户Id
         byMemberid: kefu_Room_fun.byMemberid,
@@ -284,7 +308,12 @@ module.exports = {
         initAdd: kefu_Room_fun.initAdd,
         // 客服所接待的用户
         byUserIdList: kefu_Room_fun.byUserIdList,
+        // 修改用户对应的客服
+        editUserId: kefu_Room_fun.editUserId,
+        // 修改用户对应的SocketId
+        editMemberSocketId: kefu_Room_fun.editMemberSocketId,
     },
+    /*************** Users 客服表  *******************/
     dataUsers: {
         // 客服登录
         userLogin: kefu_User_fun.userLogin,
@@ -292,6 +321,11 @@ module.exports = {
         byCookieId: kefu_User_fun.byCookieId,
         // Id 读取用户信息
         byId: kefu_User_fun.byId,
+    },
+    /*************** Message 消息表  *******************/
+    dataMessage:{
+        // 保存发送的消息
+        saveMessage:kefu_Message_fun.saveMessage,
     },
 
     // 获取单条记录

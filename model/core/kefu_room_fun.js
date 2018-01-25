@@ -44,7 +44,7 @@ function byUserid(client, opts) {
 *   客服所接待的用户
  */
 function byUserIdList(client, opts) {
-    opts.sqltext = 'select kefu_room.member_socketid,kefu_member.`name`,kefu_member.img,kefu_member.messagenum,kefu_member.messagetime,kefu_member.`status` from kefu_room LEFT JOIN kefu_member ON kefu_room.member_id = kefu_member.id  where kefu_room.user_id = ?';
+    opts.sqltext = 'select kefu_room.member_socketid,kefu_member.id,kefu_member.`name`,kefu_member.img,kefu_member.messagenum,kefu_member.messagetime,kefu_member.`status` from kefu_room LEFT JOIN kefu_member ON kefu_room.member_id = kefu_member.id  where kefu_room.user_id = ?';
 
     client.query(opts.sqltext, [opts.userid], function (err, rows, fields) {
         if (err || rows.length <= 0) {
@@ -59,9 +59,28 @@ function byUserIdList(client, opts) {
  */
 function initAdd(client, opts) {
     opts.sqltext = 'INSERT INTO kefu_room VALUES (?,?,?,?,?)';
-    console.log(opts);
     client.query(opts.sqltext, opts.param, function (err, rows, fields) {
         typeof opts.success === "function" && opts.success({err:err, row:rows});
+    });
+}
+
+/*
+*   修改用户对应的客服
+ */
+function editUserId(client, opts) {
+    opts.sqltext = 'update kefu_room set user_id = ? where member_id = ?';
+    client.query(opts.sqltext, [opts.userid, opts.memberid], function (err, rows, fields) {
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
+    });
+}
+
+/*
+*   修改用户对应的SocketId
+ */
+function editMemberSocketId(client, opts) {
+    opts.sqltext = 'update kefu_room set member_socketid = ? where member_id = ?';
+    client.query(opts.sqltext, [opts.socketid, opts.memberid], function (err, rows, fields) {
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
     });
 }
 
@@ -72,4 +91,8 @@ module.exports = {
     initAdd: initAdd,
     // 客服所接待的用户
     byUserIdList: byUserIdList,
+    // 修改用户对应的客服
+    editUserId: editUserId,
+    // 修改用户对应的SocketId
+    editMemberSocketId: editMemberSocketId,
 };

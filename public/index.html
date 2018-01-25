@@ -39,158 +39,156 @@
 		</form>
 	</div>
 	<script type="text/javascript">
-		$(function(){
-		    var kefu_user_cookieid = $.cookie('kefu_user_cookieid') || '';
-		    if (kefu_user_cookieid == '') {
-				window.location = '/login.html';
-			}
+        $(function () {
+            var kefu_user_cookieid = $.cookie('kefu_user_cookieid') || '';
+            if (kefu_user_cookieid == '') {
+                window.location = '/login.html';
+            }
 
-			var $lines = $('.lines'),
+            var $lines = $('.lines'),
 				$nickname = $('.nickname'),
 				$messages = $('.messages'),
 				$message = $('.message'),
 				$sendMessage = $('.send-message'),
-				toUser =  null;
-			var $roomid = '';
+				toUser = null;
+            var $id = '';
 
-			var socket = io.connect('http://localhost:8087');
+            var socket = io.connect('http://localhost:8087');
 
-			/*
+            /*
 			*	初始化
 			*/
-			socket.on('init:push',function (push) {
-				// 客服登录验证
-			    socket.emit('kefu_user_login:verification', push.socketid, kefu_user_cookieid, function (resver) {
-					console.log(resver);
-					if(!resver.result){
-						alert('登录失效');
-						window.location = '/login.html';
-						return;
-					}
-				});
-			});
+            socket.on('init:push', function (push) {
+                // 客服登录验证
+                socket.emit('kefu_user_login:verification', push.socketid, kefu_user_cookieid, function (resver) {
+                    console.log(resver);
+                    if (!resver.result) {
+                        alert('登录失效');
+                        window.location = '/login.html';
+                        return;
+                    }
+                });
+            });
 
-			/*
+            /*
 			*	客服在线信息
 			*/
-			socket.on('kefu_user:onlines',function (res) {
-				$('.kefu-users').empty().append($('<span>当前在线：</span>'));
-				$.each(res,function(key,val){
-					$('.kefu-users').append($('<b>').text(val.name));
-				});
-			});
+            socket.on('kefu_user:onlines', function (res) {
+                $('.kefu-users').empty().append($('<span>当前在线：</span>'));
+                $.each(res, function (key, val) {
+                    $('.kefu-users').append($('<b>').text(val.name));
+                });
+            });
 
-			/*
-			*	用户发起会话，进入对应的Room中
+            /*
+			*	对应的用户信息
 			*/
-			socket.on(kefu_user_cookieid, function (res) {
-				console.log(res);
-				socket.emit('online:join',res.roomId,function () {
-					$('.kefu-rooms').empty().append($('<span>Room：</span>'));
-					$.each(res.rooms,function(key,val){
-						if(val.room == $roomid){
-						    $('.kefu-rooms').append($('<b style="background: #ff0000;" room="' + val.member_socketid + '">').text(val.name).data('room', val.member_socketid).append($('<span>').html('0')));
-						}else {
-						    $('.kefu-rooms').append($('<b room="' + val.member_socketid + '">').text(val.name).data('room', val.member_socketid).append($('<span>').html('0')));
-						}
-					});
-				});
-			});
+            socket.on('members:' + kefu_user_cookieid, function (res) {
+                $('.kefu-rooms').empty().append($('<span>Room：</span>'));
+                $.each(res.rooms, function (key, val) {
+                    if (val.id == $id) {
+                        $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('room', val.id).append($('<span>').html('0')));
+                    } else {
+                        $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('room', val.id).append($('<span>').html('0')));
+                    }
+                });
+            });
 
-			// 连接提示操作
-			socket.on('announcement',function(msg){
-				$lines.append($('<p>').append($('<em>').text(msg)));
-				$lines.scrollTop(100000000);
-			});
+            // 呼叫客服加入房间
+            socket.on('room:join:' + kefu_user_cookieid, function (res) {
+                socket.emit('online:join', res.membersocketid, function () {});
+            });
 
-			function message(from,msg,opt_to){
-				var label;
-				var times = new Date();
-				var hours = times.getHours();
-				hours = hours<10?'0'+hours:hours;
-				var minutes = times.getMinutes();
-				minutes = minutes<10?'0'+minutes:minutes;
+            // 连接提示操作
+            socket.on('announcement', function (msg) {
+                $lines.append($('<p>').append($('<em>').text(msg)));
+                $lines.scrollTop(100000000);
+            });
 
-				if(opt_to){
-					label = $('<b>').html('['+ hours + ":" + minutes+']'+from+'对'+opt_to+'说:');
-				}else{
-					label = $('<b>').html('['+ hours + ":" + minutes+']'+from+':');
-				}
-				$lines.append($('<p>').append(label,msg));
-				$lines.scrollTop(100000000);
-			}
+            function message(from, msg, opt_to) {
+                var label;
+                var times = new Date();
+                var hours = times.getHours();
+                hours = hours < 10 ? '0' + hours : hours;
+                var minutes = times.getMinutes();
+                minutes = minutes < 10 ? '0' + minutes : minutes;
 
-			socket.on('user:pub', function (backobj) {
-				if($roomid == ''){
-					return;
-				}else if(backobj.roomid == $roomid){
-					message(backobj.name, backobj.message);
-				}else if(backobj.roomid != $roomid){
-					var $roomtext = $('[room="'+backobj.roomid+'"] span');
-					$roomtext.html(parseInt($roomtext.html()) + 1);
-				}
-			});
+                if (opt_to) {
+                    label = $('<b>').html('[' + hours + ":" + minutes + ']' + from + '对' + opt_to + '说:');
+                } else {
+                    label = $('<b>').html('[' + hours + ":" + minutes + ']' + from + ':');
+                }
+                $lines.append($('<p>').append(label, msg));
+                $lines.scrollTop(100000000);
+            }
 
-			socket.on('user:private',message);
-			socket.on('reconnect',function(){
-				//$lines.remove();
-				message('<i>系统消息</i>','重连了');
-			});
-			socket.on('reconnecting',function(){
-				message('<i>系统消息</i>','尝试重连中');
-			});
-			socket.on('error',function(e){
-				message('<i>系统消息</i>',e?e:'未知错误');
-			});
-			socket.on('connect_failed',function(e){
-				console.log('连接失败');
-			});
-			socket.on('disconnect',function(e){
-				$messages.hide();
-				$sendMessage.hide();
-				$nicknameErr.html('突然间断线了,请重新进入');
-				$nicknameErr.css('visibility','visible');
-				$nickname.show();
-			});
+            socket.on('user:pub', function (backobj) {
+                if ($roomid == '') {
+                    return;
+                } else if (backobj.roomid == $roomid) {
+                    message(backobj.name, backobj.message);
+                } else if (backobj.roomid != $roomid) {
+                    var $roomtext = $('[room="' + backobj.roomid + '"] span');
+                    $roomtext.html(parseInt($roomtext.html()) + 1);
+                }
+            });
 
-			function clear(){
-				$message.val('').focus();
-			}
+            socket.on('user:private', message);
+            socket.on('reconnect', function () {
+                //$lines.remove();
+                message('<i>系统消息</i>', '重连了');
+            });
+            socket.on('reconnecting', function () {
+                message('<i>系统消息</i>', '尝试重连中');
+            });
+            socket.on('error', function (e) {
+                message('<i>系统消息</i>', e ? e : '未知错误');
+            });
+            socket.on('connect_failed', function (e) {
+                console.log('连接失败');
+            });
+            socket.on('disconnect', function (e) {
+                $messages.hide();
+                $sendMessage.hide();
+                $nickname.show();
+            });
 
-			$sendMessage.submit(function(){
-				message('我',$message.val());
-				socket.emit('user:pub', $message.val(), $roomid);
-				clear();
-				$lines.scrollTop(100000000);
-				return false;
-			});
+            function clear() {
+                $message.val('').focus();
+            }
 
-			$('.kefu-rooms').on('click','b',function(e){
-				var $bitem = $(e.target);
-				$bitem.siblings('b').css('background','#4FA72C');
-				$bitem.css('background','#ff0000');
-				$roomid = $bitem.data('room');
-				if($roomid != ''){
-					// 呼叫Room的消息
-					socket.emit('kefu_user_message:to_roomid', $roomid, messagetoroomidBackFun);
-					// 呼叫Room的消息 回调
-					function messagetoroomidBackFun(resmessage) {
-						console.log('kefu_user_message:to_roomid:');
-						console.log(resmessage);
-						if(resmessage.result){
-							var $messagerows = resmessage.rows;
-							if($messagerows.length > 0){
-								$lines.empty();
-								[].forEach.call($messagerows, function (item, index) {
-									//console.log(item.name);
-									message(item.name, item.content);
-								});
-							}
-						}
-					}
-				}
-			});
-		});
+            $sendMessage.submit(function () {
+                message('我', $message.val());
+                socket.emit('user:pub', $message.val(), $id);
+                clear();
+                $lines.scrollTop(100000000);
+                return false;
+            });
+
+            $('.kefu-rooms').on('click', 'b', function (e) {
+                var $bitem = $(e.target);
+                $bitem.siblings('b').css('background', '#4FA72C');
+                $bitem.css('background', '#ff0000');
+                $id = $bitem.data('id');
+                if ($id != '') {
+                    // 呼叫Room的消息
+                    socket.emit('kefu_user_message:to_roomid', $id, messagetoroomidBackFun);
+                    // 呼叫Room的消息 回调
+                    function messagetoroomidBackFun(resmessage) {
+                        if (resmessage.result) {
+                            var $messagerows = resmessage.rows;
+                            if ($messagerows.length > 0) {
+                                $lines.empty();
+                                [].forEach.call($messagerows, function (item, index) {
+                                    //console.log(item.name);
+                                    message(item.name, item.content);
+                                });
+                            }
+                        }
+                    }
+                }
+            });
+        });
 	</script>
 </body>
 </html>

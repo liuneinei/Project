@@ -60,7 +60,10 @@
 			/*
 			*	初始化
 			*/
-			socket.on('init:push',function (push) {
+			socket.on('init:push', function (push) {
+
+			    console.log('socketid => ' + push.socketid);
+
 				// 客服登录验证
 				socket.emit('kefu_member_login:init', push.socketid, kefu_member_cookieid, function (resver) {
 					console.log('客服登录验证:');

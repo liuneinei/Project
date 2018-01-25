@@ -48,7 +48,17 @@ function byId(client, opts) {
 function initAdd(client, opts) {
     opts.sqltext = 'INSERT INTO kefu_member VALUES (?,?,?,?,?,?,?,?,?,?,?,?)';
     client.query(opts.sqltext, opts.param, function(err, rows, fields) {
-        typeof opts.success === "function" && opts.success({err:err, row:rows});
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
+    });
+}
+
+/*
+*   状态修改处理
+ */
+function editStatus(client, opts) {
+    opts.sqltext = 'update kefu_member set status = ? where id = ?';
+    client.query(opts.sqltext, [opts.status, opts.id], function (err, rows, fields) {
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
     });
 }
 
@@ -59,4 +69,6 @@ module.exports = {
     byId: byId,
     // 初始化用户
     initAdd: initAdd,
+    // 状态修改处理
+    editStatus: editStatus,
 };
