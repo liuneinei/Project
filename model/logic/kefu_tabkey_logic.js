@@ -3,7 +3,7 @@
  */
 
 // 工具类
-var kefuarrtool = require('../../comm/kefuarrtool.js');
+var kefuarrtool = require('../../comm/kefuarrtools.js');
 
 // 数据库
 var mysql = require('../../core/mysql.js');

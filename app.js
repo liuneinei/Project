@@ -7,9 +7,9 @@ var mymd5 = require('./core/md5.js');
 // 所有逻辑处理
 var mysqlkefulogic = require('./model/logic/mysql_kefu_logic');
 // 工具类
-var kefuarrtool = require('./comm/kefuarrtool.js');
+var kefuarrtool = require('./comm/kefuarrtools.js');
 // 客服处理类
-var kefuusertool = require('./comm/kefuusertool.js');
+var kefuusertool = require('./comm/kefuusertools.js');
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));

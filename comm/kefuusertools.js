@@ -2,7 +2,7 @@
  * Created by 3241214616 on 2018-1-19.
  */
 
-var KefuArrTool = require('./kefuarrtool.js');
+var KefuArrTool = require('./kefuarrtools.js');
 
 /*
 *   从小到大 排序
