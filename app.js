@@ -7,9 +7,12 @@ var mymd5 = require('./core/md5.js');
 // 所有逻辑处理
 var mysqlkefulogic = require('./model/logic/mysql_kefu_logic');
 // 工具类
-var kefuarrtool = require('./comm/kefuarrtools.js');
+var kefuarrtool = require('./comm/kefuarrtool.js');
 // 客服处理类
-var kefuusertool = require('./comm/kefuusertools.js');
+var kefuusertool = require('./comm/kefuusertool.js');
+// 存储类
+var kefustorage = require('./comm/kefustorage.js');
+
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -25,9 +28,6 @@ var kefuuseronlines = [];
 // 用户在线
 var kefumemberonlines = [];
 
-// 解决分库分表的主键Id自增
-var kefutabkey = [];
-
 // 房间信息
 var kefu_rooms = {};
 
@@ -38,12 +38,12 @@ io.sockets.on('connection', function (socket) {
 
     /*
 	*	连接时推送
-	 */
+	*/
     socket.emit('init:push', { socketid: socket.id });
 
     /*
 	*	发送消息触发
-	 */
+	*/
     socket.on('user:pub', function (msg, id, fn) {
         // 注1： param Id 小于 0 或 socket.memberid 且小于 0，则说明参数被窜改
         // 注2： param Id 大于 0 且 socket.userid 小于 0，则说明参数被窜改
@@ -110,18 +110,12 @@ io.sockets.on('connection', function (socket) {
             socket.broadcast.to(memberonline.socketid).emit("user:pub", { name: socket.name, message: msg, id: id });
 
             // 自增Id
-            mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefutabkey, tabname: 'keyName', tabvalue: 'kefu_message', success: fireTabKeyBackSend });
+            mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefustorage.tabkey, tabname: 'keyName', tabvalue: 'kefu_message', success: fireTabKeyBackSend });
 
             // 自增Id 回调
             function fireTabKeyBackSend(res) {
                 // Error back
                 if (!res.result) return false;
-
-                // 移除自增记录
-                if (res.index >= 0) kefutabkey.splice(res.index, 1);
-                // 添加自增记录
-                res.row.value += 1;
-                kefutabkey.push(res.row);
 
                 // 1客服 0用户
                 forid = messageType == 1 ? socket.userid : socket.memberid;
@@ -172,7 +166,7 @@ io.sockets.on('connection', function (socket) {
             // Sql保存 - 保存发送消息
             mysqlkefulogic.back_message.fireSaveMessage({
                 message: {
-                    id: (id + 1),
+                    id: id,
                     companyrltid: memberonline.companyrltid,
                     roomid: (memberonline.id).toString(),
                     forid: forid,
@@ -191,7 +185,7 @@ io.sockets.on('connection', function (socket) {
 
     /*
 	*	客服选择对应的用户时，返回对应的聊天消息
-	 */
+	*/
     socket.on('kefu_user_message:to_roomid', function (id, fn) {
         var rooms = kefu_rooms[socket.cookieid] || [];
         if (rooms.length <= 0) {
@@ -232,7 +226,9 @@ io.sockets.on('connection', function (socket) {
         }
     });
 
-    // 这算是双人聊天吗？
+    /*
+    *   私聊
+    */
     socket.on('user:private', function (msg, to) {
         // if(onlines[to]){
         // 	onlines[to].emit('user:private',socket.nickname,msg,to);
@@ -287,8 +283,11 @@ io.sockets.on('connection', function (socket) {
                 // 添加在线客服
                 kefuuseronlines.push({ id: res.row.id, username: res.row.username, name: res.row.name, img: res.row.img, cookieid: res.row.cookieid, admitnum: res.row.admitnum, socketid: socketid });
 
+                // 用户房间集
+                var memberrooms = rooms_admit_member(res.rooms);
+
                 // 绑定接待用户
-                kefu_rooms[cookieid] = res.rooms;
+                kefu_rooms[cookieid] = memberrooms;
 
                 // 记录cookieid
                 socket.cookieid = cookieid;
@@ -299,9 +298,35 @@ io.sockets.on('connection', function (socket) {
                 // 客服登录集
                 io.sockets.emit('kefu_user:onlines', kefuuseronlines);
                 // 接待用户集
-                io.sockets.emit('members:' + res.row.cookieid, { type: 'list', rooms: res.rooms });
+                io.sockets.emit('members:' + res.row.cookieid, { type: 'list', rooms: memberrooms });
 
                 typeof fn === 'function' && fn({ result: true });
+            }
+
+            /*************************** 客服接待用户 ***********************************/
+            function rooms_admit_member(members) {
+                if (members.length <= 0) {
+                    return [];
+                }
+                // 遍历
+                members.forEach(function (item, index) {
+                    if (item.status == 1) {
+                        // 读取用户在 io.sockets.rooms 是否有连接 
+                        var adroom = io.sockets.adapter.rooms[item.member_socketid] || {};
+                        if ((adroom.length || 0) > 0) {
+                            console.log('adroom 00000:');
+                            console.log(item.member_socketid);
+                            // 加入 Room
+                            socket.join(item.member_socketid);
+                        } else {
+                            // 标为离线状态
+                            item.status = 0;
+                            // 数据库更改状态
+                            mysqlkefulogic.back_member.fireEditStatus({ status: item.status, id: item.id })
+                        }
+                    }
+                });
+                return members;
             }
         }
     });
@@ -311,21 +336,13 @@ io.sockets.on('connection', function (socket) {
 	*/
     socket.on('kefu_member_login:init', function (socketid, cookieid, fn) {
         // 自增Id
-        mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefutabkey, tabname: 'keyName', tabvalue: 'kefu_member', success: fireTabKeyBack });
+        mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefustorage.tabkey, tabname: 'keyName', tabvalue: 'kefu_member', success: fireTabKeyBack });
         // 自增Id 回调
         function fireTabKeyBack(res) {
             // Error back
             if (!res.result) {
                 typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
-
-            // 移除自增记录
-            if (res.index >= 0) kefutabkey.splice(res.index, 1);
-
-            // 添加自增记录
-            res.row.value += 1;
-            kefutabkey.push(res.row);
-
             // 初始化用户 或 登录用户
             mysqlkefulogic.back_member.fireMemberLogin({
                 socketid: socketid,
@@ -354,7 +371,7 @@ io.sockets.on('connection', function (socket) {
                 // Error back
                 typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
-
+            // 查找用户是否已在线
             var index = kefuarrtool.getWith(kefumemberonlines, 'id', res.row.id);
             if (index >= 0) {
                 typeof fn === 'function' && fn({ result: res.result, message: '账号已在其他端登录!' });
@@ -380,6 +397,9 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('kefu_member:onlines', kefumemberonlines);
             // 订阅
             socket.join(socketid);
+
+            console.log('adroom 00000111111112222:');
+            console.log(socketid);
 
             // 修改用户状态
             mysqlkefulogic.back_member.fireEditStatus({ status: 1, id: res.row.id });
@@ -546,9 +566,6 @@ io.sockets.on('connection', function (socket) {
             kefumemberonlines.splice(mmeberindex, 1);
             // 用户在线 - 用户Id为空
             if ((onlineMenber.userid || 0) <= 0) return;
-
-            console.log('onlineMenber 000000 : ');
-            console.log(onlineMenber);
 
             // 通知客服 下线
             io.sockets.emit('members:' + onlineMenber.usercookieid, { type: 'off', rooms: onlineMenber });

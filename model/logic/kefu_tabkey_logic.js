@@ -4,6 +4,8 @@
 
 // 工具类
 var kefuarrtool = require('../../comm/kefuarrtool.js');
+// 存储类
+var kefustorage = require('../../comm/kefustorage.js');
 
 // 数据库
 var mysql = require('../../core/mysql.js');
@@ -23,17 +25,14 @@ function fireTabKey(opts) {
     if (keyindex >= 0) { // 存在
         // TabKey 对象
         keyItem = opts.arr[keyindex];
-        // keyItem.value += 1;
-
         backfun();
     } else {
         mysql.dataTabkey.byKeyName({
             param: [opts.tabvalue], success: function (res) {
                 if (res.result) {
                     keyItem = res.row;
-                    // keyItem.value += 1;
                 }
-
+                kefustorage.tabkey.push(keyItem);
                 backfun();
             }
         });
@@ -46,7 +45,7 @@ function fireTabKey(opts) {
             typeof opts.success === "function" && opts.success({ result: true, row: keyItem, index: keyindex });
 
             // 修改 opts.tabvalue Value 值
-            mysql.dataTabkey.editValue({ param: [keyItem.value, opts.tabvalue] });
+            //mysql.dataTabkey.editValue({ param: [keyItem.value, opts.tabvalue] });
         }
     }
 }

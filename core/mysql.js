@@ -47,7 +47,11 @@ var kefu_Tabkey_fun = {
      */
     editValue: function (opts) {
         return tabkeyfun.editValue(client, opts);
-    }
+    },
+    // 集中处理
+    editValueOrange:function (opts) {
+      return tabkeyfun.editValueOrange(client, opts);
+    },
 };
 
 /*
@@ -137,6 +141,8 @@ module.exports = {
         byKeyName: kefu_Tabkey_fun.byKeyName,
         // 修改Value值
         editValue: kefu_Tabkey_fun.editValue,
+        // 集中处理
+        editValueOrange:kefu_Tabkey_fun.editValueOrange,
     },
     /************** Member 用户表  ********************/
     dataMember: {

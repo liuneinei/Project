@@ -18,15 +18,8 @@ function fireMemberLogin(opts) {
     } else if (opts.socketid == '') {
         typeof opts.success === "function" && opts.success({ result: false, message: '链接失败' }); return;
     } else if (opts.cookieid == '') {
-
-
-        console.log('opts.member.id : ' + opts.member.id);
-
         // 主键加1
         opts.member.id += 1;
-
-        console.log('opts.member.id : ' + opts.member.id);
-
         // 用户初始化
         mysql.dataMember.initAdd({
             param: [opts.member.id, opts.member.centerid, opts.member.companyrltid, opts.member.username, opts.member.password, opts.member.name, opts.member.img, opts.member.cookieid, opts.member.messagenum, opts.member.messagetime, opts.member.status, opts.member.addtime],
@@ -34,16 +27,13 @@ function fireMemberLogin(opts) {
         });
         // 用户初始化 回调
         function initAddMemberBack(rowdata) {
-
-            console.log('initAddMemberBack : ' + opts.member.id);
-            console.log(rowdata);
+            // 修改 kefu_tabkey1 表 字段 Value 值
+            mysql.dataTabkey.editValueOrange({ tabvalue: 'kefu_member', value:opts.member.id, success:function () {} });
 
             if ((rowdata.row.affectedRows || 0) <= 0) {
-                typeof opts.success === "function" && opts.success({ result: false, message: '用户初始化失败' });
-                return;
+                typeof opts.success === "function" && opts.success({ result: false, message: '用户初始化失败' }); return;
             }
             opts.cookieid = opts.member.cookieid;
-
             // 初始化房间
             mysql.dataRoom.initAdd({
                 param: [opts.member.id, opts.member.companyrltid, opts.member.id, opts.socketid, 0],
@@ -53,24 +43,18 @@ function fireMemberLogin(opts) {
 
         // 初始化房间 回调
         function initAddRoomBack(rowdata) {
-
-            console.log('initAddRoomBack : ' + opts.member.id);
-            console.log(rowdata);
-
             if ((rowdata.row.affectedRows || 0) <= 0) {
-                typeof opts.success === "function" && opts.success({ result: false, message: '房间初始化失败' });
-                return;
+                typeof opts.success === "function" && opts.success({ result: false, message: '房间初始化失败' }); return;
             }
             // 递归
             fireMemberLogin(opts);
         }
     } else {
+
         mysql.dataMember.byCookieId({
             cookieid: opts.cookieid, success: function (rowdata) {
-
                 // 修改用户连接SocketId
                 mysql.dataRoom.editMemberSocketId({ socketid: opts.socketid, memberid: rowdata.row.id })
-
                 typeof opts.success === "function" && opts.success(rowdata);
             }
         });

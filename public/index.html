@@ -104,7 +104,7 @@
 
                         // 未在线
                         if (val.status == 0) {
-                            $('.kefu-rooms').find('b').addClass('checkhui');
+                            $('.kefu-rooms').find('b#' + val.id).addClass('checkhui');
                         }
                     });
                 } else if (res.type == 'new' || res.type == 'dis') { // 新用户 // 转移
@@ -194,9 +194,10 @@
                 $lines.empty();
                 var $bitem = $(e.target);
                 $bitem.siblings('b').removeClass('check');
-                $bitem.addClass('check');
                 $id = $bitem.data('id');
                 if (($id || 0) > 0) {
+                    $bitem.addClass('check');
+                    $bitem.find('span').html('0');
                     // 呼叫Room的消息
                     socket.emit('kefu_user_message:to_roomid', $id, messagetoroomidBackFun);
                     // 呼叫Room的消息 回调

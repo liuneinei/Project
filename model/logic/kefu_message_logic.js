@@ -7,10 +7,14 @@ var mysql = require('../../core/mysql.js');
 
 // 保存发送的消息
 function fireSaveMessage(opts) {
+    opts.message.id += 1;
     mysql.dataMessage.saveMessage({
         param: [opts.message.id, opts.message.companyrltid, opts.message.roomid, opts.message.forid, opts.message.type, opts.message.content, opts.message.isread, opts.message.addtime],
         success: function (res) {
             typeof opts.success == "function" && opts.success(res);
+
+            // 修改 kefu_tabkey1 表 字段 Value 值
+            mysql.dataTabkey.editValueOrange({ tabvalue: 'kefu_message', value:opts.message.id, success:function () {} });
         }
     });
 }
