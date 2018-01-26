@@ -124,6 +124,9 @@ io.sockets.on('connection', function (socket) {
 
                 // Sql保存 - 保存发送的消息
                 _funSaveMessage(res.row.value, memberonline);
+
+                // 更新客服接待用户的未读数
+                _funRoomsMember(memberonline);
             }
         }
 
@@ -176,6 +179,14 @@ io.sockets.on('connection', function (socket) {
                 // 记录未读消息
                 mysqlkefulogic.back_member.fireEditMessage({ prime: 'add', messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"), id: memberonline.id });
             }
+        }
+
+        // 更新客服接待用户的未读数
+        function _funRoomsMember(memberonline) {
+            // 修改用户的对应的客服Id、CookieId
+            var memberitem = kefuarrtool.getWiths(kefumemberonlines, 'id', memberonline.id);
+            console.log(' _funRoomsMember ::::');
+            console.log(memberitem);
         }
 
         // 给除了自己以外的客户端广播消息
@@ -255,7 +266,7 @@ io.sockets.on('connection', function (socket) {
                 kefuuseronlines.push({ id: res.row.id, username: res.row.username, name: res.row.name, img: res.row.img, cookieid: res.row.cookieid, admitnum: res.row.admitnum, socketid: socketid });
 
                 // 用户房间集
-                var memberrooms = rooms_admit_member(res.rooms);
+                var memberrooms = rooms_admit_member(res);
 
                 // 绑定接待用户
                 kefu_rooms[cookieid] = memberrooms;
@@ -275,7 +286,8 @@ io.sockets.on('connection', function (socket) {
             }
 
             /*************************** 客服接待用户 ***********************************/
-            function rooms_admit_member(members) {
+            function rooms_admit_member(res) {
+                members = res.rooms;
                 if (members.length <= 0) {
                     return [];
                 }
@@ -285,10 +297,15 @@ io.sockets.on('connection', function (socket) {
                         // 读取用户在 io.sockets.rooms 是否有连接 
                         var adroom = io.sockets.adapter.rooms[item.member_socketid] || {};
                         if ((adroom.length || 0) > 0) {
-                            console.log('adroom 00000:');
-                            console.log(item.member_socketid);
                             // 加入 Room
                             socket.join(item.member_socketid);
+
+                            // 修改用户的对应的客服Id、CookieId
+                            var memberitem = kefuarrtool.getWiths(kefumemberonlines, 'id', item.id);
+                            if ((memberitem.id || 0) > 0) {
+                                memberitem.userid = res.row.id;
+                                memberitem.usercookieid = res.row.cookieid;
+                            }
                         } else {
                             // 标为离线状态
                             item.status = 0;

@@ -17,6 +17,20 @@ function getWith(arr, field, id) {
 }
 
 /*
+ * 获取信息当前的 Id 所在的对象
+ */
+function getWiths(arr, field, id) {
+    var length = arr.length;
+    for (var i = 0; i < length; i++){
+        var obj = arr[i];
+        if(obj[field] == id){
+            return obj;
+        }
+    }
+    return {};
+}
+
+/*
  *   从小到大排序
  *   return 集合
  */
@@ -58,6 +72,8 @@ Date.prototype.Format = function (fmt) { //author: meizz
 module.exports={
     // 获取信息当前的 Id 所在的索引
     getWith: getWith,
+    // 获取信息当前的 Id 所在的对象
+    getWiths: getWiths,
     // 从小到大排序
     getSort: getSort
 };
