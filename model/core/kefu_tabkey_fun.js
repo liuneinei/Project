@@ -9,7 +9,7 @@
  */
 function editValue(client, opts) {
     var $uptabkey = 'update kefu_tabkey1 set value = ? where keyName = ?';
-    client.query($uptabkey, opts.param, function () {});
+    client.query($uptabkey, opts.param, function () { });
 }
 
 /*
@@ -20,16 +20,16 @@ function editValue(client, opts) {
 function byKeyName(client, opts) {
     opts.sqltext = 'select * from kefu_tabkey1 where keyName = ?';
     client.query(opts.sqltext, opts.param, function (err, rows, fields) {
-        if (err || rows.length <= 0){
-            typeof opts.success === "function" && opts.success({result:false, message:err || '找不到数据'});
+        if (err || rows.length <= 0) {
+            typeof opts.success === "function" && opts.success({ result: false, message: err || '找不到数据' });
             return;
         }
         var row = rows[0] || {};
-        if((row.id || 0) <= 0){
-            typeof opts.success === "function" && opts.success({result:false, message:err || '找不到数据'});
+        if ((row.id || 0) <= 0) {
+            typeof opts.success === "function" && opts.success({ result: false, message: err || '找不到数据' });
             return;
         }
-        typeof  opts.success === "function" && opts.success({result:true, row:row});
+        typeof opts.success === "function" && opts.success({ result: true, row: row });
     });
 }
 

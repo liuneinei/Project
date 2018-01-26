@@ -61,13 +61,14 @@ io.sockets.on('connection', function (socket) {
         // 注3： param Id 小于 0 且 socket.userid 大于 0，则说明参数被窜改
         if (((id || 0) <= 0 && (socket.memberid || 0) <= 0) ||
             ((id || 0) > 0 && (socket.userid || 0) <= 0) ||
-            ((id || 0) < 0 && (socket.userid || 0) > 0))
-        {
+            ((id || 0) < 0 && (socket.userid || 0) > 0)) {
             return;
         }
 
         // 客服发送消息 : 默认
         var messageType = 1;
+        // 1客服 0用户
+        var forid = 0;
 
         if ((id || 0) <= 0) {
             // 用户发给客服
@@ -106,10 +107,8 @@ io.sockets.on('connection', function (socket) {
             function fireByIdBack(res) {
                 // 读取用户信息
                 var memberonline = res.row;
-                if ((memberonline.id || 0) <= 0) {
-                    // 数据库无信息，停止执行
-                    return;
-                }
+                // 数据库无信息，停止执行
+                if ((memberonline.id || 0) <= 0) return;
 
                 // 发送 Room 消息
                 _funSendMessage(memberonline);
@@ -127,28 +126,63 @@ io.sockets.on('connection', function (socket) {
             // 自增Id 回调
             function fireTabKeyBackSend(res) {
                 // Error back
-                if (!res.result) {
-                    return;
-                }
+                if (!res.result) return false;
+
                 // 移除自增记录
                 if (res.index >= 0) kefutabkey.splice(res.index, 1);
                 // 添加自增记录
                 kefutabkey.push(res.row);
 
-                // 保存用户发送的消息
+                // 1客服 0用户
+                forid = messageType == 1 ? socket.userid : socket.memberid;
+
+                // Arr保存 - 保存发送的消息
+                _funMessageStorage(memberonline);
+
+                // Sql保存 - 保存发送的消息
                 _funSaveMessage(res.row.value, memberonline);
             }
         }
 
-        // 保存用户发送的消息
-        function _funSaveMessage(id, memberonline) {
-            // 1客服 0用户
-            var forid = messageType == 1 ? socket.userid : socket.memberid;
+        /***************    以下处理消息保存    ********************/
 
-            // 保存发送消息
+        /*
+        *   Arr保存 - 保存发送的消息
+        *
+        *   注1：函数内使用return false, 表示函数体执行结束；如果使用return;可能会导致Parent 体结束执行；
+        *
+        *   注2(重点)：kefu_rooms 存的是客服所接待的用户，在每个用户下会保存当前的聊天记录，
+        *
+         */
+        function _funMessageStorage(memberonline) {
+            // 根据 usercookieid 获取信息
+            var sessionArr = kefu_rooms[memberonline.usercookieid] || [];
+            if (sessionArr.length <= 0) return false;
+
+            var roomindex = kefuarrtool.getWith(sessionArr, 'id', memberonline.id);
+            if (roomindex < 0) return false;
+
+            var roomArr = sessionArr[roomindex].message || [];
+            // 保存数据
+            roomArr.push({
+                companyRltId: memberonline.companyrltid,
+                forid: forid,
+                name: socket.name,
+                type: messageType,
+                content: msg,
+                isRead: 0,
+                addTime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
+            });
+
+            sessionArr[roomindex].message = roomArr;
+        }
+
+        // Sql保存 - 保存用户发送的消息
+        function _funSaveMessage(id, memberonline) {
+            // Sql保存 - 保存发送消息
             mysqlkefulogic.back_message.fireSaveMessage({
                 message: {
-                    id: id,
+                    id: (id + 1),
                     companyrltid: memberonline.companyrltid,
                     roomid: (memberonline.id).toString(),
                     forid: forid,
@@ -157,83 +191,8 @@ io.sockets.on('connection', function (socket) {
                     isread: 0,
                     addtime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
                 },
-                success: saveMessageBack
-            })
-        }
-
-        // 保存发送消息 回调
-        function saveMessageBack(res) {
-
-            console.log('saveMessageBack 222222');
-
-            console.log(res);
-        }
-
-        return;
-
-        console.log('user:pub');
-
-        console.log(kefumemberonlines);
-        console.log(index);
-
-        var $roomid = roomid || undefined; // 默认为客服发送，当参数 roomid 为空时说明为用户
-        if (!$roomid && socket.roomid) {
-            $roomid = socket.roomid;
-        }
-
-        console.log('user:pub');
-
-        console.log(io.sockets.adapter.rooms);
-
-        console.log('socket.id  ：' + socket.id);
-
-
-        if ($roomid) {
-            // 给除了自己以外的组里广播消息
-            socket.broadcast.to($roomid).emit("user:pub", { name: socket.name, message: msg, roomid: $roomid });
-
-            //
-            return;
-            /***************    以下处理消息入库    ********************/
-            var markId = $roomid;// 默认用户发送
-            var markType = 0;	// 默认用户类型
-            if (socket.sessionid) { // 客服发送
-                markId = socket.sessionid;
-                markType = 1;
-            }
-            // 记录消息至数据库中
-            mysqlexecute.mysqlMessageStorage({
-                roomId: $roomid,
-                markId: markId,
-                type: markType,
-                content: msg,
-                addTime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"),
-                success: MessageStorage
+                success: function (res) { /* Sql保存 - 保存发送消息 回调 */ }
             });
-
-            /***************    以下处理消息保存    ********************/
-            function MessageStorage(resmessage) {
-                if (resmessage.result) {
-                    var $backObj = resmessage.backObj;
-                    // 根据 sessionId 获取信息
-                    var sessionArr = kefu_rooms[$backObj.sessionId] || [];
-                    if (sessionArr.length > 0) {
-                        var roomindex = kefuarrtool.getWith(sessionArr, 'room', $roomid);
-                        if (roomindex >= 0) {
-                            var roomArr = sessionArr[roomindex].message || [];
-                            roomArr.push({
-                                companyRltId: $backObj.companyRltId,
-                                forid: $backObj.forId,
-                                name: $backObj.name,
-                                type: $backObj.type,
-                                content: $backObj.content,
-                                isRead: $backObj.isRead,
-                                addTime: $backObj.addTime
-                            });
-                        }
-                    }
-                }
-            }
         }
 
         // 给除了自己以外的客户端广播消息
@@ -243,12 +202,12 @@ io.sockets.on('connection', function (socket) {
     /*
 	*	客服选择对应的用户时，返回对应的聊天消息
 	 */
-    socket.on('kefu_user_message:to_roomid', function (roomid, fn) {
-        var rooms = kefu_rooms[socket.sessionid] || [];
+    socket.on('kefu_user_message:to_roomid', function (id, fn) {
+        var rooms = kefu_rooms[socket.cookieid] || [];
         if (rooms.length <= 0) {
             typeof fn === "function" && fn({ result: false, rows: [] }); return;
         }
-        var roomindex = kefuarrtool.getWith(rooms, 'room', roomid);
+        var roomindex = kefuarrtool.getWith(rooms, 'id', id);
         if (roomindex < 0) {
             typeof fn === "function" && fn({ result: false, rows: [] }); return;
         }
@@ -258,6 +217,29 @@ io.sockets.on('connection', function (socket) {
             typeof fn === "function" && fn({ result: false, rows: [] }); return;
         }
         typeof fn === "function" && fn({ result: true, rows: messages });
+
+        // 用户处理
+        _funMember();
+
+        /*
+        *   用户处理，
+        *   exp1：加入用户Room ； exp2：标识为已读
+         */
+        function _funMember() {
+            /************************* exp1：加入用户Room *********************************/
+            // 用户在线 - 读取对象 - 并验证处理
+            var index = kefuarrtool.getWith(kefumemberonlines, 'id', id);
+            if (index < 0) return;
+            // 用户在线 - 用户实例
+            var memberonline = kefumemberonlines[index];
+            if ((memberonline.id || 0) <= 0) return;
+            // 用户在线 - 客服加入客服Room
+            socket.join(memberonline.socketid);
+
+            /************************* exp2：标识为已读 *********************************/
+            // 发送消息 - 标为已读
+            mysqlkefulogic.back_message.fireEditIsRead({ isread: 1, roomid: id });
+        }
     });
 
     // 这算是双人聊天吗？
@@ -318,6 +300,8 @@ io.sockets.on('connection', function (socket) {
                 // 绑定接待用户
                 kefu_rooms[cookieid] = res.rooms;
 
+                // 记录cookieid
+                socket.cookieid = cookieid;
                 // 记录userid
                 socket.userid = res.row.id;
                 // 记录名称

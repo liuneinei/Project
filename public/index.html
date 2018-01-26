@@ -6,39 +6,39 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
     <link rel="icon" sizes="any" mask href="images/favicon.ico" />
     <title>即时聊天 - Chat</title>
-	<link rel="stylesheet" type="text/css" href="css/socket.css?v1.3">
-	<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-	<script src="http://m.dumanyi.com/Content/js/vue.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/socket.css?v1.3">
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="http://m.dumanyi.com/Content/js/vue.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-	<h1>Scoket.IO Chat Demo</h1>
-	<div class="wrap chatroom">
-		<div class="messages">
-			<div class="nicknames kefu-users">
-				<span>客服在线：</span>
-				<!--<b>小明</b>
-				<b>小黄</b>-->
-			</div>
-			<div class="nicknames kefu-rooms">
-				<span>Room：</span>
-				<!--<b>小明</b>
-				<b>小黄</b>-->
-			</div>
-			<div class="lines">
-				<!--<p><b>小明:</b>我好像长高了!</p>
-				<p><b>小黄:</b>我英语变好了!</p>
-				<p><b>我:</b>我变态了!</p>-->
-			</div>
-		</div>
-		<form class="send-message">
-			<span class="to">发送给<b>所有人</b></span>
-			<input class="nick message" type="text" placeholder="在这里输入消息发送" />
-			<button>发送</button>
-		</form>
-	</div>
-	<script type="text/javascript">
+    <h1>Scoket.IO Chat Demo</h1>
+    <div class="wrap chatroom">
+        <div class="messages">
+            <div class="nicknames kefu-users">
+                <span>客服在线：</span>
+                <!--<b>小明</b>
+                <b>小黄</b>-->
+            </div>
+            <div class="nicknames kefu-rooms">
+                <span>Room：</span>
+                <!--<b>小明</b>
+                <b>小黄</b>-->
+            </div>
+            <div class="lines">
+                <!--<p><b>小明:</b>我好像长高了!</p>
+                <p><b>小黄:</b>我英语变好了!</p>
+                <p><b>我:</b>我变态了!</p>-->
+            </div>
+        </div>
+        <form class="send-message">
+            <span class="to">发送给<b>所有人</b></span>
+            <input class="nick message" type="text" placeholder="在这里输入消息发送" />
+            <button>发送</button>
+        </form>
+    </div>
+    <script type="text/javascript">
         $(function () {
             var kefu_user_cookieid = $.cookie('kefu_user_cookieid') || '';
             if (kefu_user_cookieid == '') {
@@ -87,16 +87,16 @@
                 $('.kefu-rooms').empty().append($('<span>Room：</span>'));
                 $.each(res.rooms, function (key, val) {
                     if (val.id == $id) {
-                        $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('room', val.id).append($('<span>').html('0')));
+                        $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
                     } else {
-                        $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('room', val.id).append($('<span>').html('0')));
+                        $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
                     }
                 });
             });
 
             // 呼叫客服加入房间
             socket.on('room:join:' + kefu_user_cookieid, function (res) {
-                socket.emit('online:join', res.membersocketid, function () {});
+                socket.emit('online:join', res.membersocketid, function () { });
             });
 
             // 连接提示操作
@@ -123,12 +123,10 @@
             }
 
             socket.on('user:pub', function (backobj) {
-                if ($roomid == '') {
-                    return;
-                } else if (backobj.roomid == $roomid) {
+                if (backobj.id == $id) {
                     message(backobj.name, backobj.message);
-                } else if (backobj.roomid != $roomid) {
-                    var $roomtext = $('[room="' + backobj.roomid + '"] span');
+                } else if (backobj.id != $id) {
+                    var $roomtext = $('[id="' + backobj.id + '"] span');
                     $roomtext.html(parseInt($roomtext.html()) + 1);
                 }
             });
@@ -166,29 +164,29 @@
             });
 
             $('.kefu-rooms').on('click', 'b', function (e) {
+                $lines.empty();
                 var $bitem = $(e.target);
                 $bitem.siblings('b').css('background', '#4FA72C');
                 $bitem.css('background', '#ff0000');
                 $id = $bitem.data('id');
-                if ($id != '') {
+                if (($id || 0) > 0) {
                     // 呼叫Room的消息
                     socket.emit('kefu_user_message:to_roomid', $id, messagetoroomidBackFun);
                     // 呼叫Room的消息 回调
                     function messagetoroomidBackFun(resmessage) {
-                        if (resmessage.result) {
-                            var $messagerows = resmessage.rows;
-                            if ($messagerows.length > 0) {
-                                $lines.empty();
-                                [].forEach.call($messagerows, function (item, index) {
-                                    //console.log(item.name);
-                                    message(item.name, item.content);
-                                });
-                            }
+                        if (!resmessage.result) return;
+
+                        var $messagerows = resmessage.rows;
+                        if ($messagerows.length > 0) {
+                            [].forEach.call($messagerows, function (item, index) {
+                                //console.log(item.name);
+                                message(item.name, item.content);
+                            });
                         }
                     }
                 }
             });
         });
-	</script>
+    </script>
 </body>
 </html>

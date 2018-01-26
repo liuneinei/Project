@@ -8,14 +8,20 @@ var mysql = require('../../core/mysql.js');
 // 保存发送的消息
 function fireSaveMessage(opts) {
     mysql.dataMessage.saveMessage({
-        param:[opts.message.id, opts.message.companyrltid, opts.message.roomid, opts.message.forid, opts.message.type, opts.message.content, opts.message.isread, opts.message.addtime],
-        success:function (res) {
+        param: [opts.message.id, opts.message.companyrltid, opts.message.roomid, opts.message.forid, opts.message.type, opts.message.content, opts.message.isread, opts.message.addtime],
+        success: function (res) {
             typeof opts.success == "function" && opts.success(res);
         }
     });
+}
+// 标识为已读
+function fireEditIsRead(opts) {
+    mysql.dataMessage.editIsRead(opts);
 }
 
 module.exports = {
     // 保存发送的消息
     fireSaveMessage: fireSaveMessage,
+    // 标识为已读
+    fireEditIsRead: fireEditIsRead,
 };

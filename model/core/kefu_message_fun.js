@@ -16,7 +16,19 @@ function saveMessage(client, opts) {
     });
 }
 
+/*
+*   标识为已读
+ */
+function editIsRead(client, opts) {
+    opts.sqltext = 'update kefu_message set isread = ? where roomid = ?';
+    client.query(opts.sqltext, [opts.isread, opts.roomid], function (err, rows, fields) {
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
+    });
+}
+
 module.exports = {
     // 保存发送的消息
     saveMessage: saveMessage,
-}
+    // 标识为已读
+    editIsRead: editIsRead,
+};

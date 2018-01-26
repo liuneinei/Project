@@ -9,15 +9,16 @@ var mysql = require('../../core/mysql.js');
 *   客服登录
  */
 function fireUserLogin(opts) {
-    if(!opts.username || !opts.password){
-        typeof opts.success === "function" && opts.success({result: false, message: '用户名或密码不能为空!'}); return;
+    if (!opts.username || !opts.password) {
+        typeof opts.success === "function" && opts.success({ result: false, message: '用户名或密码不能为空!' }); return;
     }
-    mysql.dataUsers.userLogin({ socketid: opts.socketid, username: opts.username, password: opts.password,
+    mysql.dataUsers.userLogin({
+        socketid: opts.socketid, username: opts.username, password: opts.password,
         success: function (res) {
-            if(!res.result){
-                typeof opts.success === "function" && opts.success({result: res.result, message: '用户名或密码错误!'}); return;
+            if (!res.result) {
+                typeof opts.success === "function" && opts.success({ result: res.result, message: '用户名或密码错误!' }); return;
             }
-            typeof opts.success === "function" && opts.success({result: res.result, row: res.row});
+            typeof opts.success === "function" && opts.success({ result: res.result, row: res.row });
         }
     });
 }
@@ -27,10 +28,10 @@ function fireUserLogin(opts) {
  */
 function fireUserOnLine(opts) {
     // CookieId 处理 客服是否在线
-    mysql.dataUsers.byCookieId({ cookieid: opts.cookieid, success: byCookieIdBack});
+    mysql.dataUsers.byCookieId({ cookieid: opts.cookieid, success: byCookieIdBack });
 
     // CookieId 处理 客服是否在线  回调
-    function byCookieIdBack(res){
+    function byCookieIdBack(res) {
         if (!res.result) {
             typeof opts.success === 'function' && opts.success({ result: res.result, message: '无效标识，请重登录!' }); return;
         }
@@ -43,7 +44,7 @@ function fireUserOnLine(opts) {
     }
 
     // 客服所接待的用户 回调
-    function byUserIdListBack(res){
+    function byUserIdListBack(res) {
         typeof opts.success === 'function' && opts.success({ result: res.result, row: opts.row, rooms: res.rows }); return;
     }
 }

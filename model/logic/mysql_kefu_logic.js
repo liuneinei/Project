@@ -9,9 +9,9 @@ var kefumemberlogic = require('./kefu_member_logic.js');
 // 客服逻辑处理
 var kefuserslogic = require('./kefu_users_logic.js');
 // 房间逻辑处理
-var kefroomlogic = require('./kefu_room_logic.js');
+var kefuroomlogic = require('./kefu_room_logic.js');
 // 发送消息逻辑处理
-var kefmessagelogic = require('./kefu_message_logic.js');
+var kefumessagelogic = require('./kefu_message_logic.js');
 
 module.exports = {
     back_tabkey: {
@@ -38,12 +38,14 @@ module.exports = {
     },
     back_room: {
         // 修改用户对应的客服
-        fireEditUserId: kefroomlogic.fireEditUserId,
+        fireEditUserId: kefuroomlogic.fireEditUserId,
         // 修改用户对应的SocketId
-        fireEditMemberSocketId: kefroomlogic.fireEditMemberSocketId,
+        fireEditMemberSocketId: kefuroomlogic.fireEditMemberSocketId,
     },
     back_message: {
         // 保存发送的消息
-        fireSaveMessage : kefmessagelogic.fireSaveMessage,
+        fireSaveMessage: kefumessagelogic.fireSaveMessage,
+        // 标识为已读
+        fireEditIsRead: kefumessagelogic.fireEditIsRead,
     }
 };

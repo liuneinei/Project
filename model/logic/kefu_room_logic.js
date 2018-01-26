@@ -18,8 +18,6 @@ function fireEditUserId(opts) {
 function fireEditMemberSocketId(opts) {
     mysql.dataRoom.editMemberSocketId(opts);
 }
-    
-        
 
 module.exports = {
     // 修改用户对应的客服

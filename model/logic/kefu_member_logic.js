@@ -14,10 +14,12 @@ var mysql = require('../../core/mysql.js');
  */
 function fireMemberLogin(opts) {
     if (opts.cookieid == '' && opts.socketid == '') {
-        typeof opts.success === "function" && opts.success({result: false, message: '请求非法'}); return;
+        typeof opts.success === "function" && opts.success({ result: false, message: '请求非法' }); return;
     } else if (opts.socketid == '') {
-        typeof opts.success === "function" && opts.success({result: false, message: '链接失败'}); return;
+        typeof opts.success === "function" && opts.success({ result: false, message: '链接失败' }); return;
     } else if (opts.cookieid == '') {
+        // 主键加1
+        opts.member.id += 1;
         // 用户初始化
         mysql.dataMember.initAdd({
             param: [opts.member.id, opts.member.centerid, opts.member.companyrltid, opts.member.username, opts.member.password, opts.member.name, opts.member.img, opts.member.cookieid, opts.member.messagenum, opts.member.messagetime, opts.member.status, opts.member.addtime],
@@ -26,7 +28,7 @@ function fireMemberLogin(opts) {
         // 用户初始化 回调
         function initAddMemberBack(rowdata) {
             if ((rowdata.row.affectedRows || 0) <= 0) {
-                typeof opts.success === "function" && opts.success({result: false, message: '用户初始化失败'});
+                typeof opts.success === "function" && opts.success({ result: false, message: '用户初始化失败' });
                 return;
             }
             opts.cookieid = opts.member.cookieid;
@@ -41,9 +43,10 @@ function fireMemberLogin(opts) {
         // 初始化房间 回调
         function initAddRoomBack(rowdata) {
             if ((rowdata.row.affectedRows || 0) <= 0) {
-                typeof opts.success === "function" && opts.success({result: false, message: '房间初始化失败'});
+                typeof opts.success === "function" && opts.success({ result: false, message: '房间初始化失败' });
                 return;
             }
+            // 递归
             fireMemberLogin(opts);
         }
     } else {
@@ -73,7 +76,7 @@ function fireById(opts) {
 function fireEditStatus(opts) {
     mysql.dataMember.editStatus(opts);
 }
-    
+
 
 module.exports = {
     // 用户初始化登录 
