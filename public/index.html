@@ -11,6 +11,15 @@
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="http://m.dumanyi.com/Content/js/vue.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <style>
+        .messages .nicknames .checkhui {
+            background: #ccc;
+        }
+
+        .messages .nicknames .check {
+            background: #ff0000;
+        }
+    </style>
 </head>
 <body>
     <h1>Scoket.IO Chat Demo</h1>
@@ -84,14 +93,32 @@
 			*	对应的用户信息
 			*/
             socket.on('members:' + kefu_user_cookieid, function (res) {
-                $('.kefu-rooms').empty().append($('<span>Room：</span>'));
-                $.each(res.rooms, function (key, val) {
-                    if (val.id == $id) {
-                        $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
-                    } else {
-                        $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
+                if (res.type == 'list') { // 集合
+                    $('.kefu-rooms').empty().append($('<span>Room：</span>'));
+                    $.each(res.rooms, function (key, val) {
+                        if (val.id == $id) {
+                            $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
+                        } else {
+                            $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
+                        }
+
+                        // 未在线
+                        if (val.status == 0) {
+                            $('.kefu-rooms').find('b').addClass('checkhui');
+                        }
+                    });
+                } else if (res.type == 'new' || res.type == 'dis') { // 新用户 // 转移
+                    $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + res.rooms.id + '">').text(res.rooms.name).data('id', res.rooms.id).append($('<span>').html('0')));
+                } else if (res.type == 'on') { // 用户上线
+                    var eleid= $('[id=' + res.rooms.id + ']');
+                    eleid.removeClass('checkhui');
+                } else if (res.type == 'off') { // 用户下线
+                    var eleid = $('[id=' + res.rooms.id + ']');
+                    eleid.removeClass('check');
+                    if (!eleid.hasClass('checkhui')) {
+                        eleid.addClass('checkhui');
                     }
-                });
+                }
             });
 
             // 呼叫客服加入房间
@@ -166,8 +193,8 @@
             $('.kefu-rooms').on('click', 'b', function (e) {
                 $lines.empty();
                 var $bitem = $(e.target);
-                $bitem.siblings('b').css('background', '#4FA72C');
-                $bitem.css('background', '#ff0000');
+                $bitem.siblings('b').removeClass('check');
+                $bitem.addClass('check');
                 $id = $bitem.data('id');
                 if (($id || 0) > 0) {
                     // 呼叫Room的消息

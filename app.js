@@ -7,9 +7,9 @@ var mymd5 = require('./core/md5.js');
 // 所有逻辑处理
 var mysqlkefulogic = require('./model/logic/mysql_kefu_logic');
 // 工具类
-var kefuarrtool = require('./comm/KefuArrTool.js');
+var kefuarrtool = require('./comm/kefuarrtool.js');
 // 客服处理类
-var kefuusertool = require('./comm/KefuUserTool.js');
+var kefuusertool = require('./comm/kefuusertool.js');
 var app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -17,7 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var server = http.createServer(app);
 server.listen(8087);
-
 var sio = require('socket.io');
 var io = sio.listen(server);
 
@@ -25,11 +24,6 @@ var io = sio.listen(server);
 var kefuuseronlines = [];
 // 用户在线
 var kefumemberonlines = [];
-
-// 客服在线 - sessionId
-var kefuuser_sessionids = {};
-// 用户在线 - roomId
-var kefumember_roomids = {};
 
 // 解决分库分表的主键Id自增
 var kefutabkey = [];
@@ -126,6 +120,7 @@ io.sockets.on('connection', function (socket) {
                 // 移除自增记录
                 if (res.index >= 0) kefutabkey.splice(res.index, 1);
                 // 添加自增记录
+                res.row.value += 1;
                 kefutabkey.push(res.row);
 
                 // 1客服 0用户
@@ -304,7 +299,7 @@ io.sockets.on('connection', function (socket) {
                 // 客服登录集
                 io.sockets.emit('kefu_user:onlines', kefuuseronlines);
                 // 接待用户集
-                io.sockets.emit('members:' + res.row.cookieid, { rooms: res.rooms });
+                io.sockets.emit('members:' + res.row.cookieid, { type: 'list', rooms: res.rooms });
 
                 typeof fn === 'function' && fn({ result: true });
             }
@@ -328,6 +323,7 @@ io.sockets.on('connection', function (socket) {
             if (res.index >= 0) kefutabkey.splice(res.index, 1);
 
             // 添加自增记录
+            res.row.value += 1;
             kefutabkey.push(res.row);
 
             // 初始化用户 或 登录用户
@@ -408,9 +404,13 @@ io.sockets.on('connection', function (socket) {
                 var rooms = kefu_rooms[userline.cookieid] || [];
                 // 检查是否已经包含
                 var roomsindex = kefuarrtool.getWith(rooms, 'id', res.row.id);
+
+                // 用户对象
+                var roomMember = {};
+
                 if (roomsindex < 0) {
-                    // 客服接待更新
-                    rooms.push({
+                    // 用户对象赋值
+                    roomMember = {
                         member_socketid: res.row.member_socketid,
                         id: res.row.id,
                         name: res.row.name,
@@ -418,7 +418,9 @@ io.sockets.on('connection', function (socket) {
                         messagenum: res.row.messagenum,
                         messagetime: res.row.messagetime,
                         status: 1,
-                    });
+                    };
+                    // 客服接待更新
+                    rooms.push(roomMember);
                 }
 
                 kefu_rooms[userline.cookieid] = rooms;
@@ -430,6 +432,14 @@ io.sockets.on('connection', function (socket) {
 
                 // 呼叫客服加入房间
                 io.sockets.emit('room:join:' + userline.cookieid, { membersocketid: socketid });
+
+                if ((roomMember.id || 0) > 0) {
+                    // 新接待用户
+                    io.sockets.emit('members:' + userline.cookieid, { type: 'new', rooms: roomMember });
+                } else {
+                    // 用户上线
+                    io.sockets.emit('members:' + userline.cookieid, { type: 'on', rooms: res.row });
+                }
 
                 // 用户 绑定 客服信息
                 var userindex = kefuarrtool.getWith(kefumemberonlines, 'id', res.row.id);
@@ -514,7 +524,7 @@ io.sockets.on('connection', function (socket) {
                 mysqlkefulogic.back_room.fireEditUserId({ userid: userline.id, memberid: oldMember.id });
 
                 // 接待用户集
-                io.sockets.emit('members:' + userline.cookieid, { rooms: newRooms });
+                io.sockets.emit('members:' + userline.cookieid, { type: 'dis', rooms: oldMember });
             }
 
             // 原客服清空
@@ -536,6 +546,12 @@ io.sockets.on('connection', function (socket) {
             kefumemberonlines.splice(mmeberindex, 1);
             // 用户在线 - 用户Id为空
             if ((onlineMenber.userid || 0) <= 0) return;
+
+            console.log('onlineMenber 000000 : ');
+            console.log(onlineMenber);
+
+            // 通知客服 下线
+            io.sockets.emit('members:' + onlineMenber.usercookieid, { type: 'off', rooms: onlineMenber });
 
 
             /************************* 客服接待用户 ***********************/
