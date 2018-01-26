@@ -4,13 +4,8 @@ var http = require('http');
 var express = require('express');
 var path = require('path');
 var mymd5 = require('./core/md5.js');
-// 数据库连接
-var mysqlexecute = require('./core/mysql.js');
-
 // 所有逻辑处理
 var mysqlkefulogic = require('./model/logic/mysql_kefu_logic');
-
-
 // 工具类
 var kefuarrtool = require('./comm/KefuArrTool.js');
 // 客服处理类
