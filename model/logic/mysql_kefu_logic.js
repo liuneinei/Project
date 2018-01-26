@@ -35,6 +35,8 @@ module.exports = {
         fireById: kefumemberlogic.fireById,
         // 状态修改处理
         fireEditStatus: kefumemberlogic.fireEditStatus,
+        // 修改未读信息
+        fireEditMessage: kefumemberlogic.fireEditMessage,
     },
     back_room: {
         // 修改用户对应的客服

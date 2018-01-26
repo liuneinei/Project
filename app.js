@@ -98,7 +98,6 @@ io.sockets.on('connection', function (socket) {
                 var memberonline = res.row;
                 // 数据库无信息，停止执行
                 if ((memberonline.id || 0) <= 0) return;
-
                 // 发送 Room 消息
                 _funSendMessage(memberonline);
             }
@@ -135,20 +134,12 @@ io.sockets.on('connection', function (socket) {
         *
         *   注1：函数内使用return false, 表示函数体执行结束；如果使用return;可能会导致Parent 体结束执行；
         *
-        *   注2(重点)：kefu_rooms 存的是客服所接待的用户，在每个用户下会保存当前的聊天记录，
-        *
          */
         function _funMessageStorage(memberonline) {
-            // 根据 usercookieid 获取信息
-            var sessionArr = kefu_rooms[memberonline.usercookieid] || [];
-            if (sessionArr.length <= 0) return false;
-
-            var roomindex = kefuarrtool.getWith(sessionArr, 'id', memberonline.id);
-            if (roomindex < 0) return false;
-
-            var roomArr = sessionArr[roomindex].message || [];
-            // 保存数据
-            roomArr.push({
+            // 聊天记录
+            var messagearr = kefustorage.messages[memberonline.id] || [];
+            // 追加数据
+            messagearr.push({
                 companyRltId: memberonline.companyrltid,
                 forid: forid,
                 name: socket.name,
@@ -157,8 +148,8 @@ io.sockets.on('connection', function (socket) {
                 isRead: 0,
                 addTime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
             });
-
-            sessionArr[roomindex].message = roomArr;
+            // 保存数据
+            kefustorage.messages[memberonline.id] = messagearr;
         }
 
         // Sql保存 - 保存用户发送的消息
@@ -175,8 +166,16 @@ io.sockets.on('connection', function (socket) {
                     isread: 0,
                     addtime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
                 },
-                success: function (res) { /* Sql保存 - 保存发送消息 回调 */ }
+                success: fireSaveMessageBack
             });
+            // Sql保存 - 保存发送消息 回调
+            function fireSaveMessageBack(res) {
+                if (!res.result) {
+                    return false;
+                }
+                // 记录未读消息
+                mysqlkefulogic.back_member.fireEditMessage({ prime: 'add', messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"), id: memberonline.id });
+            }
         }
 
         // 给除了自己以外的客户端广播消息
@@ -187,43 +186,16 @@ io.sockets.on('connection', function (socket) {
 	*	客服选择对应的用户时，返回对应的聊天消息
 	*/
     socket.on('kefu_user_message:to_roomid', function (id, fn) {
-        var rooms = kefu_rooms[socket.cookieid] || [];
-        if (rooms.length <= 0) {
+        // 聊天记录
+        var messagearr = kefustorage.messages[id] || [];
+        if (messagearr.length <= 0) {
             typeof fn === "function" && fn({ result: false, rows: [] }); return;
         }
-        var roomindex = kefuarrtool.getWith(rooms, 'id', id);
-        if (roomindex < 0) {
-            typeof fn === "function" && fn({ result: false, rows: [] }); return;
-        }
-        // 消息集
-        var messages = rooms[roomindex].message || [];
-        if (messages.length < 0) {
-            typeof fn === "function" && fn({ result: false, rows: [] }); return;
-        }
-        typeof fn === "function" && fn({ result: true, rows: messages });
-
-        // 用户处理
-        _funMember();
-
-        /*
-        *   用户处理，
-        *   exp1：加入用户Room ； exp2：标识为已读
-         */
-        function _funMember() {
-            /************************* exp1：加入用户Room *********************************/
-            // 用户在线 - 读取对象 - 并验证处理
-            var index = kefuarrtool.getWith(kefumemberonlines, 'id', id);
-            if (index < 0) return;
-            // 用户在线 - 用户实例
-            var memberonline = kefumemberonlines[index];
-            if ((memberonline.id || 0) <= 0) return;
-            // 用户在线 - 客服加入客服Room
-            socket.join(memberonline.socketid);
-
-            /************************* exp2：标识为已读 *********************************/
-            // 发送消息 - 标为已读
-            mysqlkefulogic.back_message.fireEditIsRead({ isread: 1, roomid: id });
-        }
+        typeof fn === "function" && fn({ result: true, rows: messagearr });
+        // 消息处理 - 标为已读
+        mysqlkefulogic.back_message.fireEditIsRead({ isread: 1, roomid: id });
+        // 消息处理 - 用户未读数清空
+        mysqlkefulogic.back_member.fireEditMessage({ prime: 'clear', messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"), id: id })
     });
 
     /*
@@ -253,7 +225,6 @@ io.sockets.on('connection', function (socket) {
             if (!res.result) {
                 typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
-
             typeof fn === 'function' && fn({ result: res.result, cookieid: res.row.cookieid });
         }
     });
@@ -397,9 +368,6 @@ io.sockets.on('connection', function (socket) {
             io.sockets.emit('kefu_member:onlines', kefumemberonlines);
             // 订阅
             socket.join(socketid);
-
-            console.log('adroom 00000111111112222:');
-            console.log(socketid);
 
             // 修改用户状态
             mysqlkefulogic.back_member.fireEditStatus({ status: 1, id: res.row.id });

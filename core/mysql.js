@@ -74,6 +74,10 @@ var kefu_Member_fun = {
     editStatus: function (opts) {
         return memberfun.editStatus(client, opts);
     },
+    // 修改未读信息
+    editMessage: function (opts) {
+      return memberfun.editMessage(client, opts);
+    },
 };
 
 /*
@@ -154,6 +158,8 @@ module.exports = {
         initAdd: kefu_Member_fun.initAdd,
         // 状态修改处理
         editStatus: kefu_Member_fun.editStatus,
+        // 修改未读信息
+        editMessage: kefu_Member_fun.editMessage,
     },
     /************** Room 房间表  ********************/
     dataRoom: {

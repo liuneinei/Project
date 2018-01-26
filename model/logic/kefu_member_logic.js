@@ -28,7 +28,7 @@ function fireMemberLogin(opts) {
         // 用户初始化 回调
         function initAddMemberBack(rowdata) {
             // 修改 kefu_tabkey1 表 字段 Value 值
-            mysql.dataTabkey.editValueOrange({ tabvalue: 'kefu_member', value:opts.member.id, success:function () {} });
+            mysql.dataTabkey.editValueOrange({ tabvalue: 'kefu_member', value: opts.member.id, success: function () { } });
 
             if ((rowdata.row.affectedRows || 0) <= 0) {
                 typeof opts.success === "function" && opts.success({ result: false, message: '用户初始化失败' }); return;
@@ -76,6 +76,18 @@ function fireEditStatus(opts) {
     mysql.dataMember.editStatus(opts);
 }
 
+// 修改未读信息
+function fireEditMessage(opts) {
+    mysql.dataMember.editMessage({
+        prime: opts.prime, messagetime: opts.messagetime, id: opts.id,
+        success: function (res) {
+            if ((res.row.affectedRows || 0) <= 0) {
+                typeof opts.success == "function" && opts.success({ result: false, message: '修改失败' }); return;
+            }
+            typeof opts.success == "function" && opts.success({ result: true });
+        }
+    });
+}
 
 module.exports = {
     // 用户初始化登录 
@@ -86,4 +98,6 @@ module.exports = {
     fireById: fireById,
     // 状态修改处理
     fireEditStatus: fireEditStatus,
+    // 修改未读信息
+    fireEditMessage: fireEditMessage,
 };

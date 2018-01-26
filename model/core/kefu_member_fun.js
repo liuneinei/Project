@@ -62,6 +62,22 @@ function editStatus(client, opts) {
     });
 }
 
+/*
+*   修改未读信息
+ */
+function editMessage(client, opts) {
+    if (!(opts.prime || '')) {
+        return;
+    } else if (opts.prime == 'clear') {
+        opts.sqltext = 'update kefu_member set messagenum = 0 , messagetime = ? where id = ?';
+    } else if (opts.prime == 'add') {
+        opts.sqltext = 'update kefu_member set messagenum = messagenum + 1 , messagetime = ? where id = ?';
+    }
+    client.query(opts.sqltext, [opts.messagenum, opts.messagetime, opts.id], function (err, rows, fields) {
+        typeof opts.success === "function" && opts.success({ err: err, row: rows });
+    });
+}
+
 module.exports = {
     // CookieId 读取用户信息
     byCookieId: byCookieId,
@@ -71,4 +87,6 @@ module.exports = {
     initAdd: initAdd,
     // 状态修改处理
     editStatus: editStatus,
+    // 修改未读信息
+    editMessage: editMessage,
 };
