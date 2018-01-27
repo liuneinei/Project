@@ -97,9 +97,9 @@
                     $('.kefu-rooms').empty().append($('<span>Room：</span>'));
                     $.each(res.rooms, function (key, val) {
                         if (val.id == $id) {
-                            $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
+                            $('.kefu-rooms').append($('<b style="background: #ff0000;" id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html(val.messagenum)));
                         } else {
-                            $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html('0')));
+                            $('.kefu-rooms').append($('<b id="' + val.id + '">').text(val.name).data('id', val.id).append($('<span>').html(val.messagenum)));
                         }
 
                         // 未在线

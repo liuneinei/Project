@@ -23,11 +23,6 @@ server.listen(8087);
 var sio = require('socket.io');
 var io = sio.listen(server);
 
-// 客服在线
-var kefuuseronlines = [];
-// 用户在线
-var kefumemberonlines = [];
-
 // 房间信息
 var kefu_rooms = {};
 
@@ -68,14 +63,14 @@ io.sockets.on('connection', function (socket) {
         }
 
         // 用户在线 - 读取对象 - 并验证处理
-        var index = kefuarrtool.getWith(kefumemberonlines, 'id', id);
+        var index = kefuarrtool.getIndex(kefustorage.kefumemberonlines, 'id', id);
         if (index < 0) {
             // 读取用户信息
             _funMember();
 
         } else {
             // 读取用户信息
-            var memberonline = kefumemberonlines[index];
+            var memberonline = kefustorage.kefumemberonlines[index];
             if ((memberonline.id || 0) <= 0) {
                 // 读取用户信息
                 _funMember();
@@ -126,7 +121,7 @@ io.sockets.on('connection', function (socket) {
                 _funSaveMessage(res.row.value, memberonline);
 
                 // 更新客服接待用户的未读数
-                _funRoomsMember(memberonline);
+                _funRoomsMember(memberonline.id);
             }
         }
 
@@ -182,11 +177,15 @@ io.sockets.on('connection', function (socket) {
         }
 
         // 更新客服接待用户的未读数
-        function _funRoomsMember(memberonline) {
+        function _funRoomsMember(memberid) {
             // 修改用户的对应的客服Id、CookieId
-            var memberitem = kefuarrtool.getWiths(kefumemberonlines, 'id', memberonline.id);
-            console.log(' _funRoomsMember ::::');
-            console.log(memberitem);
+            var memberitem = kefuarrtool.getWiths(kefustorage.kefumemberonlines, 'id', memberid);
+            if ((memberitem.id || 0) <= 0) return false;
+
+            // 未读数
+            memberitem.messagenum = memberitem.messagenum + 1;
+            // 最后发送时间
+            memberitem.messagetime = new Date();
         }
 
         // 给除了自己以外的客户端广播消息
@@ -223,7 +222,7 @@ io.sockets.on('connection', function (socket) {
 	* 	param 	nickuser 登录名 | nickpwd 密码 | fn 回调函数
 	*/
     socket.on('kefu_user:login', function (socketid, username, password, fn) {
-        var index = kefuarrtool.getWith(kefuuseronlines, 'username', username);
+        var index = kefuarrtool.getIndex(kefustorage.kefuuseronlines, 'username', username);
         if (index >= 0) {
             typeof fn === 'function' && fn({ result: false, message: '账号已在其他端登录!' }); return;
         }
@@ -257,13 +256,13 @@ io.sockets.on('connection', function (socket) {
                 }
 
                 // 验证是否已经登录
-                var index = kefuarrtool.getWith(kefuuseronlines, 'username', res.row.username);
+                var index = kefuarrtool.getIndex(kefustorage.kefuuseronlines, 'username', res.row.username);
                 if (index >= 0) {
                     typeof fn === 'function' && fn({ result: false, message: '账号已在其他端登录!' }); return;
                 }
 
                 // 添加在线客服
-                kefuuseronlines.push({ id: res.row.id, username: res.row.username, name: res.row.name, img: res.row.img, cookieid: res.row.cookieid, admitnum: res.row.admitnum, socketid: socketid });
+                kefustorage.kefuuseronlines.push({ id: res.row.id, username: res.row.username, name: res.row.name, img: res.row.img, cookieid: res.row.cookieid, admitnum: res.row.admitnum, socketid: socketid });
 
                 // 用户房间集
                 var memberrooms = rooms_admit_member(res);
@@ -278,7 +277,7 @@ io.sockets.on('connection', function (socket) {
                 // 记录名称
                 socket.name = res.row.name;
                 // 客服登录集
-                io.sockets.emit('kefu_user:onlines', kefuuseronlines);
+                io.sockets.emit('kefu_user:onlines', kefustorage.kefuuseronlines);
                 // 接待用户集
                 io.sockets.emit('members:' + res.row.cookieid, { type: 'list', rooms: memberrooms });
 
@@ -288,9 +287,28 @@ io.sockets.on('connection', function (socket) {
             /*************************** 客服接待用户 ***********************************/
             function rooms_admit_member(res) {
                 members = res.rooms;
-                if (members.length <= 0) {
-                    return [];
+
+                // 查找未有接待的用户  ------------ ES6 
+                var nonesuser = kefustorage.kefumemberonlines.filter(m => m.userid == 0);
+                if (nonesuser.length > 0) {
+                    nonesuser.forEach(function (item, index) {
+                        // 将用户 转接到 客服
+                        members.push({
+                            member_socketid: item.socketid,
+                            id: item.id,
+                            name: item.name,
+                            img: item.img,
+                            messagenum: item.messagenum,
+                            messagetime: item.messagetime,
+                            status: item.status
+                        });
+                        // 将用户绑定客服
+                        mysqlkefulogic.back_room.fireEditUserId({userid:res.row.id, memberid:item.id});
+                    });
+                    nonesuser = null;
                 }
+                if (members.length <= 0) return [];
+
                 // 遍历
                 members.forEach(function (item, index) {
                     if (item.status == 1) {
@@ -301,7 +319,7 @@ io.sockets.on('connection', function (socket) {
                             socket.join(item.member_socketid);
 
                             // 修改用户的对应的客服Id、CookieId
-                            var memberitem = kefuarrtool.getWiths(kefumemberonlines, 'id', item.id);
+                            var memberitem = kefuarrtool.getWiths(kefustorage.kefumemberonlines, 'id', item.id);
                             if ((memberitem.id || 0) > 0) {
                                 memberitem.userid = res.row.id;
                                 memberitem.usercookieid = res.row.cookieid;
@@ -360,19 +378,32 @@ io.sockets.on('connection', function (socket) {
                 typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
             // 查找用户是否已在线
-            var index = kefuarrtool.getWith(kefumemberonlines, 'id', res.row.id);
+            var index = kefuarrtool.getIndex(kefustorage.kefumemberonlines, 'id', res.row.id);
             if (index >= 0) {
                 typeof fn === 'function' && fn({ result: res.result, message: '账号已在其他端登录!' });
             } else {
                 // 追加在线用户
-                kefumemberonlines.push({
+                kefustorage.kefumemberonlines.push({
+                    // 用户主键
                     id: res.row.id,
+                    // 商户标识
                     companyrltid: res.row.companyrltid,
+                    // 用户名称
                     name: res.row.name,
+                    // 用户头像
                     img: res.row.img,
+                    // 用户在线状态
+                    status: 1,
+                    // 用户SocketId
                     socketid: socketid,
+                    // 客服Id
                     userid: res.row.user_id,
+                    // 客服CookieId
                     usercookieid: '',
+                    // 未读数
+                    messagenum: 0,
+                    // 最后发送时间
+                    messagetime: new Date(),
                 });
             }
             // 记录Id
@@ -382,7 +413,7 @@ io.sockets.on('connection', function (socket) {
             // 记录名称
             socket.name = res.row.name;
             // 用户登录集
-            io.sockets.emit('kefu_member:onlines', kefumemberonlines);
+            io.sockets.emit('kefu_member:onlines', kefustorage.kefumemberonlines);
             // 订阅
             socket.join(socketid);
 
@@ -396,7 +427,7 @@ io.sockets.on('connection', function (socket) {
         // 用户连接客服
         function memberroom(res) {
             // 返回人数最少的客服
-            var userline = kefuusertool.GetLessAdmitNum(kefuuseronlines, 'admitNum');
+            var userline = kefuusertool.GetLessAdmitNum(kefustorage.kefuuseronlines, 'admitNum');
 
             // 有客服在线时才处理
             if ((userline.id || 0) > 0) {
@@ -404,11 +435,11 @@ io.sockets.on('connection', function (socket) {
                 mysqlkefulogic.back_room.fireEditUserId({ userid: userline.id, memberid: res.row.id });
 
                 // 更新客服接待人数
-                kefuusertool.UpdateAdmitNum(kefuuseronlines, userline.id);
+                kefuusertool.UpdateAdmitNum(kefustorage.kefuuseronlines, userline.id);
                 // 得到当前客服接待的信息
                 var rooms = kefu_rooms[userline.cookieid] || [];
                 // 检查是否已经包含
-                var roomsindex = kefuarrtool.getWith(rooms, 'id', res.row.id);
+                var roomsindex = kefuarrtool.getIndex(rooms, 'id', res.row.id);
 
                 // 用户对象
                 var roomMember = {};
@@ -447,9 +478,9 @@ io.sockets.on('connection', function (socket) {
                 }
 
                 // 用户 绑定 客服信息
-                var userindex = kefuarrtool.getWith(kefumemberonlines, 'id', res.row.id);
+                var userindex = kefuarrtool.getIndex(kefustorage.kefumemberonlines, 'id', res.row.id);
                 if (userindex >= 0) {
-                    var useritem = kefumemberonlines[userindex];
+                    var useritem = kefustorage.kefumemberonlines[userindex];
                     useritem.userid = userline.id;
                     useritem.usercookieid = userline.cookieid;
                 }
@@ -485,15 +516,15 @@ io.sockets.on('connection', function (socket) {
             var oldUser = {};
 
             // 验证是否登录
-            var index = kefuarrtool.getWith(kefuuseronlines, 'id', socket.userid);
+            var index = kefuarrtool.getIndex(kefustorage.kefuuseronlines, 'id', socket.userid);
 
             if (index < 0) return;
 
             // 读取对象
-            oldUser = kefuuseronlines[index];
+            oldUser = kefustorage.kefuuseronlines[index];
 
             // 移除对象
-            kefuuseronlines.splice(index, 1);
+            kefustorage.kefuuseronlines.splice(index, 1);
 
             // 读取接待用户
             var oldRooms = kefu_rooms[oldUser.cookieid];
@@ -513,7 +544,7 @@ io.sockets.on('connection', function (socket) {
                 if (oldMember.status <= 0) continue;
 
                 // 返回人数最少的客服
-                var userline = kefuusertool.GetLessAdmitNum(kefuuseronlines, 'admitNum');
+                var userline = kefuusertool.GetLessAdmitNum(kefustorage.kefuuseronlines, 'admitNum');
 
                 // 客服ID
                 if ((userline.id || 0) <= 0) continue;
@@ -543,12 +574,12 @@ io.sockets.on('connection', function (socket) {
 
             /************************* 在线记录删除 ***********************/
             // 用户在线 - 检查是否已经包含
-            var mmeberindex = kefuarrtool.getWith(kefumemberonlines, 'id', socket.memberid);
+            var mmeberindex = kefuarrtool.getIndex(kefustorage.kefumemberonlines, 'id', socket.memberid);
             if (mmeberindex < 0) return;
             // 用户在线 - 读取用户信息
-            var onlineMenber = kefumemberonlines[mmeberindex];
+            var onlineMenber = kefustorage.kefumemberonlines[mmeberindex];
             // 用户在线 - 移除在线用户
-            kefumemberonlines.splice(mmeberindex, 1);
+            kefustorage.kefumemberonlines.splice(mmeberindex, 1);
             // 用户在线 - 用户Id为空
             if ((onlineMenber.userid || 0) <= 0) return;
 
@@ -562,7 +593,7 @@ io.sockets.on('connection', function (socket) {
             if (newRooms.length <= 0) return;
 
             // 客服接待用户 - 用户所在索引
-            mmeberindex = kefuarrtool.getWith(newRooms, 'id', socket.memberid);
+            mmeberindex = kefuarrtool.getIndex(newRooms, 'id', socket.memberid);
             if (mmeberindex < 0) return;
 
             // 客服接待用户 - 用户对象

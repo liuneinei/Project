@@ -22,7 +22,7 @@ function editValue(client, opts) {
  */
 function editValueOrange(client, opts) {
     // 查找索引
-    var keyindex = kefuarrtool.getWith(kefustorage.tabkey, 'keyName', opts.tabvalue);
+    var keyindex = kefuarrtool.getIndex(kefustorage.tabkey, 'keyName', opts.tabvalue);
     if(keyindex < 0){
         typeof opts.success === "function" && opts.success({result:false,message:'无效数据'});return;
     }

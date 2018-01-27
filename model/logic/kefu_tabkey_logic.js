@@ -19,7 +19,7 @@ var mysql = require('../../core/mysql.js');
  */
 function fireTabKey(opts) {
     // 查找索引
-    var keyindex = kefuarrtool.getWith(opts.arr, opts.tabname, opts.tabvalue);
+    var keyindex = kefuarrtool.getIndex(opts.arr, opts.tabname, opts.tabvalue);
     // 初始化对象
     var keyItem = {};
     if (keyindex >= 0) { // 存在

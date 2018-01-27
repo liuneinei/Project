@@ -73,7 +73,17 @@ function fireById(opts) {
 
 // 状态修改处理
 function fireEditStatus(opts) {
-    mysql.dataMember.editStatus(opts);
+    mysql.dataMember.editStatus({
+        status: opts.status,
+        id: opts.id,
+        success: function (res) {
+            if ((res.row.affectedRows || 0) <= 0) {
+                typeof opts.success === "function" && opts.success({ result: false, message: '状态修改失败' });
+                return;
+            }
+            typeof opts.success === "function" && opts.success({ result: false });
+        }
+    });
 }
 
 // 修改未读信息

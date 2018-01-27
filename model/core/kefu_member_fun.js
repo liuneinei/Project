@@ -73,7 +73,7 @@ function editMessage(client, opts) {
     } else if (opts.prime == 'add') {
         opts.sqltext = 'update kefu_member set messagenum = messagenum + 1 , messagetime = ? where id = ?';
     }
-    client.query(opts.sqltext, [opts.messagenum, opts.messagetime, opts.id], function (err, rows, fields) {
+    client.query(opts.sqltext, [opts.messagetime, opts.id], function (err, rows, fields) {
         typeof opts.success === "function" && opts.success({ err: err, row: rows });
     });
 }

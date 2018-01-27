@@ -5,7 +5,7 @@
 /*
 * 获取信息当前的 Id 所在的索引
  */
-function getWith(arr, field, id) {
+function getIndex(arr, field, id) {
     var length = arr.length;
     for (var i = 0; i < length; i++){
         var obj = arr[i];
@@ -44,6 +44,20 @@ function getSort(arr, field) {
     return arr;
 }
 
+/*
+ *   从大到小排序
+ *   return 集合
+ */
+function getSortDesc(arr, field) {
+    if (arr.length <= 0) {
+        return [];
+    }
+    arr.sort(function (a, b) {
+        return b[field] - a[field];
+    });
+    return arr;
+}
+
 /*----*/
 //日期格式化
 Date.prototype.Format = function (fmt) { //author: meizz
@@ -71,9 +85,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 module.exports={
     // 获取信息当前的 Id 所在的索引
-    getWith: getWith,
+    getIndex: getIndex,
     // 获取信息当前的 Id 所在的对象
     getWiths: getWiths,
     // 从小到大排序
-    getSort: getSort
+    getSort: getSort,
 };
