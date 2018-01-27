@@ -18,6 +18,20 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 // app.listen(8087);
 
+app.get("/member/:id", function (request, response) {
+    console.log(request.method);
+    var id = request.params.id;
+    console.log(id);
+
+    mysqlkefulogic.back_users.fireById({
+        id:id,
+        success:function (res) {
+            
+            response.json(res);
+        }
+    });
+});
+
 var server = http.createServer(app);
 server.listen(8087);
 var sio = require('socket.io');
