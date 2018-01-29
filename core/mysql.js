@@ -78,6 +78,10 @@ var kefu_Member_fun = {
     editMessage: function (opts) {
       return memberfun.editMessage(client, opts);
     },
+    // 通过中心Id
+    byCenterId: function (opts) {
+        return memberfun.byCenterId(client, opts);
+    }
 };
 
 /*
@@ -160,6 +164,8 @@ module.exports = {
         editStatus: kefu_Member_fun.editStatus,
         // 修改未读信息
         editMessage: kefu_Member_fun.editMessage,
+        // 通过中心Id
+        byCenterId: kefu_Member_fun.byCenterId,
     },
     /************** Room 房间表  ********************/
     dataRoom: {

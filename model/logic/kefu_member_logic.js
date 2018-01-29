@@ -4,6 +4,10 @@
 
 // 数据库
 var mysql = require('../../core/mysql.js');
+// 加密
+var mymd5 = require('../../core/md5.js');
+// 公共处理
+var kefucommon = require('../../public/js/kefucommon.js');
 
 /*
 *   用户登录
@@ -13,13 +17,31 @@ var mysql = require('../../core/mysql.js');
     opts.success = opts.success || function () {};
  */
 function fireMemberLogin(opts) {
-    if (opts.cookieid == '' && opts.socketid == '') {
+    if (opts.cookieid == '' && opts.socketid == '' && opts.centerid == '') {
         typeof opts.success === "function" && opts.success({ result: false, message: '请求非法' }); return;
     } else if (opts.socketid == '') {
         typeof opts.success === "function" && opts.success({ result: false, message: '链接失败' }); return;
+    } else if (opts.centerid != '') {
+        if(typeof opts.success !== "function") opts.success = function () {};
+        mysql.dataMember.byCenterId({ centerid: opts.centerid, success: opts.success });
     } else if (opts.cookieid == '') {
         // 主键加1
-        opts.member.id += 1;
+        var rowid = opts.rowid + 1;
+        // 用户初始化
+        opts.member = {
+            id: rowid,
+            centerid: '',
+            companyrltid: 0,
+            username: 'm' + (Math.random() * 1000000).toFixed(0),
+            password: mymd5.md5('123').toString(),
+            name: '会员' + rowid,
+            img: '',
+            cookieid: mymd5.md5(opts.socketid).toString(),
+            messagenum: 0,
+            messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"),
+            status: 1,
+            addtime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
+        };
         // 用户初始化
         mysql.dataMember.initAdd({
             param: [opts.member.id, opts.member.centerid, opts.member.companyrltid, opts.member.username, opts.member.password, opts.member.name, opts.member.img, opts.member.cookieid, opts.member.messagenum, opts.member.messagetime, opts.member.status, opts.member.addtime],
@@ -50,7 +72,6 @@ function fireMemberLogin(opts) {
             fireMemberLogin(opts);
         }
     } else {
-
         mysql.dataMember.byCookieId({
             cookieid: opts.cookieid, success: function (rowdata) {
                 // 修改用户连接SocketId
@@ -99,6 +120,65 @@ function fireEditMessage(opts) {
     });
 }
 
+// 关联初始化用户
+function fireInitCenterId(opts) {
+    // 通过中心Id
+    mysql.dataMember.byCenterId({ centerid: opts.centerid, success: byCenterIdBack });
+    // 获取回调
+    function byCenterIdBack(res) {
+        if (res.result) {
+            typeof opts.success === "function" && opts.success(res); return;
+        }
+        // Id自增
+        var rowid = opts.rowid + 1;
+        // 用户初始化信息
+        opts.member = {
+            id: rowid,
+            centerid: opts.centerid,
+            companyrltid: 0,
+            username: 'm' + (Math.random() * 1000000).toFixed(0),
+            password: mymd5.md5('123').toString(),
+            name: '用户' + rowid,
+            img: '',
+            cookieid: mymd5.md5(opts.centerid).toString(),
+            messagenum: 0,
+            messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"),
+            status: 0,
+            addtime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
+        };
+
+        // 用户初始化
+        mysql.dataMember.initAdd({
+            param: [opts.member.id, opts.member.centerid, opts.member.companyrltid, opts.member.username, opts.member.password, opts.member.name, opts.member.img, opts.member.cookieid, opts.member.messagenum, opts.member.messagetime, opts.member.status, opts.member.addtime],
+            success: initAddMemberBack
+        });
+        // 用户初始化 回调
+        function initAddMemberBack(rowdata) {
+            // 修改 kefu_tabkey1 表 字段 Value 值
+            mysql.dataTabkey.editValueOrange({ tabvalue: 'kefu_member', value: opts.member.id, success: function () { } });
+
+            if ((rowdata.row.affectedRows || 0) <= 0) {
+                typeof opts.success === "function" && opts.success({ result: false, message: '用户初始化失败' }); return;
+            }
+            opts.cookieid = opts.member.cookieid;
+            // 初始化房间
+            mysql.dataRoom.initAdd({
+                param: [opts.member.id, opts.member.companyrltid, opts.member.id, opts.socketid, 0],
+                success: initAddRoomBack
+            });
+        }
+
+        // 初始化房间 回调
+        function initAddRoomBack(rowdata) {
+            if ((rowdata.row.affectedRows || 0) <= 0) {
+                typeof opts.success === "function" && opts.success({ result: false, message: '房间初始化失败' }); return;
+            }
+            // 递归
+            fireInitCenterId(opts);
+        }
+    }
+}
+
 module.exports = {
     // 用户初始化登录 
     fireMemberLogin: fireMemberLogin,
@@ -110,4 +190,6 @@ module.exports = {
     fireEditStatus: fireEditStatus,
     // 修改未读信息
     fireEditMessage: fireEditMessage,
+    // 关联初始化用户
+    fireInitCenterId: fireInitCenterId,
 };

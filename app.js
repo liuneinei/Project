@@ -18,18 +18,26 @@ var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 // app.listen(8087);
 
-app.get("/member/:id", function (request, response) {
-    console.log(request.method);
-    var id = request.params.id;
-    console.log(id);
+app.get("/member/:centerid", function (request, response) {
+    // 用户关联Id
+    var centerid = request.params.centerid;
 
-    mysqlkefulogic.back_users.fireById({
-        id:id,
-        success:function (res) {
-            
+    // 自增Id
+    mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefustorage.tabkey, tabname: 'keyName', tabvalue: 'kefu_member', success: fireTabKeyBack });
+    // 自增Id 回调
+    function fireTabKeyBack(res) {
+        // Error back
+        if (!res.result) {
+            response.json({result: res.result, message: res.message}); return;
+        }
+
+        // 读取并初始化数据(无关联情况下)
+        mysqlkefulogic.back_member.fireInitCenterId({ rowid:res.row.value, centerid:centerid, success:fireInitCenterIdBack });
+        // 读取并初始化数据 回调
+        function fireInitCenterIdBack(res) {
             response.json(res);
         }
-    });
+    }
 });
 
 var server = http.createServer(app);
@@ -44,6 +52,8 @@ var kefu_rooms = {};
 io.sockets.on('connection', function (socket) {
     // 所有 socket 连接集
     // console.log(io.sockets.server.eio);
+
+    // io.sockets.connected[socketid].emit();
 
     /*
 	*	连接时推送
@@ -219,7 +229,7 @@ io.sockets.on('connection', function (socket) {
         // 消息处理 - 标为已读
         mysqlkefulogic.back_message.fireEditIsRead({ isread: 1, roomid: id });
         // 消息处理 - 用户未读数清空
-        mysqlkefulogic.back_member.fireEditMessage({ prime: 'clear', messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"), id: id })
+        mysqlkefulogic.back_member.fireEditMessage({ prime: 'clear', messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"), id: id });
     });
 
     /*
@@ -354,7 +364,7 @@ io.sockets.on('connection', function (socket) {
     /*
 	*	用户登录初始化
 	*/
-    socket.on('kefu_member_login:init', function (socketid, cookieid, fn) {
+    socket.on('kefu_member_login:init', function (socketid, centerid, cookieid, fn) {
         // 自增Id
         mysqlkefulogic.back_tabkey.fireTabKey({ arr: kefustorage.tabkey, tabname: 'keyName', tabvalue: 'kefu_member', success: fireTabKeyBack });
         // 自增Id 回调
@@ -364,25 +374,7 @@ io.sockets.on('connection', function (socket) {
                 typeof fn === 'function' && fn({ result: res.result, message: res.message }); return;
             }
             // 初始化用户 或 登录用户
-            mysqlkefulogic.back_member.fireMemberLogin({
-                socketid: socketid,
-                cookieid: cookieid,
-                member: {
-                    id: res.row.value,
-                    centerid: '',
-                    companyrltid: 0,
-                    username: 'm' + (Math.random() * 1000000).toFixed(0),
-                    password: mymd5.md5('123').toString(),
-                    name: '会员' + res.row.value,
-                    img: '',
-                    cookieid: mymd5.md5(socketid).toString(),
-                    messagenum: 0,
-                    messagetime: (new Date()).Format("yyyy-MM-dd hh:mm:ss"),
-                    status: 1,
-                    addtime: (new Date()).Format("yyyy-MM-dd hh:mm:ss")
-                },
-                success: fireMemberLoginBack
-            });
+            mysqlkefulogic.back_member.fireMemberLogin({ socketid: socketid, centerid: centerid, cookieid: cookieid, rowid: res.row.value, success: fireMemberLoginBack });
         }
 
         // 初始化用户 或 登录用户 回调
