@@ -17,14 +17,14 @@ var kefucommon = require('../../public/js/kefucommon.js');
     opts.success = opts.success || function () {};
  */
 function fireMemberLogin(opts) {
-    if (opts.cookieid == '' && opts.socketid == '' && opts.centerid == '') {
+    if (!opts.cookieid && !opts.socketid && !opts.centerid) {
         typeof opts.success === "function" && opts.success({ result: false, message: '请求非法' }); return;
-    } else if (opts.socketid == '') {
+    } else if (!opts.socketid) {
         typeof opts.success === "function" && opts.success({ result: false, message: '链接失败' }); return;
-    } else if (opts.centerid != '') {
+    } else if (opts.centerid) {
         if(typeof opts.success !== "function") opts.success = function () {};
         mysql.dataMember.byCenterId({ centerid: opts.centerid, success: opts.success });
-    } else if (opts.cookieid == '') {
+    } else if (!opts.cookieid) {
         // 主键加1
         var rowid = opts.rowid + 1;
         // 用户初始化
@@ -75,7 +75,7 @@ function fireMemberLogin(opts) {
         mysql.dataMember.byCookieId({
             cookieid: opts.cookieid, success: function (rowdata) {
                 // 修改用户连接SocketId
-                mysql.dataRoom.editMemberSocketId({ socketid: opts.socketid, memberid: rowdata.row.id })
+                mysql.dataRoom.editMemberSocketId({ socketid: opts.socketid, memberid: rowdata.row.id });
                 typeof opts.success === "function" && opts.success(rowdata);
             }
         });
