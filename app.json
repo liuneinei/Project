@@ -1,8 +1,7 @@
 {
   "pages":[
-    "pages/myexp/myexp",
     "pages/index/index",
-    
+    "pages/myexp/myexp",
     "pages/myservice/myservice",
     "pages/mycity/mycity",
     "pages/news/news",

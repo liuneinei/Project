@@ -82,5 +82,9 @@
   height: 2rpx;
   widows: 20rpx;
   color: #cccccc;
-  
+}
+
+/* 滚动图片  */
+.slide-image{
+  width: 100%;
 }
