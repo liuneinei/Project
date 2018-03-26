@@ -8,10 +8,24 @@
           <button class='btn'>添加服务地区</button>
         </view>
       </view>
-      <view class='warp service-box'>
+      <!-- <view class='warp service-box'>
         <view class='inpt-tarea'></view>
         <view class='form-btn'>
           <button class='btn'>添加服务项</button>
+        </view>
+      </view> -->
+      <view class='warp'>
+        <view>已有服务项：</view>
+        <view class='warp-line'>
+          <label>分娩导乐、</label>
+          <label>分娩导乐、</label>
+          <label>分娩导乐、</label>
+        </view>
+        <view>新增服务项：</view>
+        <view class='warp-line'>
+          <label>分娩导乐、</label>
+          <label>分娩导乐、</label>
+          <label>分娩导乐、</label>
         </view>
       </view>
       <view class='form-btn'>

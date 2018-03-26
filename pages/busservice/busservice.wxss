@@ -4,42 +4,48 @@
     /*position: relative;*/
     margin: 0 auto;
     height: 100%;
-    font-size: 14px;
+    font-size: 28rpx;
 }
 
 .step-title{
-    padding: 10px;
+    padding: 20rpx;
     text-align: center;
     width: 92%;
 }
 
 .inpt-tarea{
     width: 93%;
-    height: 80px;
-    padding: 10px;
+    height: 160rpx;
+    padding: 20rpx;
     border: 1px solid #ccc;
+    border-radius: 8rpx;
 }
 .warp{
     width: 92%;
     margin: 0 auto; 
 }
 .service-box{
-    margin-top:20px;
+    margin-top: 40rpx;
 }
 
 .form-btn{
-    margin-top: 20px;
+    margin-top: 40rpx;
     text-align: center
 }
 .form-btn .btn{
-    height: 35px;
-    font-size: 16px;
+    height: 70rpx;
+    font-size: 28rpx;
 }
 
 .btn{
-    width: 83px;
-    height: 25px;
+    width: 268rpx;
+    height: 70rpx;
+    line-height: 70rpx;
     text-align: center;
-    border: 1px solid #dddddd;
+    border: 0px solid #dddddd;
     background: none;
+}
+
+.warp-line{
+  margin: 20rpx 0 20rpx 0;
 }

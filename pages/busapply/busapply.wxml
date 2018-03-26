@@ -35,8 +35,19 @@
           <view class='id_img'>身份证反面</view>
         </view>
       </view>
+      <view class='warp service-box'>
+        <view class='inpt-tarea'>
+          <view class='tarea-item' wx:for="{{showdata.area}}" wx:for-item="item">
+            <view>{{item.name}}</view>
+            <view class='tarea-del' data-id='{{item.city}}' bindtap='btnAreaDel'>删除</view>
+          </view>
+        </view>
+        <view class='form-btn'>
+          <button class='btn' bindtap='btnChooseCity'>添加服务地区</button>
+        </view>
+      </view>
       <view class="form-btn">
-				<button class="btn" formType="submit">下一步</button>
+				<button class="btn" formType="submit">提交修改</button>
 			</view>
     </form>
   </view>

@@ -94,3 +94,34 @@
     height: 35px;
     font-size: 16px;
 }
+
+/* 服务项 */
+.service-box{
+    margin-top:20px;
+}
+.inpt-tarea{
+    width: 93%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    overflow:auto;
+    border-radius: 5rpx;
+}
+.tarea-item{
+  display: flex;
+  position: relative;
+}
+.tarea-item .tarea-del{
+  position: absolute;
+  right: 15rpx;
+}
+.btn{
+    width: 134px;
+    height: 70rpx;
+    text-align: center;
+    border: 1px solid #dddddd;
+    background: none;
+    font-size: 28rpx;
+    line-height:70rpx;
+}
+/* End: 服务框 */
